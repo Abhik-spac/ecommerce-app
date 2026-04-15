@@ -4,8 +4,14 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
 [![Module Federation](https://img.shields.io/badge/Module%20Federation-Webpack%205-green.svg)](https://webpack.js.org/concepts/module-federation/)
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen.svg)]()
+[![MFE](https://img.shields.io/badge/MFE-Fully%20Configured-success.svg)]()
 
 A production-ready, scalable eCommerce platform built with **Angular 19+** and **Module Federation** microfrontend architecture. Inspired by SAP Composable Storefront (Spartacus) but designed with modern Angular best practices.
+
+## ✅ MFE Status: Fully Configured
+
+**All applications are configured as Micro Frontends with Module Federation.**
+**Run all MFEs with a single command:** `npm run start:all-mfe`
 
 ---
 
@@ -154,39 +160,51 @@ npm run build:shared
 
 ### Running the Applications
 
-#### Option 1: Run All MFEs + B2C App
+#### ✅ Option 1: Run All MFEs (Single Command - Recommended)
 ```bash
-npm run start:mfe
+npm run start:all-mfe
+```
+This starts all 7 applications:
+- Shell App (http://localhost:4200)
+- Product MFE (http://localhost:4201)
+- Cart MFE (http://localhost:4202)
+- Checkout MFE (http://localhost:4203)
+- Order MFE (http://localhost:4204)
+- Auth MFE (http://localhost:4205)
+- User MFE (http://localhost:4206)
+
+#### Option 2: Run All Applications (Shell + B2B + Admin)
+```bash
+npm run start:all-apps
 ```
 This starts:
-- B2C Shell (http://localhost:4200)
-- All 6 MFEs (ports 4201-4206)
+- Shell App (http://localhost:4200)
+- B2B App (http://localhost:4300)
+- Admin App (http://localhost:4400)
 
-#### Option 2: Run Individual Apps
+#### Option 3: Run Everything (All 9 Applications)
 ```bash
-# B2C Storefront
-npm run start:b2c          # http://localhost:4200
+npm run start:everything
+```
+This starts all MFEs + all applications simultaneously.
 
-# B2B Storefront
-npm run start:b2b          # http://localhost:4300
-
-# Admin Panel
-npm run start:admin        # http://localhost:4400
+#### Option 4: Run Individual Apps/MFEs
+```bash
+# Shell Application
+npm run start:shell        # http://localhost:4200
 
 # Individual MFEs
-npm run start:product      # http://localhost:4201
-npm run start:cart         # http://localhost:4202
-npm run start:checkout     # http://localhost:4203
-npm run start:order        # http://localhost:4204
-npm run start:auth         # http://localhost:4205
-npm run start:user         # http://localhost:4206
-```
+npm run start:product-mfe  # http://localhost:4201
+npm run start:cart-mfe     # http://localhost:4202
+npm run start:checkout-mfe # http://localhost:4203
+npm run start:order-mfe    # http://localhost:4204
+npm run start:auth-mfe     # http://localhost:4205
+npm run start:user-mfe     # http://localhost:4206
 
-#### Option 3: Run All Three Apps Together
-```bash
-npm run start:all
+# Additional Apps
+npm run start:b2b          # http://localhost:4300
+npm run start:admin        # http://localhost:4400
 ```
-This starts B2C, B2B, and Admin apps simultaneously.
 ### 🎓 Test Credentials
 
 **Email/Password Login:**
@@ -205,14 +223,24 @@ This starts B2C, B2B, and Admin apps simultaneously.
 
 ## 📦 Available Scripts
 
-### Development
+### Development (Single Command Options) ✅
 ```bash
-npm start              # Start B2C app
-npm run start:b2c      # Start B2C app (port 4200)
-npm run start:b2b      # Start B2B app (port 4300)
-npm run start:admin    # Start Admin app (port 4400)
-npm run start:all      # Start all 3 apps
-npm run start:mfe      # Start all MFEs + B2C shell
+npm run start:all-mfe      # Start all MFEs (Shell + 6 MFEs) - RECOMMENDED
+npm run start:all-apps     # Start all apps (Shell + B2B + Admin)
+npm run start:everything   # Start everything (All 9 applications)
+```
+
+### Development (Individual)
+```bash
+npm run start:shell        # Start Shell app (port 4200)
+npm run start:product-mfe  # Start Product MFE (port 4201)
+npm run start:cart-mfe     # Start Cart MFE (port 4202)
+npm run start:checkout-mfe # Start Checkout MFE (port 4203)
+npm run start:order-mfe    # Start Order MFE (port 4204)
+npm run start:auth-mfe     # Start Auth MFE (port 4205)
+npm run start:user-mfe     # Start User MFE (port 4206)
+npm run start:b2b          # Start B2B app (port 4300)
+npm run start:admin        # Start Admin app (port 4400)
 ```
 
 ### Build
