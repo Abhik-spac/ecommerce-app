@@ -1,0 +1,104 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <div class="toolbar-content">
+    <div class="logo-section">
+      <button mat-icon-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <h1 routerLink="/" class="logo">
+        <mat-icon>business</mat-icon>
+        B2B Portal
+      </h1>
+    </div>
+
+    <div class="nav-section">
+      <button mat-button routerLink="/products">
+        <mat-icon>inventory_2</mat-icon>
+        Products
+      </button>
+      <button mat-button routerLink="/orders">
+        <mat-icon>receipt_long</mat-icon>
+        Orders
+      </button>
+      <button mat-button>
+        <mat-icon>request_quote</mat-icon>
+        Quotes
+      </button>
+    </div>
+
+    <div class="actions-section">
+      <button mat-icon-button routerLink="/cart" [matBadge]="cartService.itemCount()" matBadgeColor="accent">
+        <mat-icon>shopping_cart</mat-icon>
+      </button>
+
+      <button mat-icon-button *ngIf="!authService.isAuthenticated()" routerLink="/auth">
+        <mat-icon>person</mat-icon>
+      </button>
+
+      <button mat-icon-button *ngIf="authService.isAuthenticated()" [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+
+      <mat-menu #userMenu="matMenu">
+        <div class="user-info" mat-menu-item disabled>
+          <strong>{{ authService.currentUser()?.firstName }} {{ authService.currentUser()?.lastName }}</strong>
+          <small>{{ authService.currentUser()?.email }}</small>
+          <small class="company-name">Acme Corporation</small>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item routerLink="/profile">
+          <mat-icon>person</mat-icon>
+          Profile
+        </button>
+        <button mat-menu-item routerLink="/orders">
+          <mat-icon>receipt_long</mat-icon>
+          Orders
+        </button>
+        <button mat-menu-item>
+          <mat-icon>business</mat-icon>
+          Company Settings
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="authService.logout()">
+          <mat-icon>logout</mat-icon>
+          Logout
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-toolbar>
+
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="app-footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>B2B Services</h3>
+      <ul>
+        <li><a href="#">Bulk Orders</a></li>
+        <li><a href="#">Custom Pricing</a></li>
+        <li><a href="#">Quote Requests</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Support</h3>
+      <ul>
+        <li><a href="#">Account Manager</a></li>
+        <li><a href="#">Technical Support</a></li>
+        <li><a href="#">Documentation</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Terms & Conditions</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2024 B2B eCommerce Portal. All rights reserved.</p>
+  </div>
+</footer>

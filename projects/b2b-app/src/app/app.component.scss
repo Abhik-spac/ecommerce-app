@@ -1,0 +1,124 @@
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.toolbar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .logo {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.nav-section {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  margin-left: 32px;
+}
+
+.actions-section {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px;
+
+  strong {
+    font-size: 14px;
+  }
+
+  small {
+    font-size: 12px;
+    color: #666;
+  }
+
+  .company-name {
+    color: #3f51b5;
+    font-weight: 500;
+  }
+}
+
+.main-content {
+  min-height: calc(100vh - 64px - 200px);
+  background: #fafafa;
+}
+
+.app-footer {
+  background: #2c3e50;
+  color: white;
+  padding: 48px 24px 24px;
+
+  .footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 32px;
+    margin-bottom: 32px;
+
+    .footer-section {
+      h3 {
+        font-size: 18px;
+        margin: 0 0 16px 0;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          margin-bottom: 8px;
+
+          a {
+            color: #ecf0f1;
+            text-decoration: none;
+
+            &:hover {
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .footer-bottom {
+    text-align: center;
+    padding-top: 24px;
+    border-top: 1px solid #34495e;
+
+    p {
+      margin: 0;
+      color: #ecf0f1;
+      font-size: 14px;
+    }
+  }
+}

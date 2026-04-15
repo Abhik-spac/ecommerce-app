@@ -1,0 +1,185 @@
+<div class="product-detail-container" *ngIf="!isLoading() && product()">
+  <div class="breadcrumb">
+    <a routerLink="/products">Products</a>
+    <mat-icon>chevron_right</mat-icon>
+    <span>{{ product().name }}</span>
+  </div>
+
+  <div class="product-content">
+    <!-- Product Images -->
+    <div class="product-images">
+      <div class="main-image">
+        <img [src]="product().images[0]?.url" [alt]="product().name">
+        
+        <!-- Badges -->
+        <div class="badges">
+          <mat-chip *ngIf="product().isNew" class="badge-new">New</mat-chip>
+          <mat-chip *ngIf="product().isFeatured" class="badge-featured">Featured</mat-chip>
+          <mat-chip *ngIf="product().compareAtPrice" class="badge-sale">
+            {{ getDiscountPercentage() }}% OFF
+          </mat-chip>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="product-info">
+      <h1>{{ product().name }}</h1>
+      
+      <!-- Rating -->
+      <div class="rating">
+        <mat-icon class="star-icon">star</mat-icon>
+        <span class="rating-value">{{ product().rating }}</span>
+        <span class="review-count">({{ product().reviewCount }} reviews)</span>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Price -->
+      <div class="price-section">
+        <div class="price-container">
+          <span class="current-price">₹{{ product().price | number:'1.0-0' }}</span>
+          <span *ngIf="product().compareAtPrice" class="compare-price">
+            ₹{{ product().compareAtPrice | number:'1.0-0' }}
+          </span>
+        </div>
+        <div *ngIf="product().compareAtPrice" class="savings">
+          You save ₹{{ (product().compareAtPrice - product().price) | number:'1.0-0' }}
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Description -->
+      <div class="description">
+        <h3>Description</h3>
+        <p>{{ product().description }}</p>
+      </div>
+
+      <!-- Attributes -->
+      <div class="attributes" *ngIf="product().attributes?.length > 0">
+        <h3>Specifications</h3>
+        <div class="attribute-list">
+          <div class="attribute-item" *ngFor="let attr of product().attributes">
+            <span class="attr-name">{{ attr.name }}:</span>
+            <span class="attr-value">{{ attr.value }}</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Stock Status -->
+      <div class="stock-status" [class.in-stock]="product().inventory.quantity > 0">
+        <mat-icon>{{ product().inventory.quantity > 0 ? 'check_circle' : 'cancel' }}</mat-icon>
+        <span>
+          {{ product().inventory.quantity > 0 ? 
+             'In Stock (' + product().inventory.quantity + ' available)' : 
+             'Out of Stock' }}
+        </span>
+      </div>
+
+      <!-- Quantity Selector -->
+      <div class="quantity-selector" *ngIf="product().inventory.quantity > 0">
+        <label>Quantity:</label>
+        <div class="quantity-controls">
+          <button mat-icon-button (click)="decreaseQuantity()" [disabled]="quantity === 1">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <span class="quantity-value">{{ quantity }}</span>
+          <button mat-icon-button (click)="increaseQuantity()" 
+                  [disabled]="quantity >= product().inventory.quantity">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          class="add-to-cart-btn"
+          (click)="addToCart()"
+          [disabled]="product().inventory.quantity === 0">
+          <mat-icon>shopping_cart</mat-icon>
+          Add to Cart
+        </button>
+        <button mat-raised-button color="accent" class="buy-now-btn">
+          <mat-icon>flash_on</mat-icon>
+          Buy Now
+        </button>
+        <button mat-icon-button class="wishlist-btn">
+          <mat-icon>favorite_border</mat-icon>
+        </button>
+      </div>
+
+      <!-- Tags -->
+      <div class="tags" *ngIf="product().tags?.length > 0">
+        <mat-chip *ngFor="let tag of product().tags">{{ tag }}</mat-chip>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Information Tabs -->
+  <mat-tab-group class="info-tabs">
+    <mat-tab label="Details">
+      <div class="tab-content">
+        <h3>Product Details</h3>
+        <p>{{ product().description }}</p>
+        <div class="detail-list" *ngIf="product().attributes?.length > 0">
+          <div class="detail-item" *ngFor="let attr of product().attributes">
+            <strong>{{ attr.name }}:</strong> {{ attr.value }}
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    
+    <mat-tab label="Reviews ({{ product().reviewCount }})">
+      <div class="tab-content">
+        <h3>Customer Reviews</h3>
+        <div class="reviews-summary">
+          <div class="average-rating">
+            <span class="rating-number">{{ product().rating }}</span>
+            <mat-icon class="star-icon">star</mat-icon>
+          </div>
+          <p>Based on {{ product().reviewCount }} reviews</p>
+        </div>
+        <p class="no-reviews">Reviews feature coming soon...</p>
+      </div>
+    </mat-tab>
+    
+    <mat-tab label="Shipping & Returns">
+      <div class="tab-content">
+        <h3>Shipping Information</h3>
+        <ul>
+          <li>Free shipping on orders over ₹500</li>
+          <li>Standard delivery: 3-5 business days</li>
+          <li>Express delivery available</li>
+        </ul>
+        <h3>Return Policy</h3>
+        <ul>
+          <li>30-day return policy</li>
+          <li>Product must be unused and in original packaging</li>
+          <li>Free returns on defective items</li>
+        </ul>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="isLoading()" class="loading-container">
+  <mat-spinner></mat-spinner>
+  <p>Loading product details...</p>
+</div>
+
+<!-- Not Found State -->
+<div *ngIf="!isLoading() && !product()" class="not-found">
+  <mat-icon class="not-found-icon">error_outline</mat-icon>
+  <h2>Product Not Found</h2>
+  <p>The product you're looking for doesn't exist.</p>
+  <button mat-raised-button color="primary" routerLink="/products">
+    Back to Products
+  </button>
+</div>

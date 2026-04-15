@@ -1,8 +1,7 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
@@ -12,11 +11,49 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "esModuleInterop": true,
+    "sourceMap": true,
+    "declaration": false,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022"
+    "module": "ES2022",
+    "lib": [
+      "ES2022",
+      "dom"
+    ],
+    "paths": {
+      "@models/*": ["libs/models/src/lib/*"],
+      "@core/*": ["libs/core/src/lib/*"],
+      "@features/*": [
+        "libs/features/*"
+      ],
+      "@ecommerce/shared": [
+        "./dist/shared",
+        "./projects/shared/src/public-api"
+      ],
+      "auth-mfe": [
+        "./dist/auth-mfe"
+      ],
+      "cart-mfe": [
+        "./dist/cart-mfe"
+      ],
+      "checkout-mfe": [
+        "./dist/checkout-mfe"
+      ],
+      "order-mfe": [
+        "./dist/order-mfe"
+      ],
+      "product-mfe": [
+        "./dist/product-mfe"
+      ],
+      "shared": [
+        "./dist/shared"
+      ],
+      "user-mfe": [
+        "./dist/user-mfe"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

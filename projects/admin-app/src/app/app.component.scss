@@ -1,0 +1,96 @@
+.sidenav-container {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 250px;
+  background: #263238;
+  color: white;
+
+  .sidenav-header {
+    padding: 24px 16px;
+    background: #1a2327;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .admin-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: #4caf50;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
+
+  mat-nav-list {
+    padding-top: 8px;
+
+    a {
+      color: #b0bec5;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+      }
+
+      &.active {
+        background: rgba(76, 175, 80, 0.15);
+        color: #4caf50;
+        border-left: 3px solid #4caf50;
+      }
+
+      mat-icon {
+        color: inherit;
+      }
+    }
+  }
+
+  mat-divider {
+    background: rgba(255, 255, 255, 0.12);
+    margin: 8px 0;
+  }
+}
+
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+  .toolbar-spacer {
+    flex: 1;
+  }
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px;
+
+  strong {
+    font-size: 14px;
+  }
+
+  small {
+    font-size: 12px;
+    color: #666;
+  }
+
+  .role-badge {
+    color: #4caf50;
+    font-weight: 500;
+    margin-top: 4px;
+  }
+}
+
+.main-content {
+  padding: 24px;
+  min-height: calc(100vh - 64px);
+  background: #f5f5f5;
+}
