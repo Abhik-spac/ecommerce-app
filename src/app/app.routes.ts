@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/native-federation';
 import { authGuard, guestGuard } from './guards/auth.guard';
+import { HomeComponent } from './pages/home.component';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'products',
-    pathMatch: 'full'
+    component: HomeComponent
   },
   // Product MFE routes
   {
@@ -22,25 +22,7 @@ export const routes: Routes = [
   },
   // Auth MFE routes (accessible only to guests)
   {
-    path: 'login',
-    loadChildren: () =>
-      loadRemoteModule('authMfe', './Routes').then(m => m.AUTH_ROUTES),
-    canActivate: [guestGuard]
-  },
-  {
-    path: 'register',
-    loadChildren: () =>
-      loadRemoteModule('authMfe', './Routes').then(m => m.AUTH_ROUTES),
-    canActivate: [guestGuard]
-  },
-  {
-    path: 'otp-login',
-    loadChildren: () =>
-      loadRemoteModule('authMfe', './Routes').then(m => m.AUTH_ROUTES),
-    canActivate: [guestGuard]
-  },
-  {
-    path: 'forgot-password',
+    path: '',
     loadChildren: () =>
       loadRemoteModule('authMfe', './Routes').then(m => m.AUTH_ROUTES),
     canActivate: [guestGuard]

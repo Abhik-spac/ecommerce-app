@@ -18,7 +18,7 @@
     "start:b2b": "ng serve b2b-app --port 4300 --configuration development",
     "start:admin": "ng serve admin-app --port 4400 --configuration development",
     "start:all-apps": "concurrently \"npm:start:shell\" \"npm:start:b2b\" \"npm:start:admin\" -n \"SHELL,B2B,ADMIN\" -c \"bgBlue,bgGreen,bgYellow\"",
-    "start:everything": "concurrently \"npm:start:shell\" \"npm:start:b2b\" \"npm:start:admin\" -n \"SHELL,B2B,ADMIN\" -c \"bgBlue,bgGreen,bgYellow\"",
+    "start:everything": "concurrently \"npm:start:shell\" \"npm:start:b2b\" \"npm:start:admin\" \"npm:start:product-mfe\" \"npm:start:cart-mfe\" \"npm:start:checkout-mfe\" \"npm:start:order-mfe\" \"npm:start:auth-mfe\" \"npm:start:user-mfe\" -n \"SHELL,B2B,ADMIN,PRODUCT,CART,CHECKOUT,ORDER,AUTH,USER\" -c \"bgBlue,bgGreen,bgYellow,bgMagenta,bgCyan,bgRed,bgWhite,gray,bgBlack\"",
     "build": "ng build",
     "build:b2c": "ng build b2c-app --configuration production",
     "build:b2b": "ng build b2b-app --configuration production",
