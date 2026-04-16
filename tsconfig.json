@@ -23,35 +23,8 @@
       "dom"
     ],
     "paths": {
-      "@models/*": ["libs/models/src/lib/*"],
-      "@core/*": ["libs/core/src/lib/*"],
-      "@features/*": [
-        "libs/features/*"
-      ],
       "@ecommerce/shared": [
-        "./dist/shared",
         "./projects/shared/src/public-api"
-      ],
-      "auth-mfe": [
-        "./dist/auth-mfe"
-      ],
-      "cart-mfe": [
-        "./dist/cart-mfe"
-      ],
-      "checkout-mfe": [
-        "./dist/checkout-mfe"
-      ],
-      "order-mfe": [
-        "./dist/order-mfe"
-      ],
-      "product-mfe": [
-        "./dist/product-mfe"
-      ],
-      "shared": [
-        "./dist/shared"
-      ],
-      "user-mfe": [
-        "./dist/user-mfe"
       ]
     }
   },

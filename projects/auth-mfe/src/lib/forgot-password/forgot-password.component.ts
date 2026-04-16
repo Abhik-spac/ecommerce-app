@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatStepperModule } from '@angular/material/stepper';
-import { AuthService } from '../auth.service';
+import { AuthService } from '@ecommerce/shared';
 
 @Component({
   selector: 'app-forgot-password',

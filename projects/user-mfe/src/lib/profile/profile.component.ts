@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '@ecommerce/shared';
 
 @Component({
   selector: 'app-profile',

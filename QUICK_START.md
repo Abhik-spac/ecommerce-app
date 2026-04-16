@@ -1,410 +1,166 @@
-# 🚀 Quick Start Guide - Angular eCommerce Platform
+# Quick Start Guide
+
+Get the E-Commerce Microfrontend Platform running in minutes.
 
 ## Prerequisites
 
-- **Node.js**: 18.x or higher
-- **npm**: 9.x or higher
-- **Angular CLI**: 19.x or higher
-
-```bash
-node --version  # Should be 18+
-npm --version   # Should be 9+
-ng version      # Should be 19+
-```
-
----
+- Node.js 18+ and npm
+- Angular CLI 17+
 
 ## Installation
 
-### 1. Install Dependencies
 ```bash
+# Clone the repository (if applicable)
 cd ecommerce-app
+
+# Install dependencies
 npm install
 ```
 
-### 2. Start Development Server
+## Running the Application
+
+### Option 1: Start All Microfrontends (Recommended)
+
 ```bash
-npm start
+npm run start:all-mfe-full
 ```
 
-The app will open at: **http://localhost:4200**
+This command starts all 7 applications concurrently:
+- Shell: http://localhost:4200
+- Product MFE: http://localhost:4201
+- Cart MFE: http://localhost:4202
+- Checkout MFE: http://localhost:4203
+- Order MFE: http://localhost:4204
+- Auth MFE: http://localhost:4205
+- User MFE: http://localhost:4206
 
----
+**Wait for all servers to build** (approximately 30-60 seconds on first run).
 
-## 🎓 Test Credentials
+### Option 2: Start Individual Applications
 
-### Login with Email/Password
-- **Email**: `test@example.com`
-- **Password**: `password123`
-
-### Login with OTP
-- **Mobile**: `9876543210`
-- **OTP**: `123456`
-
-### Social Login
-- Click "Login with Google" (mock implementation)
-
----
-
-## 🧭 Navigation Guide
-
-### Public Pages (No Login Required)
-1. **Home/Products** (`/products`)
-   - Browse all products
-   - Search, filter, sort
-   - Add to cart
-
-2. **Product Details** (`/products/:id`)
-   - View product information
-   - Select quantity
-   - Add to cart
-
-3. **Shopping Cart** (`/cart`)
-   - View cart items
-   - Update quantities
-   - See price breakdown
-
-4. **Login** (`/login`)
-   - Email/password login
-   - Link to OTP login
-   - Link to registration
-
-5. **Register** (`/register`)
-   - Create new account
-   - Email verification
-
-6. **OTP Login** (`/otp-login`)
-   - Login with mobile OTP
-
-7. **Forgot Password** (`/forgot-password`)
-   - Reset password via email/OTP
-
-### Protected Pages (Login Required)
-1. **Checkout** (`/checkout`)
-   - 3-step checkout process
-   - Shipping, payment, review
-
-2. **Orders** (`/orders`)
-   - View order history
-   - Track orders
-   - Cancel orders
-   - Download invoices
-
-3. **Profile** (`/profile`)
-   - Update personal info
-   - Change password
-   - Manage addresses
-   - Account settings
-
----
-
-## 🛍️ Complete Shopping Flow
-
-### Step 1: Browse Products
-1. Go to **Products** page
-2. Use search bar to find products
-3. Apply filters (category, price range)
-4. Sort by price/name/rating
-
-### Step 2: View Product Details
-1. Click on any product card
-2. View full product information
-3. Select quantity
-4. Click "Add to Cart"
-
-### Step 3: Review Cart
-1. Click cart icon in toolbar (shows item count)
-2. Review items in cart
-3. Update quantities with +/- buttons
-4. Remove items if needed
-5. See subtotal, tax, and total
-
-### Step 4: Checkout (Requires Login)
-1. Click "Proceed to Checkout"
-2. If not logged in, redirected to login
-3. **Step 1**: Enter shipping information
-4. **Step 2**: Select payment method
-5. **Step 3**: Review order and place
-
-### Step 5: Order Confirmation
-1. Order placed successfully
-2. View order details
-3. Get order ID
-
-### Step 6: Track Orders
-1. Go to **Orders** page
-2. View all orders
-3. Filter by status (All/Pending/Delivered)
-4. Cancel orders if needed
-5. Download invoices
-
----
-
-## 🔧 Development Commands
-
-### Start Development Server
 ```bash
-npm start
-# or
-ng serve
+# Start shell app only
+npm run start:shell
+
+# Start specific MFEs
+npm run start:product-mfe
+npm run start:cart-mfe
+npm run start:checkout-mfe
+npm run start:order-mfe
+npm run start:auth-mfe
+npm run start:user-mfe
 ```
 
-### Build for Production
+## Accessing the Application
+
+1. Open your browser to http://localhost:4200
+2. The shell app will dynamically load MFEs as you navigate
+
+## Test Credentials
+
+Use these credentials to test authentication:
+
+- **Email Login**: test@example.com / password123
+- **OTP Login**: Any phone number / OTP: 123456
+
+## Available Routes
+
+| Route | Description | Auth Required |
+|-------|-------------|---------------|
+| `/products` | Product listing | No |
+| `/products/:id` | Product details | No |
+| `/cart` | Shopping cart | No |
+| `/login` | Email/password login | Guest only |
+| `/register` | User registration | Guest only |
+| `/otp-login` | Phone OTP login | Guest only |
+| `/forgot-password` | Password reset | Guest only |
+| `/checkout` | Checkout process | Yes |
+| `/orders` | Order history | Yes |
+| `/profile` | User profile | Yes |
+
+## Verifying the Setup
+
+### Check All Servers Are Running
+
 ```bash
-npm run build
-# or
-ng build
+# Check listening ports
+lsof -i :4200 -i :4201 -i :4202 -i :4203 -i :4204 -i :4205 -i :4206 | grep LISTEN
 ```
 
-### Run Tests
+You should see 7 node processes listening on ports 4200-4206.
+
+### Verify Remote Entry Points
+
 ```bash
-npm test
-# or
-ng test
+# Check each MFE's remoteEntry.json
+curl http://localhost:4201/remoteEntry.json  # Product MFE
+curl http://localhost:4202/remoteEntry.json  # Cart MFE
+curl http://localhost:4203/remoteEntry.json  # Checkout MFE
+curl http://localhost:4204/remoteEntry.json  # Order MFE
+curl http://localhost:4205/remoteEntry.json  # Auth MFE
+curl http://localhost:4206/remoteEntry.json  # User MFE
 ```
 
-### Lint Code
-```bash
-npm run lint
-# or
-ng lint
-```
+Each should return a JSON response with federation configuration.
 
-### Format Code
-```bash
-npm run format
-```
-
----
-
-## 🏗️ Module Federation (Microfrontends)
-
-### Start All Apps
-```bash
-npm run start:all
-```
-
-This starts:
-- **B2C App**: http://localhost:4200
-- **B2B App**: http://localhost:4201
-- **Admin App**: http://localhost:4202
-
-### Start Individual Apps
-```bash
-# B2C Storefront
-npm run start:b2c
-
-# B2B Storefront
-npm run start:b2b
-
-# Admin Panel
-npm run start:admin
-```
-
----
-
-## 📁 Project Structure
-
-```
-ecommerce-app/
-├── src/
-│   ├── app/
-│   │   ├── features/           # Feature modules
-│   │   │   ├── auth/          # Authentication
-│   │   │   ├── product/       # Product catalog
-│   │   │   ├── cart/          # Shopping cart
-│   │   │   ├── checkout/      # Checkout flow
-│   │   │   ├── order/         # Order management
-│   │   │   └── user/          # User profile
-│   │   ├── services/          # Shared services
-│   │   ├── guards/            # Route guards
-│   │   ├── interceptors/      # HTTP interceptors
-│   │   ├── models/            # TypeScript interfaces
-│   │   ├── app.component.ts   # Root component
-│   │   └── app.routes.ts      # Route configuration
-│   ├── assets/                # Static assets
-│   └── styles.scss            # Global styles
-├── b2b-app/                   # B2B application
-├── admin-app/                 # Admin application
-└── package.json
-```
-
----
-
-## 🎨 UI Components
-
-### Material Design Components Used
-- **Toolbar**: Navigation bar
-- **Card**: Product cards, order cards
-- **Button**: Primary, accent, warn buttons
-- **Icon**: Material icons throughout
-- **Badge**: Cart item count
-- **Menu**: User dropdown menu
-- **Stepper**: Checkout flow, password reset
-- **Tabs**: Profile sections, order filters
-- **Form Field**: Input fields
-- **Select**: Dropdowns
-- **Checkbox**: Checkboxes
-- **Radio**: Radio buttons
-- **Divider**: Section separators
-- **Snackbar**: Toast notifications
-- **Dialog**: Modals (future)
-- **Progress**: Loading indicators
-
----
-
-## 🔐 Authentication Flow
-
-### Email/Password Login
-1. Enter email and password
-2. Click "Sign In"
-3. JWT token stored in localStorage
-4. Redirected to products page
-
-### OTP Login
-1. Enter mobile number
-2. Click "Send OTP"
-3. Enter 6-digit OTP (123456)
-4. Click "Verify OTP"
-5. Logged in successfully
-
-### Registration
-1. Fill registration form
-2. Accept terms and conditions
-3. Click "Sign Up"
-4. Auto-login after registration
-
-### Forgot Password
-1. Enter email
-2. Verify OTP
-3. Set new password
-4. Redirected to login
-
----
-
-## 💾 Data Persistence
-
-### localStorage Keys
-- `auth_token`: JWT token
-- `current_user`: User object
-- `cart_items`: Shopping cart
-- `orders`: Order history
-- `products`: Product catalog
-
-### Mock Data
-All data is stored in localStorage for demo purposes. In production, replace with real API calls.
-
----
-
-## 🐛 Troubleshooting
+## Common Issues
 
 ### Port Already in Use
-```bash
-# Kill process on port 4200
-lsof -ti:4200 | xargs kill -9
 
-# Or use different port
-ng serve --port 4201
-```
+If you see "Port already in use" errors:
 
-### Module Not Found
 ```bash
-# Clear node_modules and reinstall
-rm -rf node_modules package-lock.json
-npm install
+# Kill all ng serve processes
+pkill -f "ng serve"
+
+# Wait a few seconds, then restart
+npm run start:all-mfe-full
 ```
 
 ### Build Errors
+
+If you encounter build errors:
+
 ```bash
 # Clear Angular cache
-rm -rf .angular
-ng build
+rm -rf .angular/cache dist
+
+# Reinstall dependencies
+rm -rf node_modules package-lock.json
+npm install
+
+# Restart
+npm run start:all-mfe-full
 ```
 
-### TypeScript Errors
+### MFE Not Loading
+
+1. Check that all servers are running
+2. Verify `public/federation.manifest.json` has correct URLs
+3. Check browser console for errors
+4. Ensure remoteEntry.json files are accessible
+
+## Development Workflow
+
+1. **Start all MFEs**: `npm run start:all-mfe-full`
+2. **Make changes** to any MFE
+3. **Hot reload** automatically rebuilds and refreshes
+4. **Test** in browser at http://localhost:4200
+
+## Next Steps
+
+- Read [Architecture Overview](./ARCHITECTURE_OVERVIEW.md)
+- Learn about [Module Federation](./MODULE_FEDERATION_COMPLETE_GUIDE.md)
+- Check [Troubleshooting Guide](./TROUBLESHOOTING.md)
+
+## Stopping the Application
+
+Press `Ctrl+C` in the terminal where you ran the start command, or:
+
 ```bash
-# Check TypeScript version
-npm list typescript
-
-# Update if needed
-npm install typescript@latest
+pkill -f "ng serve"
 ```
 
 ---
 
-## 📚 Additional Resources
-
-### Documentation
-- [Angular Documentation](https://angular.dev)
-- [Angular Material](https://material.angular.io)
-- [Module Federation](https://webpack.js.org/concepts/module-federation/)
-
-### Architecture Docs
-- `ARCHITECTURE.md` - System architecture
-- `MODULE_FEDERATION.md` - Microfrontend setup
-- `IMPLEMENTATION_SUMMARY.md` - What's implemented
-- `FEATURES_IMPLEMENTED.txt` - Feature checklist
-
----
-
-## 🎯 Next Steps
-
-### For Development
-1. Replace mock data with real API calls
-2. Integrate payment gateway (Stripe/Razorpay)
-3. Add real-time notifications
-4. Implement email/SMS notifications
-5. Add analytics tracking
-
-### For B2B Features
-1. Implement bulk ordering
-2. Add quote request (RFQ)
-3. Custom pricing per company
-4. Multi-user company accounts
-5. Purchase order management
-
-### For Admin Panel
-1. User management CRUD
-2. Product management CRUD
-3. Order management
-4. Inventory tracking
-5. Analytics dashboard
-6. CMS for content
-
----
-
-## 💡 Tips
-
-### Development
-- Use Angular DevTools browser extension
-- Enable source maps for debugging
-- Use Angular CLI schematics for generating code
-- Follow Angular style guide
-
-### Performance
-- Lazy load all feature modules
-- Use OnPush change detection
-- Optimize images
-- Enable production mode for builds
-- Use trackBy in *ngFor
-
-### Security
-- Never commit sensitive data
-- Use environment variables
-- Implement CSRF protection
-- Sanitize user inputs
-- Use HTTPS in production
-
----
-
-## 🤝 Support
-
-For issues or questions:
-1. Check documentation files
-2. Review code comments
-3. Check Angular documentation
-4. Search Stack Overflow
-
----
-
-**Happy Coding! 🚀**
+**Need help?** Check the [Troubleshooting Guide](./TROUBLESHOOTING.md)

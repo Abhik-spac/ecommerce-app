@@ -12,8 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CartService } from '@ecommerce/shared';
-import { AuthService } from '../auth/auth.service';
+import { CartService, AuthService } from '@ecommerce/shared';
 
 @Component({
   selector: 'app-checkout',

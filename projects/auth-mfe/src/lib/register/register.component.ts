@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
-import { AuthService } from '../auth.service';
+import { AuthService } from '@ecommerce/shared';
 
 interface RegisterForm {
   firstName: string;

@@ -1,653 +1,939 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
-  "newProjectRoot": "projects",
-  "projects": {
-    "ecommerce-app": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "",
-      "sourceRoot": "src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-architects/module-federation:build",
-          "options": {
-            "outputPath": "dist/ecommerce-app",
-            "index": "src/index.html",
-            "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
-            "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
-            "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.scss"
-            ],
-            "scripts": [],
-            "extraWebpackConfig": "webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve": {
-          "builder": "@angular-architects/module-federation:dev-server",
-          "options": {
-            "port": 4200,
-            "publicHost": "http://localhost:4200",
-            "extraWebpackConfig": "webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "ecommerce-app:build:production"
-            },
-            "development": {
-              "buildTarget": "ecommerce-app:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
-            "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.scss"
-            ],
-            "scripts": []
-          }
-        }
-      }
-    },
-    "b2b-app": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "projects/b2b-app",
-      "sourceRoot": "projects/b2b-app/src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-architects/module-federation:build",
-          "options": {
-            "outputPath": "dist/b2b-app",
-            "index": "projects/b2b-app/src/index.html",
-            "browser": "projects/b2b-app/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
-            "tsConfig": "projects/b2b-app/tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/b2b-app/public"
-              }
-            ],
-            "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/b2b-app/src/styles.scss"
-            ],
-            "scripts": [],
-            "extraWebpackConfig": "projects/b2b-app/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve": {
-          "builder": "@angular-architects/module-federation:dev-server",
-          "options": {
-            "port": 4201,
-            "publicHost": "http://localhost:4201",
-            "extraWebpackConfig": "projects/b2b-app/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "b2b-app:build:production"
-            },
-            "development": {
-              "buildTarget": "b2b-app:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "tsConfig": "projects/b2b-app/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/b2b-app/public"
-              }
-            ],
-            "styles": [
-              "projects/b2b-app/src/styles.scss"
-            ],
-            "scripts": []
-          }
-        }
-      }
-    },
-    "admin-app": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "projects/admin-app",
-      "sourceRoot": "projects/admin-app/src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-architects/module-federation:build",
-          "options": {
-            "outputPath": "dist/admin-app",
-            "index": "projects/admin-app/src/index.html",
-            "browser": "projects/admin-app/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
-            "tsConfig": "projects/admin-app/tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/admin-app/public"
-              }
-            ],
-            "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/admin-app/src/styles.scss"
-            ],
-            "scripts": [],
-            "extraWebpackConfig": "projects/admin-app/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve": {
-          "builder": "@angular-architects/module-federation:dev-server",
-          "options": {
-            "port": 4202,
-            "publicHost": "http://localhost:4202",
-            "extraWebpackConfig": "projects/admin-app/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "admin-app:build:production"
-            },
-            "development": {
-              "buildTarget": "admin-app:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "tsConfig": "projects/admin-app/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/admin-app/public"
-              }
-            ],
-            "styles": [
-              "projects/admin-app/src/styles.scss"
-            ],
-            "scripts": []
-          }
-        }
-      }
-    },
-    "product-mfe": {
-      "projectType": "library",
-      "root": "projects/product-mfe",
-      "sourceRoot": "projects/product-mfe/src",
-      "prefix": "product",
-      "architect": {
-        "build": {
-          "builder": "@angular-architects/module-federation:build",
-          "options": {
-            "project": "projects/product-mfe/ng-package.json",
-            "extraWebpackConfig": "projects/product-mfe/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/product-mfe/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/product-mfe/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "projects/product-mfe/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
-        },
-        "serve": {
-          "builder": "@angular-architects/module-federation:dev-server",
-          "options": {
-            "port": 4201,
-            "publicHost": "http://localhost:4201",
-            "extraWebpackConfig": "projects/product-mfe/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "product-mfe:build:production"
-            },
-            "development": {
-              "buildTarget": "product-mfe:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        }
-      }
-    },
-    "cart-mfe": {
-      "projectType": "library",
-      "root": "projects/cart-mfe",
-      "sourceRoot": "projects/cart-mfe/src",
-      "prefix": "cart",
-      "architect": {
-        "build": {
-          "builder": "@angular-architects/module-federation:build",
-          "options": {
-            "project": "projects/cart-mfe/ng-package.json",
-            "extraWebpackConfig": "projects/cart-mfe/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/cart-mfe/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/cart-mfe/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "projects/cart-mfe/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
-        },
-        "serve": {
-          "builder": "@angular-architects/module-federation:dev-server",
-          "options": {
-            "port": 4202,
-            "publicHost": "http://localhost:4202",
-            "extraWebpackConfig": "projects/cart-mfe/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "cart-mfe:build:production"
-            },
-            "development": {
-              "buildTarget": "cart-mfe:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        }
-      }
-    },
-    "checkout-mfe": {
-      "projectType": "library",
-      "root": "projects/checkout-mfe",
-      "sourceRoot": "projects/checkout-mfe/src",
-      "prefix": "checkout",
-      "architect": {
-        "build": {
-          "builder": "@angular-architects/module-federation:build",
-          "options": {
-            "project": "projects/checkout-mfe/ng-package.json",
-            "extraWebpackConfig": "projects/checkout-mfe/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/checkout-mfe/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/checkout-mfe/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "projects/checkout-mfe/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
-        },
-        "serve": {
-          "builder": "@angular-architects/module-federation:dev-server",
-          "options": {
-            "port": 4203,
-            "publicHost": "http://localhost:4203",
-            "extraWebpackConfig": "projects/checkout-mfe/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "checkout-mfe:build:production"
-            },
-            "development": {
-              "buildTarget": "checkout-mfe:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        }
-      }
-    },
-    "order-mfe": {
-      "projectType": "library",
-      "root": "projects/order-mfe",
-      "sourceRoot": "projects/order-mfe/src",
-      "prefix": "order",
-      "architect": {
-        "build": {
-          "builder": "@angular-architects/module-federation:build",
-          "options": {
-            "project": "projects/order-mfe/ng-package.json",
-            "extraWebpackConfig": "projects/order-mfe/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/order-mfe/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/order-mfe/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "projects/order-mfe/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
-        },
-        "serve": {
-          "builder": "@angular-architects/module-federation:dev-server",
-          "options": {
-            "port": 4204,
-            "publicHost": "http://localhost:4204",
-            "extraWebpackConfig": "projects/order-mfe/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "order-mfe:build:production"
-            },
-            "development": {
-              "buildTarget": "order-mfe:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        }
-      }
-    },
-    "auth-mfe": {
-      "projectType": "library",
-      "root": "projects/auth-mfe",
-      "sourceRoot": "projects/auth-mfe/src",
-      "prefix": "auth",
-      "architect": {
-        "build": {
-          "builder": "@angular-architects/module-federation:build",
-          "options": {
-            "project": "projects/auth-mfe/ng-package.json",
-            "extraWebpackConfig": "projects/auth-mfe/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/auth-mfe/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/auth-mfe/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "projects/auth-mfe/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
-        },
-        "serve": {
-          "builder": "@angular-architects/module-federation:dev-server",
-          "options": {
-            "port": 4205,
-            "publicHost": "http://localhost:4205",
-            "extraWebpackConfig": "projects/auth-mfe/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "auth-mfe:build:production"
-            },
-            "development": {
-              "buildTarget": "auth-mfe:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        }
-      }
-    },
-    "user-mfe": {
-      "projectType": "library",
-      "root": "projects/user-mfe",
-      "sourceRoot": "projects/user-mfe/src",
-      "prefix": "user",
-      "architect": {
-        "build": {
-          "builder": "@angular-architects/module-federation:build",
-          "options": {
-            "project": "projects/user-mfe/ng-package.json",
-            "extraWebpackConfig": "projects/user-mfe/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/user-mfe/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/user-mfe/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "projects/user-mfe/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
-        },
-        "serve": {
-          "builder": "@angular-architects/module-federation:dev-server",
-          "options": {
-            "port": 4206,
-            "publicHost": "http://localhost:4206",
-            "extraWebpackConfig": "projects/user-mfe/webpack.config.js"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "user-mfe:build:production"
-            },
-            "development": {
-              "buildTarget": "user-mfe:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        }
-      }
-    },
-    "shared": {
-      "projectType": "library",
-      "root": "projects/shared",
-      "sourceRoot": "projects/shared/src",
-      "prefix": "shared",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/shared/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/shared/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/shared/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "projects/shared/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
-        }
-      }
-    }
-  }
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"version": 1,
+	"newProjectRoot": "projects",
+	"projects": {
+		"ecommerce-app": {
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "scss"
+				}
+			},
+			"root": "",
+			"sourceRoot": "src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {},
+					"configurations": {
+						"production": {
+							"target": "ecommerce-app:esbuild:production"
+						},
+						"development": {
+							"target": "ecommerce-app:esbuild:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {
+						"target": "ecommerce-app:serve-original:development",
+						"rebuildDelay": 500,
+						"dev": true,
+						"cacheExternalArtifacts": false,
+						"port": 0
+					}
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n"
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"polyfills": [
+							"zone.js",
+							"zone.js/testing"
+						],
+						"tsConfig": "tsconfig.spec.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "public"
+							}
+						],
+						"styles": [
+							"@angular/material/prebuilt-themes/indigo-pink.css",
+							"src/styles.scss"
+						],
+						"scripts": []
+					}
+				},
+				"esbuild": {
+					"builder": "@angular/build:application",
+					"options": {
+						"outputPath": "dist/ecommerce-app",
+						"index": "src/index.html",
+						"browser": "src/main.ts",
+						"polyfills": [
+							"zone.js",
+							"es-module-shims"
+						],
+						"tsConfig": "tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "public"
+							}
+						],
+						"styles": [
+							"@angular/material/prebuilt-themes/indigo-pink.css",
+							"src/styles.scss"
+						],
+						"scripts": []
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "4kB",
+									"maximumError": "8kB"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve-original": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"port": 4200
+					},
+					"configurations": {
+						"production": {
+							"buildTarget": "ecommerce-app:esbuild:production"
+						},
+						"development": {
+							"buildTarget": "ecommerce-app:esbuild:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				}
+			}
+		},
+		"b2b-app": {
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "scss"
+				}
+			},
+			"root": "projects/b2b-app",
+			"sourceRoot": "projects/b2b-app/src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:application",
+					"options": {
+						"outputPath": "dist/b2b-app",
+						"index": "projects/b2b-app/src/index.html",
+						"browser": "projects/b2b-app/src/main.ts",
+						"polyfills": [
+							"zone.js"
+						],
+						"tsConfig": "projects/b2b-app/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "projects/b2b-app/public"
+							}
+						],
+						"styles": [
+							"@angular/material/prebuilt-themes/indigo-pink.css",
+							"projects/b2b-app/src/styles.scss"
+						],
+						"scripts": []
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "4kB",
+									"maximumError": "8kB"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"port": 4300
+					},
+					"configurations": {
+						"production": {
+							"buildTarget": "b2b-app:build:production"
+						},
+						"development": {
+							"buildTarget": "b2b-app:build:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n"
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"polyfills": [
+							"zone.js",
+							"zone.js/testing"
+						],
+						"tsConfig": "projects/b2b-app/tsconfig.spec.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "projects/b2b-app/public"
+							}
+						],
+						"styles": [
+							"projects/b2b-app/src/styles.scss"
+						],
+						"scripts": []
+					}
+				}
+			}
+		},
+		"admin-app": {
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "scss"
+				}
+			},
+			"root": "projects/admin-app",
+			"sourceRoot": "projects/admin-app/src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:application",
+					"options": {
+						"outputPath": "dist/admin-app",
+						"index": "projects/admin-app/src/index.html",
+						"browser": "projects/admin-app/src/main.ts",
+						"polyfills": [
+							"zone.js"
+						],
+						"tsConfig": "projects/admin-app/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "projects/admin-app/public"
+							}
+						],
+						"styles": [
+							"@angular/material/prebuilt-themes/indigo-pink.css",
+							"projects/admin-app/src/styles.scss"
+						],
+						"scripts": []
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "4kB",
+									"maximumError": "8kB"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"port": 4400
+					},
+					"configurations": {
+						"production": {
+							"buildTarget": "admin-app:build:production"
+						},
+						"development": {
+							"buildTarget": "admin-app:build:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n"
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"polyfills": [
+							"zone.js",
+							"zone.js/testing"
+						],
+						"tsConfig": "projects/admin-app/tsconfig.spec.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "projects/admin-app/public"
+							}
+						],
+						"styles": [
+							"projects/admin-app/src/styles.scss"
+						],
+						"scripts": []
+					}
+				}
+			}
+		},
+		"product-mfe": {
+			"projectType": "application",
+			"root": "projects/product-mfe",
+			"sourceRoot": "projects/product-mfe/src",
+			"prefix": "product",
+			"architect": {
+				"build": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {},
+					"configurations": {
+						"production": {
+							"target": "product-mfe:esbuild:production"
+						},
+						"development": {
+							"target": "product-mfe:esbuild:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {
+						"target": "product-mfe:serve-original:development",
+						"rebuildDelay": 500,
+						"dev": true,
+						"cacheExternalArtifacts": false,
+						"port": 0
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"tsConfig": "projects/product-mfe/tsconfig.spec.json",
+						"polyfills": [
+							"zone.js",
+							"zone.js/testing"
+						]
+					}
+				},
+				"esbuild": {
+					"builder": "@angular/build:application",
+					"options": {
+						"outputPath": "dist/product-mfe",
+						"index": "projects/product-mfe/src/index.html",
+						"polyfills": [
+							"zone.js",
+							"es-module-shims"
+						],
+						"tsConfig": "projects/product-mfe/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [],
+						"styles": [
+							"@angular/material/prebuilt-themes/indigo-pink.css",
+							"projects/product-mfe/src/styles.scss"
+						],
+						"scripts": [],
+						"browser": "projects/product-mfe/src/main.ts"
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve-original": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"buildTarget": "product-mfe:build",
+						"port": 4201
+					},
+					"configurations": {
+						"production": {
+							"buildTarget": "product-mfe:esbuild:production"
+						},
+						"development": {
+							"buildTarget": "product-mfe:esbuild:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				}
+			}
+		},
+		"cart-mfe": {
+			"projectType": "application",
+			"root": "projects/cart-mfe",
+			"sourceRoot": "projects/cart-mfe/src",
+			"prefix": "cart",
+			"architect": {
+				"build": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {},
+					"configurations": {
+						"production": {
+							"target": "cart-mfe:esbuild:production"
+						},
+						"development": {
+							"target": "cart-mfe:esbuild:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {
+						"target": "cart-mfe:serve-original:development",
+						"rebuildDelay": 500,
+						"dev": true,
+						"cacheExternalArtifacts": false,
+						"port": 0
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"tsConfig": "projects/cart-mfe/tsconfig.spec.json",
+						"polyfills": [
+							"zone.js",
+							"zone.js/testing"
+						]
+					}
+				},
+				"esbuild": {
+					"builder": "@angular/build:application",
+					"options": {
+						"outputPath": "dist/cart-mfe",
+						"index": "projects/cart-mfe/src/index.html",
+						"polyfills": [
+							"zone.js",
+							"es-module-shims"
+						],
+						"tsConfig": "projects/cart-mfe/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [],
+						"styles": [
+							"@angular/material/prebuilt-themes/indigo-pink.css",
+							"projects/cart-mfe/src/styles.scss"
+						],
+						"scripts": [],
+						"browser": "projects/cart-mfe/src/main.ts"
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve-original": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"buildTarget": "cart-mfe:build",
+						"port": 4202
+					},
+					"configurations": {
+						"production": {
+							"buildTarget": "cart-mfe:esbuild:production"
+						},
+						"development": {
+							"buildTarget": "cart-mfe:esbuild:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				}
+			}
+		},
+		"checkout-mfe": {
+			"projectType": "application",
+			"root": "projects/checkout-mfe",
+			"sourceRoot": "projects/checkout-mfe/src",
+			"prefix": "checkout",
+			"architect": {
+				"build": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {},
+					"configurations": {
+						"production": {
+							"target": "checkout-mfe:esbuild:production"
+						},
+						"development": {
+							"target": "checkout-mfe:esbuild:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {
+						"target": "checkout-mfe:serve-original:development",
+						"rebuildDelay": 500,
+						"dev": true,
+						"cacheExternalArtifacts": false,
+						"port": 0
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"tsConfig": "projects/checkout-mfe/tsconfig.spec.json",
+						"polyfills": [
+							"zone.js",
+							"zone.js/testing"
+						]
+					}
+				},
+				"esbuild": {
+					"builder": "@angular/build:application",
+					"options": {
+						"outputPath": "dist/checkout-mfe",
+						"index": "projects/checkout-mfe/src/index.html",
+						"polyfills": [
+							"zone.js",
+							"es-module-shims"
+						],
+						"tsConfig": "projects/checkout-mfe/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [],
+						"styles": [
+							"@angular/material/prebuilt-themes/indigo-pink.css",
+							"projects/checkout-mfe/src/styles.scss"
+						],
+						"scripts": [],
+						"browser": "projects/checkout-mfe/src/main.ts"
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve-original": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"buildTarget": "checkout-mfe:build",
+						"port": 4203
+					},
+					"configurations": {
+						"production": {
+							"buildTarget": "checkout-mfe:esbuild:production"
+						},
+						"development": {
+							"buildTarget": "checkout-mfe:esbuild:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				}
+			}
+		},
+		"order-mfe": {
+			"projectType": "application",
+			"root": "projects/order-mfe",
+			"sourceRoot": "projects/order-mfe/src",
+			"prefix": "order",
+			"architect": {
+				"build": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {},
+					"configurations": {
+						"production": {
+							"target": "order-mfe:esbuild:production"
+						},
+						"development": {
+							"target": "order-mfe:esbuild:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {
+						"target": "order-mfe:serve-original:development",
+						"rebuildDelay": 500,
+						"dev": true,
+						"cacheExternalArtifacts": false,
+						"port": 0
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"tsConfig": "projects/order-mfe/tsconfig.spec.json",
+						"polyfills": [
+							"zone.js",
+							"zone.js/testing"
+						]
+					}
+				},
+				"esbuild": {
+					"builder": "@angular/build:application",
+					"options": {
+						"outputPath": "dist/order-mfe",
+						"index": "projects/order-mfe/src/index.html",
+						"polyfills": [
+							"zone.js",
+							"es-module-shims"
+						],
+						"tsConfig": "projects/order-mfe/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [],
+						"styles": [
+							"@angular/material/prebuilt-themes/indigo-pink.css",
+							"projects/order-mfe/src/styles.scss"
+						],
+						"scripts": [],
+						"browser": "projects/order-mfe/src/main.ts"
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve-original": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"buildTarget": "order-mfe:build",
+						"port": 4204
+					},
+					"configurations": {
+						"production": {
+							"buildTarget": "order-mfe:esbuild:production"
+						},
+						"development": {
+							"buildTarget": "order-mfe:esbuild:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				}
+			}
+		},
+		"auth-mfe": {
+			"projectType": "application",
+			"root": "projects/auth-mfe",
+			"sourceRoot": "projects/auth-mfe/src",
+			"prefix": "auth",
+			"architect": {
+				"build": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {},
+					"configurations": {
+						"production": {
+							"target": "auth-mfe:esbuild:production"
+						},
+						"development": {
+							"target": "auth-mfe:esbuild:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {
+						"target": "auth-mfe:serve-original:development",
+						"rebuildDelay": 500,
+						"dev": true,
+						"cacheExternalArtifacts": false,
+						"port": 0
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"tsConfig": "projects/auth-mfe/tsconfig.spec.json",
+						"polyfills": [
+							"zone.js",
+							"zone.js/testing"
+						]
+					}
+				},
+				"esbuild": {
+					"builder": "@angular/build:application",
+					"options": {
+						"outputPath": "dist/auth-mfe",
+						"index": "projects/auth-mfe/src/index.html",
+						"polyfills": [
+							"zone.js",
+							"es-module-shims"
+						],
+						"tsConfig": "projects/auth-mfe/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [],
+						"styles": [
+							"@angular/material/prebuilt-themes/indigo-pink.css",
+							"projects/auth-mfe/src/styles.scss"
+						],
+						"scripts": [],
+						"browser": "projects/auth-mfe/src/main.ts"
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve-original": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"buildTarget": "auth-mfe:build",
+						"port": 4205
+					},
+					"configurations": {
+						"production": {
+							"buildTarget": "auth-mfe:esbuild:production"
+						},
+						"development": {
+							"buildTarget": "auth-mfe:esbuild:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				}
+			}
+		},
+		"user-mfe": {
+			"projectType": "application",
+			"root": "projects/user-mfe",
+			"sourceRoot": "projects/user-mfe/src",
+			"prefix": "user",
+			"architect": {
+				"build": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {},
+					"configurations": {
+						"production": {
+							"target": "user-mfe:esbuild:production"
+						},
+						"development": {
+							"target": "user-mfe:esbuild:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {
+						"target": "user-mfe:serve-original:development",
+						"rebuildDelay": 500,
+						"dev": true,
+						"cacheExternalArtifacts": false,
+						"port": 0
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"tsConfig": "projects/user-mfe/tsconfig.spec.json",
+						"polyfills": [
+							"zone.js",
+							"zone.js/testing"
+						]
+					}
+				},
+				"esbuild": {
+					"builder": "@angular/build:application",
+					"options": {
+						"outputPath": "dist/user-mfe",
+						"index": "projects/user-mfe/src/index.html",
+						"polyfills": [
+							"zone.js",
+							"es-module-shims"
+						],
+						"tsConfig": "projects/user-mfe/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [],
+						"styles": [
+							"@angular/material/prebuilt-themes/indigo-pink.css",
+							"projects/user-mfe/src/styles.scss"
+						],
+						"scripts": [],
+						"browser": "projects/user-mfe/src/main.ts"
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve-original": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"buildTarget": "user-mfe:build",
+						"port": 4206
+					},
+					"configurations": {
+						"production": {
+							"buildTarget": "user-mfe:esbuild:production"
+						},
+						"development": {
+							"buildTarget": "user-mfe:esbuild:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				}
+			}
+		},
+		"shared": {
+			"projectType": "library",
+			"root": "projects/shared",
+			"sourceRoot": "projects/shared/src",
+			"prefix": "shared",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:ng-packagr",
+					"options": {
+						"project": "projects/shared/ng-package.json"
+					},
+					"configurations": {
+						"production": {
+							"tsConfig": "projects/shared/tsconfig.lib.prod.json"
+						},
+						"development": {
+							"tsConfig": "projects/shared/tsconfig.lib.json"
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"tsConfig": "projects/shared/tsconfig.spec.json",
+						"polyfills": [
+							"zone.js",
+							"zone.js/testing"
+						]
+					}
+				}
+			}
+		}
+	}
 }

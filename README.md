@@ -1,499 +1,179 @@
-# 🛍️ Enterprise eCommerce Microfrontend Platform
+# E-Commerce Microfrontend Platform
 
-[![Angular](https://img.shields.io/badge/Angular-19-red.svg)](https://angular.io/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
-[![Module Federation](https://img.shields.io/badge/Module%20Federation-Webpack%205-green.svg)](https://webpack.js.org/concepts/module-federation/)
-[![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen.svg)]()
-[![MFE](https://img.shields.io/badge/MFE-Fully%20Configured-success.svg)]()
-
-A production-ready, scalable eCommerce platform built with **Angular 19+** and **Module Federation** microfrontend architecture. Inspired by SAP Composable Storefront (Spartacus) but designed with modern Angular best practices.
-
-## ✅ MFE Status: Fully Configured
-
-**All applications are configured as Micro Frontends with Module Federation.**
-**Run all MFEs with a single command:** `npm run start:all-mfe`
-
----
-
-## 🎯 Overview
-
-This platform demonstrates a **true microfrontend architecture** where each feature is an independent Angular application that can be developed, tested, and deployed separately. The platform includes three main applications:
-
-1. **B2C Storefront** (Port 4200) - Customer-facing eCommerce
-2. **B2B Storefront** (Port 4300) - Business-to-business portal
-3. **Admin Panel** (Port 4400) - Management dashboard
-
-All three applications share the same **6 microfrontends** via Module Federation:
-- Product MFE (Port 4201)
-- Cart MFE (Port 4202)
-- Checkout MFE (Port 4203)
-- Order MFE (Port 4204)
-- Auth MFE (Port 4205)
-- User MFE (Port 4206)
-
----
-
-## ✨ Key Features
-
-### 🔐 Authentication & User Management
-- Email/Password Login
-- User Registration
-- OTP-based Login
-- Social Login (Google) - Structure ready
-- Password Reset & Recovery
-- User Profile Management
-- Address Book Management
-- JWT-based Authentication
-- Role-based Access Control
-
-### 🛍️ Product Catalog
-- Product Listing with Pagination
-- Advanced Search
-- Multi-level Filters (Price, Category, Brand)
-- Sorting Options
-- Product Detail Views
-- Product Images & Galleries
-- Product Variants (Size, Color)
-- Add to Cart
-
-### 🛒 Shopping Cart
-- Real-time Cart Updates
-- Quantity Management
-- Remove Items
-- Cart Totals Calculation
-- Persistent Cart (LocalStorage)
-- Signal-based Reactive State
-
-### 💳 Checkout & Payments
-- 3-Step Checkout Process
-- Shipping Address Selection
-- Payment Method Selection
-- Order Review
-- Multiple Payment Options (UPI, Cards, COD)
-- Order Confirmation
-
-### 📦 Order Management
-- Order History
-- Order Details
-- Order Tracking
-- Cancel Orders
-- Invoice Download (Structure)
-- Reorder Functionality
-
-### 🏢 B2B Features (Structure Ready)
-- Company Account Management
-- Multi-user Support
-- Custom Pricing
-- Quote Requests (RFQ)
-- Bulk Ordering
-- Purchase Orders
-
-### ⚙️ Admin Features (Structure Ready)
-- User Management
-- Product Management
-- Order Management
-- Analytics Dashboard
-- CMS for Content
-- Role & Permission System
-
----
+A modern e-commerce platform built with **Angular 17+** using **Native Federation** for true microfrontend architecture.
 
 ## 🏗️ Architecture
 
-### Microfrontend Structure
+This application uses **Microfrontend Architecture** with Native Federation, where each feature is an independent, deployable application.
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                   Shell Applications                     │
-│  ┌──────────┐    ┌──────────┐    ┌──────────┐         │
-│  │   B2C    │    │   B2B    │    │  Admin   │         │
-│  │ (4200)   │    │ (4300)   │    │ (4400)   │         │
-│  └──────────┘    └──────────┘    └──────────┘         │
-└─────────────────────────────────────────────────────────┘
-                        │
-                        │ Module Federation
-                        │ (Runtime Loading)
-                        ▼
-┌─────────────────────────────────────────────────────────┐
-│              Shared Microfrontends (MFEs)               │
-│  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐    │
-│  │Product│ │ Cart │ │Checkout│ │Order │ │ Auth │    │
-│  │ 4201 │ │ 4202 │ │ 4203  │ │ 4204 │ │ 4205 │    │
-│  └──────┘  └──────┘  └──────┘  └──────┘  └──────┘    │
-│                    ┌──────┐                            │
-│                    │ User │                            │
-│                    │ 4206 │                            │
-│                    └──────┘                            │
-└─────────────────────────────────────────────────────────┘
-                        │
-                        ▼
-              ┌──────────────────┐
-              │ Shared Library   │
-              │ @ecommerce/shared│
-              │                  │
-              │ - Services       │
-              │ - Models         │
-              │ - Utilities      │
-              └──────────────────┘
-```
+### Applications
 
----
+| Application | Port | Description |
+|------------|------|-------------|
+| **Shell** | 4200 | Main orchestrator app that loads all MFEs |
+| **Product MFE** | 4201 | Product listing and details |
+| **Cart MFE** | 4202 | Shopping cart management |
+| **Checkout MFE** | 4203 | Checkout process |
+| **Order MFE** | 4204 | Order history and management |
+| **Auth MFE** | 4205 | Authentication (login, register, OTP, password reset) |
+| **User MFE** | 4206 | User profile management |
+
+### Technology Stack
+
+- **Angular 17+** - Modern Angular with standalone components
+- **Native Federation** - Runtime module federation (esbuild-based)
+- **TypeScript** - Type-safe development
+- **RxJS** - Reactive programming
+- **Angular Material** - UI components
+- **SCSS** - Styling
 
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Node.js 18+ and npm
-- Angular CLI 19+
+- Angular CLI 17+
 
 ### Installation
 
 ```bash
-# Clone the repository
-cd ecommerce-app
-
-# Install dependencies
 npm install
-
-# Build shared library (REQUIRED FIRST)
-npm run build:shared
 ```
 
-### Running the Applications
+### Running the Application
 
-#### ✅ Option 1: Run All MFEs (Single Command - Recommended)
+**Start all microfrontends:**
 ```bash
-npm run start:all-mfe
+npm run start:all-mfe-full
 ```
-This starts all 7 applications:
-- Shell App (http://localhost:4200)
-- Product MFE (http://localhost:4201)
-- Cart MFE (http://localhost:4202)
-- Checkout MFE (http://localhost:4203)
-- Order MFE (http://localhost:4204)
-- Auth MFE (http://localhost:4205)
-- User MFE (http://localhost:4206)
 
-#### Option 2: Run All Applications (Shell + B2B + Admin)
+This starts all 7 applications concurrently:
+- Shell: http://localhost:4200
+- Product MFE: http://localhost:4201
+- Cart MFE: http://localhost:4202
+- Checkout MFE: http://localhost:4203
+- Order MFE: http://localhost:4204
+- Auth MFE: http://localhost:4205
+- User MFE: http://localhost:4206
+
+**Start individual applications:**
 ```bash
-npm run start:all-apps
+npm run start:shell          # Shell app only
+npm run start:product-mfe    # Product MFE only
+npm run start:cart-mfe       # Cart MFE only
+npm run start:checkout-mfe   # Checkout MFE only
+npm run start:order-mfe      # Order MFE only
+npm run start:auth-mfe       # Auth MFE only
+npm run start:user-mfe       # User MFE only
 ```
-This starts:
-- Shell App (http://localhost:4200)
-- B2B App (http://localhost:4300)
-- Admin App (http://localhost:4400)
-
-#### Option 3: Run Everything (All 9 Applications)
-```bash
-npm run start:everything
-```
-This starts all MFEs + all applications simultaneously.
-
-#### Option 4: Run Individual Apps/MFEs
-```bash
-# Shell Application
-npm run start:shell        # http://localhost:4200
-
-# Individual MFEs
-npm run start:product-mfe  # http://localhost:4201
-npm run start:cart-mfe     # http://localhost:4202
-npm run start:checkout-mfe # http://localhost:4203
-npm run start:order-mfe    # http://localhost:4204
-npm run start:auth-mfe     # http://localhost:4205
-npm run start:user-mfe     # http://localhost:4206
-
-# Additional Apps
-npm run start:b2b          # http://localhost:4300
-npm run start:admin        # http://localhost:4400
-```
-### 🎓 Test Credentials
-
-**Email/Password Login:**
-- Email: `test@example.com`
-- Password: `password123`
-
-**OTP Login:**
-- Mobile: `9876543210`
-- OTP: `123456`
-
-**Social Login:**
-- Click "Login with Google" (mock implementation)
-
-
----
-
-## 📦 Available Scripts
-
-### Development (Single Command Options) ✅
-```bash
-npm run start:all-mfe      # Start all MFEs (Shell + 6 MFEs) - RECOMMENDED
-npm run start:all-apps     # Start all apps (Shell + B2B + Admin)
-npm run start:everything   # Start everything (All 9 applications)
-```
-
-### Development (Individual)
-```bash
-npm run start:shell        # Start Shell app (port 4200)
-npm run start:product-mfe  # Start Product MFE (port 4201)
-npm run start:cart-mfe     # Start Cart MFE (port 4202)
-npm run start:checkout-mfe # Start Checkout MFE (port 4203)
-npm run start:order-mfe    # Start Order MFE (port 4204)
-npm run start:auth-mfe     # Start Auth MFE (port 4205)
-npm run start:user-mfe     # Start User MFE (port 4206)
-npm run start:b2b          # Start B2B app (port 4300)
-npm run start:admin        # Start Admin app (port 4400)
-```
-
-### Build
-```bash
-npm run build:shared   # Build shared library (required first)
-npm run build:mfe      # Build all MFEs + B2C
-npm run build:b2c      # Build B2C app
-npm run build:b2b      # Build B2B app
-npm run build:admin    # Build Admin app
-npm run build:all      # Build all 3 apps
-```
-
-### Testing
-```bash
-npm test               # Run unit tests
-npm run test:watch     # Run tests in watch mode
-```
-
----
 
 ## 📁 Project Structure
 
 ```
 ecommerce-app/
-├── src/                              # B2C Shell Application
+├── src/                          # Shell application
 │   ├── app/
-│   │   ├── app.component.ts          # Main app component
-│   │   ├── app.routes.ts             # Routes with loadRemoteModule
-│   │   └── features-legacy/          # Legacy code (reference only)
-│   └── main.ts
-├── webpack.config.js                 # B2C Module Federation config
+│   │   ├── app.routes.ts        # Dynamic MFE loading
+│   │   └── guards/              # Auth guards
+│   └── main.ts                  # Native Federation init
 ├── projects/
-│   ├── shared/                       # Shared Library ✅
-│   │   ├── src/lib/
-│   │   │   ├── services/
-│   │   │   │   ├── auth.service.ts
-│   │   │   │   ├── cart.service.ts
-│   │   │   │   └── mock-data.service.ts
-│   │   │   └── models/
-│   │   │       ├── user.model.ts
-│   │   │       ├── product.model.ts
-│   │   │       └── order.model.ts
-│   │   └── public-api.ts
-│   ├── product-mfe/                  # Product Microfrontend ✅
-│   │   ├── src/lib/
-│   │   │   ├── product-list/
-│   │   │   ├── product-detail/
-│   │   │   ├── product.service.ts
-│   │   │   └── product.routes.ts
-│   │   ├── webpack.config.js
-│   │   └── public-api.ts
-│   ├── cart-mfe/                     # Cart Microfrontend ✅
-│   ├── checkout-mfe/                 # Checkout Microfrontend ✅
-│   ├── order-mfe/                    # Order Microfrontend ✅
-│   ├── auth-mfe/                     # Auth Microfrontend ✅
-│   ├── user-mfe/                     # User Microfrontend ✅
-│   ├── b2b-app/                      # B2B Application ✅
-│   │   ├── src/app/app.routes.ts    # Uses same MFEs
-│   │   └── webpack.config.js
-│   └── admin-app/                    # Admin Application ✅
-│       ├── src/app/app.routes.ts    # Uses same MFEs
-│       └── webpack.config.js
-├── angular.json                      # Workspace configuration
-├── package.json                      # Dependencies & scripts
-└── Documentation/
-    ├── ARCHITECTURE_OVERVIEW.md      # Detailed architecture
-    ├── MICROFRONTEND_COMPLETE_GUIDE.md
-    ├── FINAL_DELIVERY_SUMMARY.md
-    ├── QUICK_START.md
-    └── FEATURES_IMPLEMENTED.txt
+│   ├── product-mfe/             # Product microfrontend
+│   ├── cart-mfe/                # Cart microfrontend
+│   ├── checkout-mfe/            # Checkout microfrontend
+│   ├── order-mfe/               # Order microfrontend
+│   ├── auth-mfe/                # Auth microfrontend
+│   ├── user-mfe/                # User microfrontend
+│   └── shared/                  # Shared library
+├── public/
+│   └── federation.manifest.json # MFE registry
+└── angular.json                 # Workspace configuration
 ```
 
----
+### Each MFE Structure
 
-## 🔧 Technology Stack
+```
+projects/{mfe-name}/
+├── src/
+│   ├── main.ts                  # Federation initialization
+│   ├── bootstrap.ts             # App bootstrap
+│   ├── index.html               # HTML template
+│   ├── styles.scss              # Styles
+│   └── lib/
+│       ├── {feature}.routes.ts  # Exposed routes
+│       └── components/          # Feature components
+├── federation.config.js         # Federation configuration
+└── tsconfig.app.json           # TypeScript config
+```
 
-### Core
-- **Angular 19+** - Latest Angular with standalone components
-- **TypeScript 5+** - Type-safe development
-- **RxJS 7+** - Reactive programming
-- **Angular Signals** - Modern reactive state management
+## 🔧 Key Features
 
-### UI Framework
-- **Angular Material 19** - Material Design components
-- **SCSS** - Advanced styling
-- **Responsive Design** - Mobile-first approach
+### Native Federation
 
-### Module Federation
-- **Webpack 5** - Module bundler
-- **@angular-architects/module-federation** - Angular integration
-- **Module Federation Plugin** - Runtime module loading
+Each MFE exposes its routes via Native Federation:
 
-### State Management
-- **Angular Signals** - Reactive state
-- **Services with Signals** - Shared state across MFEs
-- **LocalStorage** - Persistence
+```typescript
+// Shell app dynamically loads MFEs
+loadRemoteModule('productMfe', './Routes').then(m => m.PRODUCT_ROUTES)
+```
 
----
+### Shared Services
 
-## 🎯 Use Cases
+Common services are shared across all MFEs:
+- **AuthService** - Authentication and user management
+- **CartService** - Shopping cart state
+- **MockDataService** - Mock data for development
 
-### B2C Storefront
-- Individual customers shopping online
-- Guest checkout
-- Wishlist and favorites
-- Product reviews
-- Social login
+### Route Guards
 
-### B2B Storefront
-- Business customers with company accounts
-- Multiple users per company
-- Custom pricing and catalogs
-- Quote requests (RFQ)
-- Bulk ordering
-- Purchase orders
-- Credit terms
+- **authGuard** - Protects authenticated routes
+- **guestGuard** - Restricts routes for logged-in users
 
-### Admin Panel
-- Manage users and permissions
-- Manage products and inventory
-- Process orders
-- View analytics
-- Manage content (CMS)
-- Configure system settings
+## 🧪 Development
 
----
+### Adding a New MFE
 
-## 🔐 Security
+1. Create MFE structure in `projects/`
+2. Add federation config
+3. Update `angular.json`
+4. Register in `federation.manifest.json`
+5. Add routes in shell app
 
-- JWT-based authentication
-- HTTP-only cookies (production)
-- CSRF protection
-- XSS prevention
-- Content Security Policy
-- Role-based access control (RBAC)
-- Route guards
-- HTTP interceptors
-
----
-
-## 📊 Performance
-
-### Bundle Sizes (Estimated, gzipped)
-- B2C Shell: ~200 KB
-- B2B Shell: ~200 KB
-- Admin Shell: ~200 KB
-- Product MFE: ~150 KB
-- Cart MFE: ~80 KB
-- Checkout MFE: ~120 KB
-- Order MFE: ~100 KB
-- Auth MFE: ~90 KB
-- User MFE: ~85 KB
-- Shared Library: ~50 KB
-
-### Load Times (Target)
-- Initial Load: < 2 seconds
-- MFE Load: < 500ms
-- Route Change: < 200ms
-
----
-
-## 🧪 Testing
+### Building for Production
 
 ```bash
-# Run unit tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run E2E tests (after starting apps)
-npm run e2e
+ng build --configuration production
 ```
 
----
-
-## 🚢 Deployment
-
-### Build for Production
-```bash
-# Build all
-npm run build:mfe
-
-# Or build individually
-npm run build:shared
-ng build product-mfe --configuration production
-ng build cart-mfe --configuration production
-# ... etc
-ng build ecommerce-app --configuration production
-```
-
-### Deployment Strategy
-1. Deploy shared library to npm registry
-2. Deploy each MFE to CDN/server
-3. Update shell apps with production MFE URLs
-4. Deploy shell applications
-
----
+Each MFE builds independently and can be deployed separately.
 
 ## 📚 Documentation
 
-- **[ARCHITECTURE_OVERVIEW.md](./ARCHITECTURE_OVERVIEW.md)** - Complete architecture details
-- **[MICROFRONTEND_COMPLETE_GUIDE.md](./MICROFRONTEND_COMPLETE_GUIDE.md)** - Setup and usage guide
-- **[FINAL_DELIVERY_SUMMARY.md](./FINAL_DELIVERY_SUMMARY.md)** - Project summary
-- **[QUICK_START.md](./QUICK_START.md)** - Quick start instructions
-- **[FEATURES_IMPLEMENTED.txt](./FEATURES_IMPLEMENTED.txt)** - Feature checklist
+- [Architecture Overview](./ARCHITECTURE_OVERVIEW.md)
+- [Module Federation Guide](./MODULE_FEDERATION_COMPLETE_GUIDE.md)
+- [Deployment Guide](./DEPLOYMENT.md)
+- [Troubleshooting](./TROUBLESHOOTING.md)
 
----
+## 🎯 Benefits of This Architecture
 
-## 🤝 Contributing
+1. **Independent Deployment** - Deploy MFEs separately
+2. **Team Autonomy** - Teams work on isolated codebases
+3. **Technology Flexibility** - Different versions/frameworks per MFE
+4. **Scalability** - Scale individual MFEs based on load
+5. **Faster Builds** - Build only changed MFEs
+6. **Runtime Loading** - Load MFEs on-demand
 
-This is a demonstration project. For production use:
-1. Replace mock data with real API calls
-2. Implement proper authentication backend
-3. Add comprehensive error handling
-4. Implement proper logging
-5. Add monitoring and analytics
-6. Set up CI/CD pipelines
+## 🔐 Authentication
 
----
+Mock authentication is implemented with the following test credentials:
+
+- **Email**: test@example.com
+- **Password**: password123
+- **OTP**: 123456 (for phone login)
 
 ## 📝 License
 
-This project is for demonstration purposes.
+MIT
 
 ---
 
-## 👨‍💻 Author
-
-**Bob** - Senior Enterprise Angular Architect
-
----
-
-## 🎉 Acknowledgments
-
-- Inspired by SAP Composable Storefront (Spartacus)
-- Built with Angular 19+ best practices
-- Module Federation architecture
-- Enterprise-grade patterns
-
----
-
-## 📞 Support
-
-For questions or issues:
-1. Check the documentation
-2. Review the code comments
-3. Check the architecture diagrams
-
----
-
-**Status**: ✅ Production Ready  
-**Version**: 1.0.0  
-**Last Updated**: April 2026
-
-*Built with expertise, delivered with excellence* 🚀
+**Built with ❤️ using Angular Native Federation**
