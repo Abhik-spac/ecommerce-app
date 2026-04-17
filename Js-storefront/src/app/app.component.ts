@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet, RouterModule, NavigationEnd } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -13,6 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { AuthService, CartService, ToastService } from '@ecommerce/shared';
 import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -35,9 +36,10 @@ import { filter } from 'rxjs/operators';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   isHomePage = signal(false);
   showCartSidebar = signal(false);
+  private subscriptions = new Subscription();
 
   constructor(
     public authService: AuthService,
@@ -46,12 +48,37 @@ export class AppComponent {
     private router: Router
   ) {
     // Track current route
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      const url = event.url;
-      this.isHomePage.set(url === '/' || url === '');
-    });
+    this.subscriptions.add(
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe((event: any) => {
+        const url = event.url;
+        this.isHomePage.set(url === '/' || url === '');
+        // Close cart sidebar on route change
+        this.showCartSidebar.set(false);
+      })
+    );
+
+    // Watch for items being added to cart
+    this.subscriptions.add(
+      this.cartService.itemAdded$.subscribe(() => {
+        // Show cart sidebar when item is added (except on home page)
+        if (!this.isHomePage()) {
+          this.showCartSidebar.set(true);
+          
+          // Auto-hide after 5 seconds
+          setTimeout(() => {
+            if (!this.isHomePage()) {
+              this.showCartSidebar.set(false);
+            }
+          }, 5000);
+        }
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
   
   shouldShowCartSidebar(): boolean {
@@ -60,12 +87,12 @@ export class AppComponent {
     if (url.includes('/cart') || url.includes('/checkout')) {
       return false;
     }
-    // Show on home page only on hover
+    // Show on home page only on hover or explicit toggle
     if (this.isHomePage()) {
       return this.showCartSidebar();
     }
-    // Show on other pages (PLP, PDP) if cart has items
-    return this.cartService.itemCount() > 0;
+    // Show on other pages (PLP, PDP) only when explicitly shown
+    return this.showCartSidebar() && this.cartService.itemCount() > 0;
   }
 
   getFormattedTotal(): string {
