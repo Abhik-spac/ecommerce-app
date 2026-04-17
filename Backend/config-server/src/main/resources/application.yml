@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${CONFIG_GIT_URI:https://github.com/your-org/config-repo}
+          default-label: main
+          clone-on-start: true
+          search-paths: '{application}'
+        # Alternative: Native file system
+        native:
+          search-locations: classpath:/config,file:./config
+  profiles:
+    active: native  # Use 'git' for Git-based configuration
+
+  # Security Configuration
+  security:
+    user:
+      name: ${CONFIG_SERVER_USERNAME:config-admin}
+      password: ${CONFIG_SERVER_PASSWORD:change-this-password}
+
+server:
+  port: 8888
+
+# Eureka Client Configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 30
+
+# Management and Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh,env
+  endpoint:
+    health:
+      show-details: always
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.ecommerce: DEBUG
+    org.springframework.cloud.config: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Made with Bob

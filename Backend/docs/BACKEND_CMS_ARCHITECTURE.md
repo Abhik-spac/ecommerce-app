@@ -105,7 +105,7 @@ This document outlines the complete backend architecture and CMS integration str
         │      CMS Integration Service            │
         │      (Spring Boot)                      │
         │      Port: 8087                         │
-        │  - Caches CMS content                   │
+        │  -                   │
         │  - Transforms data for frontend         │
         │  - Handles webhooks from Strapi         │
         └─────────────────────────────────────────┘
