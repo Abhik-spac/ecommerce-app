@@ -1,4 +1,5 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
+import { Subject } from 'rxjs';
 import { ToastService } from './toast.service';
 
 export interface CartItem {
@@ -16,8 +17,10 @@ export interface CartItem {
 export class CartService {
   private toastService = inject(ToastService);
   private cartItems = signal<CartItem[]>([]);
+  private itemAddedSubject = new Subject<void>();
   
   items = this.cartItems.asReadonly();
+  itemAdded$ = this.itemAddedSubject.asObservable();
   
   itemCount = computed(() =>
     this.cartItems().reduce((sum, item) => sum + item.quantity, 0)
@@ -32,11 +35,8 @@ export class CartService {
   total = computed(() => this.subtotal() + this.tax());
 
   constructor() {
-    // Load cart from localStorage
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      this.cartItems.set(JSON.parse(savedCart));
-    }
+    // Cart will be managed via API calls
+    // No localStorage usage - data will come from backend
   }
 
   addToCart(product: any): void {
@@ -55,9 +55,14 @@ export class CartService {
         image: product.images[0]?.url || ''
       };
       this.cartItems.update(items => [...items, newItem]);
-      this.saveCart();
       this.toastService.success(`${product.name} added to cart!`);
     }
+    
+    // Emit event that item was added
+    this.itemAddedSubject.next();
+    
+    // TODO: Call API to add item to cart
+    // this.http.post('/api/cart/items', newItem).subscribe(...)
   }
 
   updateQuantity(itemId: string, quantity: number): void {
@@ -71,22 +76,31 @@ export class CartService {
         item.id === itemId ? { ...item, quantity } : item
       )
     );
-    this.saveCart();
+    
+    // TODO: Call API to update cart item quantity
+    // this.http.put(`/api/cart/items/${itemId}`, { quantity }).subscribe(...)
   }
 
   removeItem(itemId: string): void {
     this.cartItems.update(items => items.filter(item => item.id !== itemId));
-    this.saveCart();
+    
+    // TODO: Call API to remove cart item
+    // this.http.delete(`/api/cart/items/${itemId}`).subscribe(...)
   }
 
   clearCart(): void {
     this.cartItems.set([]);
-    this.saveCart();
+    
+    // TODO: Call API to clear cart
+    // this.http.delete('/api/cart').subscribe(...)
   }
 
-  private saveCart(): void {
-    localStorage.setItem('cart', JSON.stringify(this.cartItems()));
-  }
+  // TODO: Add method to load cart from API
+  // loadCart(): void {
+  //   this.http.get<CartItem[]>('/api/cart/items').subscribe(items => {
+  //     this.cartItems.set(items);
+  //   });
+  // }
 }
 
 // Made with Bob

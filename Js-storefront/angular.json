@@ -140,13 +140,47 @@
 			"prefix": "app",
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:application",
+					"builder": "@angular-architects/native-federation:build",
+					"options": {},
+					"configurations": {
+						"production": {
+							"target": "b2b-app:esbuild:production"
+						},
+						"development": {
+							"target": "b2b-app:esbuild:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {
+						"target": "b2b-app:serve-original:development",
+						"rebuildDelay": 500,
+						"dev": true,
+						"port": 4300
+					},
+					"configurations": {
+						"production": {
+							"target": "b2b-app:serve-original:production"
+						},
+						"development": {
+							"target": "b2b-app:serve-original:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"esbuild": {
+					"builder": "@angular/build:application",
 					"options": {
 						"outputPath": "dist/b2b-app",
 						"index": "projects/b2b-app/src/index.html",
 						"browser": "projects/b2b-app/src/main.ts",
 						"polyfills": [
-							"zone.js"
+							"zone.js",
+							"es-module-shims"
 						],
 						"tsConfig": "projects/b2b-app/tsconfig.app.json",
 						"inlineStyleLanguage": "scss",
@@ -186,17 +220,17 @@
 					},
 					"defaultConfiguration": "production"
 				},
-				"serve": {
-					"builder": "@angular-devkit/build-angular:dev-server",
+				"serve-original": {
+					"builder": "@angular/build:dev-server",
 					"options": {
 						"port": 4300
 					},
 					"configurations": {
 						"production": {
-							"buildTarget": "b2b-app:build:production"
+							"buildTarget": "b2b-app:esbuild:production"
 						},
 						"development": {
-							"buildTarget": "b2b-app:build:development"
+							"buildTarget": "b2b-app:esbuild:development"
 						}
 					},
 					"defaultConfiguration": "development"
@@ -239,13 +273,47 @@
 			"prefix": "app",
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:application",
+					"builder": "@angular-architects/native-federation:build",
+					"options": {},
+					"configurations": {
+						"production": {
+							"target": "admin-app:esbuild:production"
+						},
+						"development": {
+							"target": "admin-app:esbuild:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-architects/native-federation:build",
+					"options": {
+						"target": "admin-app:serve-original:development",
+						"rebuildDelay": 500,
+						"dev": true,
+						"port": 4400
+					},
+					"configurations": {
+						"production": {
+							"target": "admin-app:serve-original:production"
+						},
+						"development": {
+							"target": "admin-app:serve-original:development",
+							"dev": true
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"esbuild": {
+					"builder": "@angular/build:application",
 					"options": {
 						"outputPath": "dist/admin-app",
 						"index": "projects/admin-app/src/index.html",
 						"browser": "projects/admin-app/src/main.ts",
 						"polyfills": [
-							"zone.js"
+							"zone.js",
+							"es-module-shims"
 						],
 						"tsConfig": "projects/admin-app/tsconfig.app.json",
 						"inlineStyleLanguage": "scss",
@@ -285,17 +353,17 @@
 					},
 					"defaultConfiguration": "production"
 				},
-				"serve": {
-					"builder": "@angular-devkit/build-angular:dev-server",
+				"serve-original": {
+					"builder": "@angular/build:dev-server",
 					"options": {
 						"port": 4400
 					},
 					"configurations": {
 						"production": {
-							"buildTarget": "admin-app:build:production"
+							"buildTarget": "admin-app:esbuild:production"
 						},
 						"development": {
-							"buildTarget": "admin-app:build:development"
+							"buildTarget": "admin-app:esbuild:development"
 						}
 					},
 					"defaultConfiguration": "development"
