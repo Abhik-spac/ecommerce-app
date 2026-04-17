@@ -1,0 +1,160 @@
+@use '../../_variables' as *;
+
+.confirmation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: $spacing-3;
+  background: $bg-gradient-premium;
+}
+
+.confirmation-card {
+  max-width: $size-600;
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(135deg, rgba($color-primary, 0.15) 0%, rgba($color-primary-dark, 0.2) 100%) !important;
+  border: $border-width-thin solid rgba($color-gold, 0.2) !important;
+  box-shadow: $shadow-xl !important;
+
+  mat-card-content {
+    padding: $spacing-4;
+  }
+}
+
+.success-icon {
+  margin-bottom: $spacing-3;
+
+  mat-icon {
+    font-size: $icon-size-xxl;
+    width: $icon-size-xxl;
+    height: $icon-size-xxl;
+    color: $color-success;
+    filter: drop-shadow(0 0 10px rgba($color-success, 0.5));
+  }
+}
+
+h1 {
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-bold;
+  color: $color-white;
+  margin: 0 0 $spacing-1 0;
+}
+
+.subtitle {
+  font-size: $font-size-xl;
+  color: rgba($color-white, 0.7);
+  margin: 0 0 $spacing-3 0;
+}
+
+.order-info {
+  background: rgba($color-white, 0.05);
+  padding: $spacing-3;
+  border-radius: $border-radius-lg;
+  margin-bottom: $spacing-4;
+  border: $border-width-thin solid rgba($color-gold, 0.2);
+
+  .order-number {
+    font-size: $font-size-lg;
+    color: $color-white;
+    margin: 0 0 $spacing-1 0;
+
+    strong {
+      color: $color-gold;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  .confirmation-message {
+    font-size: $font-size-base;
+    color: rgba($color-white, 0.7);
+    margin: 0;
+    line-height: $line-height-relaxed;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: $spacing-2;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  button {
+    min-width: $size-200;
+    transition: all $transition-base;
+    
+    &[color="primary"] {
+      background-color: $color-primary !important;
+      color: $color-primary-contrast !important;
+      
+      &:hover {
+        background-color: $color-primary-dark !important;
+        transform: scale(1.05);
+        box-shadow:
+          0 0 20px rgba($color-gold, 0.9),
+          0 8px 25px rgba($color-gold, 0.5),
+          $shadow-xl;
+      }
+
+      &:active {
+        transform: scale(0.98);
+        box-shadow: $shadow-sm;
+      }
+    }
+
+    &:not([color="primary"]) {
+      background-color: transparent !important;
+      color: $color-white !important;
+      border: $border-width-thin solid rgba($color-gold, 0.3) !important;
+      
+      &:hover {
+        background-color: rgba($color-white, 0.1) !important;
+        border-color: $color-gold !important;
+        transform: scale(1.05);
+        box-shadow:
+          0 0 15px rgba($color-gold, 0.6),
+          0 4px 15px rgba($color-gold, 0.3),
+          $shadow-lg;
+      }
+      
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+
+    mat-icon {
+      margin-right: $spacing-05;
+      color: $color-gold !important;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .confirmation-container {
+    padding: $spacing-2;
+  }
+
+  .confirmation-card {
+    mat-card-content {
+      padding: $spacing-2;
+    }
+  }
+
+  h1 {
+    font-size: $font-size-3xl;
+  }
+
+  .subtitle {
+    font-size: $font-size-lg;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+// Made with Bob

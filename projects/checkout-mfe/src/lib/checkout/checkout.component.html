@@ -1,0 +1,301 @@
+    <div class="checkout-container">
+      <div class="checkout-content">
+        <h1>Checkout</h1>
+
+        <mat-stepper [linear]="true" #stepper>
+          <!-- Step 1: Shipping Address -->
+          <mat-step [stepControl]="shippingForm">
+            <form [formGroup]="shippingForm">
+              <ng-template matStepLabel>Shipping Address</ng-template>
+              
+              <mat-card>
+                <mat-card-content>
+                  <div class="form-row">
+                    <mat-form-field appearance="outline">
+                      <mat-label>First Name</mat-label>
+                      <input matInput formControlName="firstName" required>
+                      <mat-icon matPrefix>person</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Last Name</mat-label>
+                      <input matInput formControlName="lastName" required>
+                    </mat-form-field>
+                  </div>
+
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="email" required>
+                    <mat-icon matPrefix>email</mat-icon>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput type="tel" formControlName="phone" required>
+                    <mat-icon matPrefix>phone</mat-icon>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Address Line 1</mat-label>
+                    <input matInput formControlName="address1" required>
+                    <mat-icon matPrefix>home</mat-icon>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Address Line 2 (Optional)</mat-label>
+                    <input matInput formControlName="address2">
+                  </mat-form-field>
+
+                  <div class="form-row">
+                    <mat-form-field appearance="outline">
+                      <mat-label>City</mat-label>
+                      <input matInput formControlName="city" required>
+                      <mat-icon matPrefix>location_city</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>State</mat-label>
+                      <input matInput formControlName="state" required>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="form-row">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Postal Code</mat-label>
+                      <input matInput formControlName="postalCode" required>
+                      <mat-icon matPrefix>markunread_mailbox</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Country</mat-label>
+                      <input matInput formControlName="country" required>
+                    </mat-form-field>
+                  </div>
+
+                  <mat-checkbox formControlName="saveAddress">
+                    Save this address for future orders
+                  </mat-checkbox>
+                </mat-card-content>
+              </mat-card>
+
+              <div class="step-actions">
+                <button mat-button (click)="cancelCheckout()">
+                  <mat-icon>arrow_back</mat-icon>
+                  Back to Cart
+                </button>
+                <button mat-raised-button color="primary" matStepperNext
+                        [disabled]="!shippingForm.valid">
+                  Continue to Payment
+                </button>
+              </div>
+            </form>
+          </mat-step>
+
+          <!-- Step 2: Payment Method -->
+          <mat-step [stepControl]="paymentForm">
+            <form [formGroup]="paymentForm">
+              <ng-template matStepLabel>Payment Method</ng-template>
+              
+              <mat-card>
+                <mat-card-content>
+                  <mat-radio-group formControlName="paymentMethod" class="payment-methods">
+                    <mat-radio-button value="card">
+                      <div class="payment-option">
+                        <mat-icon>credit_card</mat-icon>
+                        <span>Credit/Debit Card</span>
+                      </div>
+                    </mat-radio-button>
+
+                    <mat-radio-button value="upi">
+                      <div class="payment-option">
+                        <mat-icon>qr_code</mat-icon>
+                        <span>UPI</span>
+                      </div>
+                    </mat-radio-button>
+
+                    <mat-radio-button value="netbanking">
+                      <div class="payment-option">
+                        <mat-icon>account_balance</mat-icon>
+                        <span>Net Banking</span>
+                      </div>
+                    </mat-radio-button>
+
+                    <mat-radio-button value="cod">
+                      <div class="payment-option">
+                        <mat-icon>local_shipping</mat-icon>
+                        <span>Cash on Delivery</span>
+                      </div>
+                    </mat-radio-button>
+                  </mat-radio-group>
+
+                  <!-- Card Details (shown when card is selected) -->
+                  <div *ngIf="paymentForm.get('paymentMethod')?.value === 'card'" class="card-details">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Card Number</mat-label>
+                      <input matInput formControlName="cardNumber" placeholder="1234 5678 9012 3456">
+                      <mat-icon matPrefix>credit_card</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Cardholder Name</mat-label>
+                      <input matInput formControlName="cardName">
+                      <mat-icon matPrefix>person</mat-icon>
+                    </mat-form-field>
+
+                    <div class="form-row">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Expiry Date</mat-label>
+                        <input matInput formControlName="cardExpiry" placeholder="MM/YY">
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>CVV</mat-label>
+                        <input matInput type="password" formControlName="cardCvv" placeholder="123" maxlength="3">
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <!-- UPI Details -->
+                  <div *ngIf="paymentForm.get('paymentMethod')?.value === 'upi'" class="upi-details">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>UPI ID</mat-label>
+                      <input matInput formControlName="upiId" placeholder="yourname@upi">
+                      <mat-icon matPrefix>qr_code</mat-icon>
+                    </mat-form-field>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <div class="step-actions">
+                <button mat-button (click)="cancelCheckout()">
+                  <mat-icon>close</mat-icon>
+                  Cancel
+                </button>
+                <button mat-button matStepperPrevious>
+                  <mat-icon>arrow_back</mat-icon>
+                  Back
+                </button>
+                <button mat-raised-button color="primary" matStepperNext
+                        [disabled]="!paymentForm.valid">
+                  Review Order
+                </button>
+              </div>
+            </form>
+          </mat-step>
+
+          <!-- Step 3: Review & Place Order -->
+          <mat-step>
+            <ng-template matStepLabel>Review Order</ng-template>
+            
+            <mat-card class="review-card">
+              <mat-card-header>
+                <h2>Order Summary</h2>
+              </mat-card-header>
+              <mat-card-content>
+                <!-- Cart Items -->
+                <div class="order-items">
+                  <h3>Items ({{ cartService.itemCount() }})</h3>
+                  <div *ngFor="let item of cartService.items()" class="order-item">
+                    <img [src]="item.image" [alt]="item.name" (click)="navigateToProduct(item.productId)" class="clickable">
+                    <div class="item-details">
+                      <h4 (click)="navigateToProduct(item.productId)" class="clickable">{{ item.name }}</h4>
+                      <p>Quantity: {{ item.quantity }}</p>
+                      <p class="price">₹{{ item.price * item.quantity | number:'1.2-2' }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <!-- Shipping Address -->
+                <div class="review-section">
+                  <h3>Shipping Address</h3>
+                  <p>{{ shippingForm.value.firstName }} {{ shippingForm.value.lastName }}</p>
+                  <p>{{ shippingForm.value.address1 }}</p>
+                  <p *ngIf="shippingForm.value.address2">{{ shippingForm.value.address2 }}</p>
+                  <p>{{ shippingForm.value.city }}, {{ shippingForm.value.state }} {{ shippingForm.value.postalCode }}</p>
+                  <p>{{ shippingForm.value.country }}</p>
+                  <p>Phone: {{ shippingForm.value.phone }}</p>
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <!-- Payment Method -->
+                <div class="review-section">
+                  <h3>Payment Method</h3>
+                  <p>{{ getPaymentMethodLabel() }}</p>
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <!-- Price Summary -->
+                <div class="price-summary">
+                  <div class="price-row">
+                    <span>Subtotal:</span>
+                    <span>₹{{ cartService.subtotal() | number:'1.2-2' }}</span>
+                  </div>
+                  <div class="price-row">
+                    <span>Tax (18%):</span>
+                    <span>₹{{ cartService.tax() | number:'1.2-2' }}</span>
+                  </div>
+                  <div class="price-row">
+                    <span>Shipping:</span>
+                    <span>FREE</span>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <div class="price-row total">
+                    <span>Total:</span>
+                    <span>₹{{ cartService.total() | number:'1.2-2' }}</span>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <div class="step-actions">
+              <button mat-button (click)="continueShopping()">
+                <mat-icon>shopping_cart</mat-icon>
+                Continue Shopping
+              </button>
+              <button mat-button matStepperPrevious>
+                <mat-icon>arrow_back</mat-icon>
+                Back
+              </button>
+              <button mat-raised-button color="primary" (click)="placeOrder()"
+                      [disabled]="isProcessing()">
+                <mat-spinner *ngIf="isProcessing()" diameter="20"></mat-spinner>
+                <span *ngIf="!isProcessing()">Place Order</span>
+              </button>
+            </div>
+          </mat-step>
+        </mat-stepper>
+      </div>
+
+      <!-- Order Summary Sidebar -->
+      <div class="order-summary-sidebar">
+        <mat-card>
+          <mat-card-header>
+            <h3>Order Summary</h3>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="summary-row">
+              <span>Items ({{ cartService.itemCount() }}):</span>
+              <span>₹{{ cartService.subtotal() | number:'1.2-2' }}</span>
+            </div>
+            <div class="summary-row">
+              <span>Tax:</span>
+              <span>₹{{ cartService.tax() | number:'1.2-2' }}</span>
+            </div>
+            <div class="summary-row">
+              <span>Shipping:</span>
+              <span>FREE</span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="summary-row total">
+              <span>Total:</span>
+              <span>₹{{ cartService.total() | number:'1.2-2' }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  `,

@@ -1,5 +1,5 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastService } from './toast.service';
 
 export interface CartItem {
   id: string;
@@ -14,7 +14,7 @@ export interface CartItem {
   providedIn: 'root'
 })
 export class CartService {
-  private snackBar = inject(MatSnackBar);
+  private toastService = inject(ToastService);
   private cartItems = signal<CartItem[]>([]);
   
   items = this.cartItems.asReadonly();
@@ -44,11 +44,7 @@ export class CartService {
     
     if (existingItem) {
       this.updateQuantity(existingItem.id, existingItem.quantity + 1);
-      this.snackBar.open(`Updated ${product.name} quantity in cart`, 'Close', {
-        duration: 3000,
-        horizontalPosition: 'end',
-        verticalPosition: 'top'
-      });
+      this.toastService.info(`Updated ${product.name} quantity in cart`);
     } else {
       const newItem: CartItem = {
         id: Date.now().toString(),
@@ -60,14 +56,7 @@ export class CartService {
       };
       this.cartItems.update(items => [...items, newItem]);
       this.saveCart();
-      this.snackBar.open(`${product.name} added to cart!`, 'View Cart', {
-        duration: 3000,
-        horizontalPosition: 'end',
-        verticalPosition: 'top'
-      }).onAction().subscribe(() => {
-        // Navigate to cart - will be handled by the component
-        window.location.href = '/cart';
-      });
+      this.toastService.success(`${product.name} added to cart!`);
     }
   }
 

@@ -19,7 +19,7 @@ export class MockDataService {
       compareAtPrice: 99999,
       status: 'ACTIVE',
       images: [
-        { id: '1', url: 'https://via.placeholder.com/400x400?text=Laptop', alt: 'Laptop', position: 1, isDefault: true }
+        { id: '1', url: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=400&fit=crop', alt: 'Laptop', position: 1, isDefault: true }
       ],
       variants: [],
       attributes: [
@@ -48,7 +48,7 @@ export class MockDataService {
       compareAtPrice: 64999,
       status: 'ACTIVE',
       images: [
-        { id: '2', url: 'https://via.placeholder.com/400x400?text=Phone', alt: 'Phone', position: 1, isDefault: true }
+        { id: '2', url: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop', alt: 'Phone', position: 1, isDefault: true }
       ],
       variants: [],
       attributes: [
@@ -77,7 +77,7 @@ export class MockDataService {
       compareAtPrice: 15999,
       status: 'ACTIVE',
       images: [
-        { id: '3', url: 'https://via.placeholder.com/400x400?text=Headphones', alt: 'Headphones', position: 1, isDefault: true }
+        { id: '3', url: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop', alt: 'Headphones', position: 1, isDefault: true }
       ],
       variants: [],
       attributes: [
@@ -105,7 +105,7 @@ export class MockDataService {
       compareAtPrice: 29999,
       status: 'ACTIVE',
       images: [
-        { id: '4', url: 'https://via.placeholder.com/400x400?text=Watch', alt: 'Watch', position: 1, isDefault: true }
+        { id: '4', url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop', alt: 'Watch', position: 1, isDefault: true }
       ],
       variants: [],
       attributes: [
@@ -132,7 +132,7 @@ export class MockDataService {
       price: 45999,
       status: 'ACTIVE',
       images: [
-        { id: '5', url: 'https://via.placeholder.com/400x400?text=Tablet', alt: 'Tablet', position: 1, isDefault: true }
+        { id: '5', url: 'https://images.unsplash.com/photo-1561154464-82e9adf32764?w=400&h=400&fit=crop', alt: 'Tablet', position: 1, isDefault: true }
       ],
       variants: [],
       attributes: [
@@ -160,7 +160,7 @@ export class MockDataService {
       compareAtPrice: 74999,
       status: 'ACTIVE',
       images: [
-        { id: '6', url: 'https://via.placeholder.com/400x400?text=Camera', alt: 'Camera', position: 1, isDefault: true }
+        { id: '6', url: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=400&fit=crop', alt: 'Camera', position: 1, isDefault: true }
       ],
       variants: [],
       attributes: [

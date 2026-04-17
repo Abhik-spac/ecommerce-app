@@ -1,0 +1,30 @@
+<div class="confirmation-container">
+  <mat-card class="confirmation-card">
+    <mat-card-content>
+      <div class="success-icon">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      
+      <h1>Order Confirmed!</h1>
+      <p class="subtitle">Thank you for your purchase</p>
+      
+      <div class="order-info">
+        <p class="order-number">Order Number: <strong>{{ orderId }}</strong></p>
+        <p class="confirmation-message">
+          We've received your order and will send you a confirmation email shortly.
+        </p>
+      </div>
+      
+      <div class="action-buttons">
+        <button mat-raised-button color="primary" (click)="goToHome()">
+          <mat-icon>home</mat-icon>
+          Continue Shopping
+        </button>
+        <button mat-raised-button (click)="goToOrders()">
+          <mat-icon>receipt_long</mat-icon>
+          View Orders
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

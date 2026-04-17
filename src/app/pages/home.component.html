@@ -1,0 +1,59 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Welcome to eCommerce Store</h1>
+      <p>Discover amazing products at unbeatable prices</p>
+      <button mat-raised-button color="primary" routerLink="/products" class="cta-button">
+        Shop Now
+      </button>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories-section">
+    <h2>Shop by Category</h2>
+    <mat-grid-list [cols]="gridCols" rowHeight="200px" gutterSize="16px">
+      <mat-grid-tile *ngFor="let category of categories">
+        <mat-card class="category-card" [routerLink]="['/products']" [queryParams]="{category: category.id}">
+          <mat-card-header>
+            <mat-card-title>{{ category.name }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-icon>{{ category.icon }}</mat-icon>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <h2>Why Shop With Us</h2>
+    <div class="features-grid">
+      <mat-card *ngFor="let feature of features" class="feature-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>{{ feature.icon }}</mat-icon>
+          <mat-card-title>{{ feature.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ feature.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <h2>Ready to Start Shopping?</h2>
+    <p>Join thousands of satisfied customers</p>
+    <div class="cta-buttons">
+      <button mat-raised-button color="accent" routerLink="/products">
+        Browse Products
+      </button>
+      <button mat-raised-button routerLink="/auth/register">
+        Create Account
+      </button>
+    </div>
+  </section>
+</div>

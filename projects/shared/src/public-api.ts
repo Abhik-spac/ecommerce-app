@@ -6,6 +6,7 @@
 export * from './lib/services/auth.service';
 export * from './lib/services/cart.service';
 export * from './lib/services/mock-data.service';
+export * from './lib/services/toast.service';
 
 // Models
 export * from './lib/models/user.model';

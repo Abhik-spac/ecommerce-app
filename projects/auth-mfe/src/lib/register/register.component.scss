@@ -1,0 +1,215 @@
+@use '../../variables' as *;
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 4rem - 12.5rem);
+  padding: $spacing-1;
+  background: linear-gradient(135deg, $color-secondary 0%, $color-secondary-dark 100%);
+}
+
+.register-card {
+  width: 100%;
+  max-width: 37.5rem;
+
+  mat-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $spacing-1 $spacing-1 0;
+
+    h1 {
+      margin: 0 0 $spacing-05 0;
+      font-size: $font-size-3xl;
+      font-weight: $font-weight-medium;
+    }
+
+    p {
+      margin: 0;
+      color: $color-text-secondary;
+      font-size: $font-size-base;
+    }
+  }
+
+  mat-card-content {
+    padding: $spacing-1;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-1;
+
+      .name-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $spacing-1;
+
+        @media (max-width: $breakpoint-sm) {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .full-width {
+        width: 100%;
+      }
+
+      .password-strength {
+        margin-top: -$spacing-05;
+
+        .strength-bar {
+          height: $spacing-025;
+          background: $color-gray-300;
+          border-radius: $border-radius-sm;
+          overflow: hidden;
+
+          .strength-fill {
+            height: 100%;
+            transition: all $transition-base;
+            background: linear-gradient(90deg, $color-error, $color-warning, $color-success);
+          }
+        }
+
+        .strength-text {
+          margin: $spacing-025 0 0 0;
+          font-size: $font-size-xs;
+          font-weight: $font-weight-medium;
+
+          &.strength-weak {
+            color: $color-error;
+          }
+
+          &.strength-medium {
+            color: $color-warning;
+          }
+
+          &.strength-strong {
+            color: $color-success;
+          }
+        }
+      }
+
+      .password-mismatch {
+        display: flex;
+        align-items: center;
+        gap: $spacing-05;
+        padding: $spacing-05 $spacing-075;
+        background: $color-error-light;
+        color: $color-error-dark;
+        border-radius: $border-radius-sm;
+        font-size: $font-size-sm;
+        margin-top: -$spacing-05;
+
+        mat-icon {
+          font-size: $font-size-lg;
+          width: $font-size-lg;
+          height: $font-size-lg;
+        }
+      }
+
+      .terms-checkbox {
+        margin: $spacing-05 0;
+
+        a {
+          color: $color-info-dark;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .error-message {
+        display: flex;
+        align-items: center;
+        gap: $spacing-05;
+        padding: $spacing-075;
+        background: $color-error-light;
+        color: $color-error-dark;
+        border-radius: $border-radius-sm;
+        font-size: $font-size-sm;
+
+        mat-icon {
+          font-size: $font-size-xl;
+          width: $font-size-xl;
+          height: $font-size-xl;
+        }
+      }
+
+      .register-button {
+        height: $spacing-3;
+        font-size: $font-size-base;
+        margin-top: $spacing-05;
+        transition: transform $transition-base, box-shadow $transition-base;
+
+        &:active:not([disabled]) {
+          transform: scale(0.98);
+          box-shadow: $shadow-sm;
+        }
+
+        mat-spinner {
+          display: inline-block;
+          margin: 0 auto;
+        }
+      }
+    }
+
+    .divider {
+      margin: $spacing-1 0;
+    }
+
+    .social-login {
+      text-align: center;
+
+      p {
+        margin: 0 0 $spacing-1 0;
+        color: $color-text-secondary;
+        font-size: $font-size-sm;
+      }
+
+      .social-buttons {
+        display: flex;
+        gap: $spacing-075;
+        justify-content: center;
+
+        button {
+          flex: 1;
+          max-width: 12.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: $spacing-05;
+          transition: transform $transition-base;
+
+          &:active {
+            transform: scale(0.98);
+          }
+
+          img {
+            width: $font-size-xl;
+            height: $font-size-xl;
+          }
+        }
+      }
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: $spacing-1;
+      color: $color-text-secondary;
+
+      a {
+        color: $color-info-dark;
+        text-decoration: none;
+        font-weight: $font-weight-medium;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+// Made with Bob

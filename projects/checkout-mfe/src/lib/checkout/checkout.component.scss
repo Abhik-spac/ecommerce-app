@@ -1,0 +1,496 @@
+@use '../../_variables' as *;
+
+.checkout-container {
+  display: grid;
+  grid-template-columns: 1fr $size-350;
+  gap: $spacing-3;
+  padding: $spacing-3;
+  max-width: $container-xxl;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: $bg-gradient-premium;
+
+  @media (max-width: $breakpoint-lg) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.checkout-content {
+  h1 {
+    margin: 0 0 $spacing-3 0;
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-medium;
+    color: $color-white;
+  }
+}
+
+::ng-deep mat-card {
+  margin-bottom: $spacing-2;
+  background: linear-gradient(135deg, rgba($color-primary, 0.15) 0%, rgba($color-primary-dark, 0.2) 100%) !important;
+  border: $border-width-thin solid rgba($color-gold, 0.2);
+  box-shadow: $shadow-xl;
+  overflow: visible !important;
+
+  mat-card-header {
+    color: $color-white;
+    
+    h2, h3 {
+      color: $color-white;
+    }
+  }
+
+  mat-card-content {
+    padding: $spacing-3;
+    color: $color-white;
+  }
+  
+  .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      background-color: rgba($color-white, 0.1) !important;
+    }
+    
+    .mdc-text-field {
+      background-color: rgba($color-white, 0.1) !important;
+    }
+    
+    .mat-mdc-form-field-focus-overlay {
+      background-color: transparent !important;
+    }
+    
+    label, .mat-mdc-floating-label {
+      color: rgba($color-white, 0.7) !important;
+    }
+    
+    input, .mat-mdc-input-element {
+      color: $color-white !important;
+      caret-color: $color-gold !important;
+    }
+    
+    .mat-mdc-form-field-icon-prefix mat-icon {
+      color: $color-gold !important;
+    }
+    
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: rgba($color-gold, 0.3) !important;
+    }
+    
+    &.mat-focused {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: $color-gold !important;
+      }
+    }
+  }
+  
+  mat-checkbox {
+    color: $color-white;
+    
+    .mdc-checkbox__background {
+      border-color: rgba($color-gold, 0.5) !important;
+    }
+    
+    .mdc-label {
+      color: $color-white !important;
+    }
+  }
+  
+  mat-divider {
+    border-top-color: rgba($color-white, 0.2) !important;
+  }
+}
+
+::ng-deep .mat-stepper-horizontal {
+  background: transparent !important;
+  
+  .mat-horizontal-stepper-header-container {
+    background: linear-gradient(135deg, rgba($color-primary, 0.2) 0%, rgba($color-primary-dark, 0.3) 100%) !important;
+    border-bottom: $border-width-thin solid rgba($color-gold, 0.2);
+  }
+  
+  .mat-step-header {
+    .mat-step-icon {
+      background-color: rgba($color-gold, 0.3) !important;
+      color: $color-white !important;
+    }
+    
+    .mat-step-icon-selected {
+      background-color: $color-gold !important;
+      color: $color-black !important;
+    }
+    
+    .mat-step-label {
+      color: rgba($color-white, 0.7) !important;
+    }
+    
+    .mat-step-label-selected {
+      color: $color-white !important;
+    }
+  }
+  
+  .mat-horizontal-content-container {
+    background: transparent !important;
+    padding: $spacing-2 0 !important;
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-2;
+
+  @media (max-width: $breakpoint-sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+::ng-deep .payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+  margin-bottom: $spacing-3;
+
+  mat-radio-button {
+    padding: $spacing-2;
+    border: $border-width-normal solid rgba($color-gold, 0.3);
+    border-radius: $border-radius-md;
+    background: linear-gradient(135deg, rgba($color-primary, 0.1) 0%, rgba($color-primary-dark, 0.15) 100%);
+    transition: all $transition-base, transform $transition-base, box-shadow $transition-base;
+
+    &:hover {
+      border-color: $color-gold;
+      background: linear-gradient(135deg, rgba($color-primary, 0.2) 0%, rgba($color-primary-dark, 0.25) 100%);
+      transform: translateY(-$spacing-025) scale(1.02);
+      box-shadow:
+        0 0 15px rgba($color-gold, 0.6),
+        0 4px 15px rgba($color-gold, 0.3),
+        $shadow-lg;
+    }
+
+    &.mat-mdc-radio-checked {
+      border-color: $color-gold;
+      background: linear-gradient(135deg, rgba($color-gold, 0.2) 0%, rgba($color-primary, 0.3) 100%);
+      box-shadow:
+        0 0 20px rgba($color-gold, 0.8),
+        0 6px 20px rgba($color-gold, 0.4),
+        $shadow-xl;
+        
+      .mdc-radio__outer-circle {
+        border-color: $color-gold !important;
+      }
+      
+      .mdc-radio__inner-circle {
+        border-color: $color-gold !important;
+      }
+    }
+    
+    &:active {
+      transform: scale(0.98);
+      box-shadow: $shadow-sm;
+    }
+    
+    .mdc-radio {
+      .mdc-radio__outer-circle {
+        border-color: rgba($color-gold, 0.8) !important;
+        border-width: 2px !important;
+      }
+      
+      .mdc-radio__inner-circle {
+        border-color: $color-gold !important;
+      }
+    }
+    
+    .mdc-label, .mat-mdc-radio-button label {
+      color: $color-white !important;
+    }
+  }
+
+  .payment-option {
+    display: flex;
+    align-items: center;
+    gap: $spacing-1 + $spacing-05;
+
+    mat-icon {
+      color: $color-gold;
+    }
+
+    span {
+      font-size: $font-size-base;
+      font-weight: $font-weight-medium;
+      color: $color-white;
+    }
+  }
+}
+
+.card-details, .upi-details {
+  margin-top: $spacing-3;
+  padding-top: $spacing-3;
+  border-top: 1px solid $color-border-light;
+}
+
+.step-actions {
+  display: flex;
+  gap: $spacing-1 + $spacing-05;
+  justify-content: space-between;
+  margin: $spacing-3 $spacing-2 $spacing-2 $spacing-2;
+  flex-wrap: wrap;
+  overflow: visible;
+
+  button {
+    min-width: $size-120;
+    display: flex;
+    align-items: center;
+    gap: $spacing-05;
+    transition: transform $transition-base, box-shadow $transition-base;
+    
+    &[color="primary"] {
+      background-color: $color-primary !important;
+      color: $color-primary-contrast !important;
+      
+      &:hover:not([disabled]) {
+        background-color: $color-primary-dark !important;
+        transform: scale(1.05);
+        box-shadow:
+          0 0 20px rgba($color-gold, 0.9),
+          0 8px 25px rgba($color-gold, 0.5),
+          $shadow-xl;
+      }
+
+      &:active:not([disabled]) {
+        transform: scale(0.98);
+        box-shadow: $shadow-sm;
+      }
+
+      &[disabled] {
+        background-color: $color-gray-300 !important;
+        color: $color-gray-500 !important;
+        opacity: 0.6;
+        cursor: not-allowed;
+        
+        mat-icon {
+          color: $color-gray-500 !important;
+        }
+      }
+    }
+    
+    &[mat-button]:not([color="primary"]) {
+      color: $color-white !important;
+      border: $border-width-thin solid rgba($color-gold, 0.3);
+      background: rgba($color-white, 0.05);
+      
+      mat-icon {
+        color: $color-gold !important;
+      }
+      
+      &:hover {
+        background: rgba($color-white, 0.1);
+        border-color: $color-gold;
+        transform: scale(1.05);
+        box-shadow:
+          0 0 15px rgba($color-gold, 0.6),
+          0 4px 15px rgba($color-gold, 0.3),
+          $shadow-lg;
+      }
+      
+      &:active {
+        transform: scale(0.98);
+        box-shadow: $shadow-sm;
+      }
+    }
+
+    &:active:not([disabled]):not([color="primary"]) {
+      transform: scale(0.98);
+    }
+
+    mat-icon {
+      font-size: $font-size-lg;
+      width: $font-size-lg;
+      height: $font-size-lg;
+    }
+  }
+
+  // Group right-aligned buttons
+  &::after {
+    content: '';
+    flex: 1;
+    order: -1;
+  }
+
+  button:first-child {
+    margin-right: auto;
+    order: -2;
+  }
+}
+
+.review-card {
+  overflow: visible !important;
+  
+  mat-card-content {
+    overflow: visible !important;
+    padding: $spacing-3 $spacing-4 !important;
+  }
+  
+  .order-items {
+    margin-bottom: $spacing-3;
+    overflow: visible;
+    padding: 0 $spacing-2;
+    margin-left: -$spacing-2;
+    margin-right: -$spacing-2;
+
+    h3 {
+      margin: 0 0 $spacing-2 0;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-medium;
+      color: $color-white;
+    }
+
+    .order-item {
+      display: flex;
+      gap: $spacing-2;
+      padding: $spacing-1 + $spacing-05;
+      margin: 0 (-$spacing-1);
+      border-bottom: 1px solid rgba($color-white, 0.1);
+      transition: all $transition-base;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow:
+          0 0 15px rgba($color-gold, 0.6),
+          0 4px 15px rgba($color-gold, 0.3),
+          $shadow-lg;
+      }
+
+      img {
+        width: $size-sm;
+        height: $size-sm;
+        object-fit: cover;
+        border-radius: $border-radius-md;
+        border: $border-width-thin solid rgba($color-gold, 0.3);
+        transition: all $transition-base;
+
+        &.clickable {
+          cursor: pointer;
+
+          &:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba($color-gold, 0.4);
+            border-color: $color-gold;
+          }
+        }
+      }
+
+      .item-details {
+        flex: 1;
+
+        h4 {
+          margin: 0 0 $spacing-1 0;
+          font-size: $font-size-base;
+          font-weight: $font-weight-medium;
+          color: $color-white;
+          transition: all $transition-base;
+
+          &.clickable {
+            cursor: pointer;
+
+            &:hover {
+              color: $color-gold;
+              text-shadow: 0 0 10px rgba($color-gold, 0.5);
+            }
+          }
+        }
+
+        p {
+          margin: $spacing-05 0;
+          color: rgba($color-white, 0.7);
+          font-size: $font-size-sm;
+        }
+
+        .price {
+          color: $color-gold;
+          font-weight: $font-weight-semibold;
+          font-size: $font-size-base;
+        }
+      }
+    }
+  }
+
+  .review-section {
+    padding: $spacing-2 0;
+
+    h3 {
+      margin: 0 0 $spacing-1 + $spacing-05 0;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-medium;
+      color: $color-white;
+    }
+
+    p {
+      margin: $spacing-05 0;
+      color: rgba($color-white, 0.8);
+    }
+  }
+
+  .price-summary {
+    padding: $spacing-2 0;
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      padding: $spacing-1 0;
+      font-size: $font-size-base;
+      color: $color-white;
+
+      &.total {
+        font-size: $font-size-xl;
+        font-weight: $font-weight-semibold;
+        color: $color-gold;
+        padding-top: $spacing-2;
+      }
+    }
+  }
+}
+
+.order-summary-sidebar {
+  mat-card {
+    position: sticky;
+    top: $spacing-3;
+
+    h3 {
+      margin: 0;
+      font-size: $font-size-xl;
+      font-weight: $font-weight-medium;
+      color: $color-white;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: $spacing-1 + $spacing-05 0;
+      font-size: $font-size-base;
+      color: $color-white;
+
+      &.total {
+        font-size: $font-size-xl;
+        font-weight: $font-weight-semibold;
+        color: $color-gold;
+        padding-top: $spacing-2;
+      }
+    }
+  }
+}
+
+::ng-deep .mat-stepper-horizontal {
+  margin-top: $spacing-3;
+}
+
+// Made with Bob

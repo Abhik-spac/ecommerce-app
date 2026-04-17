@@ -1,4 +1,103 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// Import global variables using modern @use syntax
+@use 'styles/variables' as *;
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: $font-family-base;
+  color: $color-white;
+  background: $bg-gradient-premium;
+  overflow-x: hidden;
+}
+
+// Global utility classes
+.text-primary { color: $color-text-primary; }
+.text-secondary { color: $color-text-secondary; }
+.bg-primary { background-color: $color-bg-primary; }
+.bg-secondary { background-color: $color-bg-secondary; }
+
+// Toast/Snackbar Styles
+.toast-success {
+  .mdc-snackbar__surface {
+    background-color: $color-success !important;
+    color: $color-white !important;
+    box-shadow:
+      0 0 20px rgba($color-success, 0.6),
+      0 8px 25px rgba($color-success, 0.4),
+      $shadow-xl;
+  }
+  
+  .mat-mdc-snack-bar-label {
+    color: $color-white !important;
+  }
+  
+  .mat-mdc-button.mat-mdc-snack-bar-action {
+    display: none !important;
+  }
+}
+
+.toast-error {
+  .mdc-snackbar__surface {
+    background-color: $color-error !important;
+    color: $color-white !important;
+    box-shadow:
+      0 0 20px rgba($color-error, 0.6),
+      0 8px 25px rgba($color-error, 0.4),
+      $shadow-xl;
+  }
+  
+  .mat-mdc-snack-bar-label {
+    color: $color-white !important;
+  }
+  
+  .mat-mdc-button.mat-mdc-snack-bar-action {
+    display: none !important;
+  }
+}
+
+.toast-warning {
+  .mdc-snackbar__surface {
+    background-color: $color-warning !important;
+    color: $color-white !important;
+    box-shadow:
+      0 0 20px rgba($color-warning, 0.6),
+      0 8px 25px rgba($color-warning, 0.4),
+      $shadow-xl;
+  }
+  
+  .mat-mdc-snack-bar-label {
+    color: $color-white !important;
+  }
+  
+  .mat-mdc-button.mat-mdc-snack-bar-action {
+    display: none !important;
+  }
+}
+
+.toast-info {
+  .mdc-snackbar__surface {
+    background-color: $color-info !important;
+    color: $color-white !important;
+    box-shadow:
+      0 0 20px rgba($color-info, 0.6),
+      0 8px 25px rgba($color-info, 0.4),
+      $shadow-xl;
+  }
+  
+  .mat-mdc-snack-bar-label {
+    color: $color-white !important;
+  }
+  
+  .mat-mdc-button.mat-mdc-snack-bar-action {
+    display: none !important;
+  }
+}
+
+// Made with Bob

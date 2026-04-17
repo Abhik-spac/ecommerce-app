@@ -1,65 +1,115 @@
+
+@use '../styles/variables' as *;
+
 .sidenav-container {
   height: 100vh;
 }
 
+// Override Material toolbar color
+.app-toolbar {
+  background-color: $color-primary !important;
+  color: $color-primary-contrast !important;
+}
+
 .sidenav {
-  width: 280px;
+  width: $spacing-20; // 320px converted to rem (20rem)
   padding: 0;
+  background: $bg-gradient-premium;
 
   .sidenav-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px;
-    background: #3f51b5;
-    color: white;
+    padding: $spacing-1;
+    background: rgba($color-black, 0.3);
+    color: $color-white;
 
     h2 {
       margin: 0;
-      font-size: 20px;
+      font-size: $font-size-xl;
     }
   }
 
   .category-section {
-    padding: 8px 16px;
+    padding: $spacing-05 $spacing-1;
 
     h3 {
-      font-size: 14px;
-      color: #666;
-      margin: 8px 0;
+      font-size: $font-size-sm;
+      color: $color-gold;
+      margin: $spacing-05 0;
       text-transform: uppercase;
+      font-weight: $font-weight-semibold;
     }
+  }
+  
+  ::ng-deep mat-nav-list {
+    margin: 0 $spacing-1;
+  }
+
+  ::ng-deep .mat-mdc-list-item {
+    color: $color-white !important;
+    border-radius: $border-radius-md;
+    margin-bottom: $spacing-05;
+    transition: transform $transition-base, box-shadow $transition-base;
+    
+    &:hover {
+      background: rgba($color-white, 0.1) !important;
+      transform: translateY(-$spacing-025) scale(1.05);
+      box-shadow:
+        0 0 20px rgba($color-gold, 0.9),
+        0 8px 25px rgba($color-gold, 0.5),
+        $shadow-xl;
+    }
+    
+    &:active {
+      transform: scale(0.98) !important;
+      box-shadow: $shadow-sm;
+      background: rgba($color-gold, 0.2) !important;
+    }
+    
+    .mat-mdc-list-item-title {
+      color: $color-white !important;
+    }
+    
+    .mat-icon {
+      color: $color-gold !important;
+      margin-right: 0.5rem !important; // 8px
+    }
+  }
+  
+  ::ng-deep .mat-divider {
+    border-top-color: rgba($color-white, 0.2) !important;
   }
   
   .sidebar-user-info {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 16px !important;
-    background: #f5f5f5;
+    gap: $spacing-075;
+    padding: $spacing-1 !important;
+    background: rgba($color-gold, 0.15);
     cursor: default;
     
     .sidebar-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
+      width: $spacing-3;
+      height: $spacing-3;
+      border-radius: $border-radius-full;
       object-fit: cover;
-      border: 2px solid #3f51b5;
+      border: $border-width-normal solid $color-gold;
     }
     
     .sidebar-user-details {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: $spacing-025;
       
       strong {
-        font-size: 14px;
-        color: #333;
+        font-size: $font-size-sm;
+        color: $color-white;
       }
       
       small {
-        font-size: 12px;
-        color: #666;
+        font-size: $font-size-xs;
+        color: rgba($color-white, 0.7);
       }
     }
   }
@@ -68,8 +118,8 @@
 .app-toolbar {
   position: sticky;
   top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: $z-index-sticky;
+  box-shadow: $shadow-md;
 }
 
 .toolbar-content {
@@ -77,20 +127,38 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 1400px;
+  max-width: $spacing-90; // 1440px
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 $spacing-1;
+  
+  // Hamburger menu button
+  button[mat-icon-button] {
+    transition: transform $transition-base, box-shadow $transition-base;
+    
+    &:hover {
+      transform: scale(1.1);
+      box-shadow:
+        0 0 20px rgba($color-gold, 0.9),
+        0 8px 25px rgba($color-gold, 0.5),
+        $shadow-xl;
+    }
+    
+    &:active {
+      transform: scale(0.98);
+      box-shadow: $shadow-sm;
+    }
+  }
 }
 
 .logo-section {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: $spacing-1;
 
   .logo {
     margin: 0;
-    font-size: 24px;
-    font-weight: 500;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-medium;
     cursor: pointer;
     user-select: none;
   }
@@ -99,33 +167,69 @@
 .nav-section {
   flex: 1;
   display: flex;
-  gap: 8px;
-  margin-left: 32px;
+  gap: $spacing-05;
+  margin-left: $spacing-2;
+  
+  // Categories button
+  button[mat-button] {
+    transition: transform $transition-base, box-shadow $transition-base;
+    
+    &:hover {
+      transform: scale(1.05);
+      box-shadow:
+        0 0 20px rgba($color-gold, 0.9),
+        0 8px 25px rgba($color-gold, 0.5),
+        $shadow-xl;
+    }
+    
+    &:active {
+      transform: scale(0.98);
+      box-shadow: $shadow-sm;
+    }
+  }
 }
 
 .actions-section {
   display: flex;
-  gap: 8px;
+  gap: $spacing-05;
   align-items: center;
+  
+  // All action buttons (cart, login, register, user profile)
+  button {
+    transition: transform $transition-base, box-shadow $transition-base;
+    
+    &:hover {
+      transform: scale(1.05);
+      box-shadow:
+        0 0 20px rgba($color-gold, 0.9),
+        0 8px 25px rgba($color-gold, 0.5),
+        $shadow-xl;
+    }
+    
+    &:active {
+      transform: scale(0.98);
+      box-shadow: $shadow-sm;
+    }
+  }
   
   .user-profile-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 4px 12px;
+    gap: $spacing-05;
+    padding: $spacing-025 $spacing-075;
     
     .user-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
+      width: $spacing-2;
+      height: $spacing-2;
+      border-radius: $border-radius-full;
       object-fit: cover;
-      border: 2px solid white;
+      border: $border-width-normal solid $color-white;
     }
     
     .user-name {
-      font-weight: 500;
+      font-weight: $font-weight-medium;
       
-      @media (max-width: 768px) {
+      @media (max-width: $breakpoint-md) {
         display: none;
       }
     }
@@ -135,28 +239,27 @@
 .user-info {
   display: flex;
   flex-direction: column;
-  padding: 8px 16px;
+  padding: $spacing-05 $spacing-1;
 
   strong {
-    font-size: 14px;
+    font-size: $font-size-sm;
   }
 
   small {
-    font-size: 12px;
-    color: #666;
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
   }
 }
 
 .main-content {
   position: relative;
-  min-height: calc(100vh - 64px - 200px);
-  background: #fafafa;
-  transition: margin-right 0.3s ease-in-out;
+  min-height: calc(100vh - 4rem - 12.5rem); // 64px toolbar + 200px footer
+  transition: margin-right $transition-base;
   
   &.with-cart-sidebar {
-    margin-right: 380px;
+    margin-right: $spacing-25; // 400px converted to rem (25rem)
     
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       margin-right: 0;
     }
   }
@@ -165,16 +268,17 @@
 // Cart Sidebar
 .cart-sidebar {
   position: fixed;
-  top: 64px;
-  right: -400px;
-  width: 380px;
-  height: calc(100vh - 64px);
-  background: white;
-  box-shadow: -2px 0 8px rgba(0,0,0,0.15);
-  transition: right 0.3s ease-in-out;
-  z-index: 999;
+  top: 4rem; // 64px toolbar height
+  right: -25rem; // 400px
+  width: $spacing-25; // 400px converted to rem (25rem)
+  height: calc(100vh - 4rem);
+  background: $bg-gradient-premium;
+  box-shadow: $shadow-xl;
+  transition: right $transition-base;
+  z-index: $z-index-modal;
   display: flex;
   flex-direction: column;
+  border-left: $border-width-thin solid rgba($color-gold, 0.3);
   
   &.visible {
     right: 0;
@@ -188,23 +292,39 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 20px;
-    background: #3f51b5;
-    color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: $spacing-1 $spacing-1;
+    background: linear-gradient(135deg, rgba($color-primary, 0.3) 0%, rgba($color-primary-dark, 0.4) 100%);
+    color: $color-primary-contrast;
+    box-shadow: $shadow-md;
+    border-bottom: $border-width-thin solid rgba($color-gold, 0.3);
     
     h2 {
       margin: 0;
-      font-size: 20px;
-      font-weight: 500;
+      font-size: $font-size-xl;
+      font-weight: $font-weight-medium;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: $spacing-05;
+      color: $color-white;
       
       mat-icon {
-        font-size: 24px;
-        width: 24px;
-        height: 24px;
+        font-size: $font-size-2xl;
+        width: $font-size-2xl;
+        height: $font-size-2xl;
+        color: $color-gold;
+      }
+    }
+    
+    button {
+      color: $color-gold;
+      transition: transform $transition-fast;
+      
+      &:hover {
+        transform: scale(1.1);
+      }
+      
+      &:active {
+        transform: scale(0.95);
       }
     }
   }
@@ -212,7 +332,7 @@
   .cart-sidebar-content {
     flex: 1;
     overflow-y: auto;
-    padding: 16px;
+    padding: $spacing-1;
     
     .empty-cart {
       display: flex;
@@ -221,46 +341,71 @@
       justify-content: center;
       height: 100%;
       text-align: center;
-      color: #666;
-      padding: 40px 20px;
+      color: rgba($color-white, 0.7);
+      padding: $spacing-2 $spacing-1;
       
       mat-icon {
-        font-size: 64px;
-        width: 64px;
-        height: 64px;
-        color: #ccc;
-        margin-bottom: 16px;
+        font-size: 4rem;
+        width: 4rem;
+        height: 4rem;
+        color: $color-gold;
+        margin-bottom: $spacing-1;
       }
       
       p {
-        margin: 0 0 24px 0;
-        font-size: 16px;
+        margin: 0 0 $spacing-2 0;
+        font-size: $font-size-base;
+        color: rgba($color-white, 0.8);
+      }
+      
+      button {
+        transition: transform $transition-base, box-shadow $transition-base;
+        
+        &:hover {
+          transform: scale(1.05);
+          box-shadow:
+            0 0 20px rgba($color-gold, 0.9),
+            0 8px 25px rgba($color-gold, 0.5),
+            $shadow-xl;
+        }
+        
+        &:active {
+          transform: scale(0.98);
+          box-shadow: $shadow-sm;
+        }
       }
     }
     
     .cart-items-list {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: $spacing-1;
       
       .cart-item {
         display: flex;
-        gap: 12px;
-        padding: 12px;
-        background: #f5f5f5;
-        border-radius: 8px;
-        transition: background 0.2s;
+        gap: $spacing-075;
+        padding: $spacing-075;
+        background: linear-gradient(135deg, rgba($color-primary, 0.15) 0%, rgba($color-primary-dark, 0.2) 100%);
+        border-radius: $border-radius-md;
+        border: $border-width-thin solid rgba($color-gold, 0.2);
+        transition: background $transition-fast, transform $transition-fast, box-shadow $transition-fast;
         
         &:hover {
-          background: #eeeeee;
+          background: linear-gradient(135deg, rgba($color-primary, 0.25) 0%, rgba($color-primary-dark, 0.3) 100%);
+          transform: translateX(-2px);
+          box-shadow:
+            0 0 15px rgba($color-gold, 0.6),
+            0 4px 15px rgba($color-gold, 0.3),
+            $shadow-lg;
         }
         
         .item-image {
-          width: 80px;
-          height: 80px;
+          width: 5rem;
+          height: 5rem;
           object-fit: cover;
-          border-radius: 4px;
+          border-radius: $border-radius-sm;
           flex-shrink: 0;
+          border: $border-width-thin solid rgba($color-gold, 0.3);
         }
         
         .item-details {
@@ -268,42 +413,54 @@
           min-width: 0;
           
           h4 {
-            margin: 0 0 4px 0;
-            font-size: 14px;
-            font-weight: 500;
+            margin: 0 0 $spacing-025 0;
+            font-size: $font-size-sm;
+            font-weight: $font-weight-medium;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            color: $color-white;
           }
           
           .item-price {
-            margin: 0 0 8px 0;
-            color: #3f51b5;
-            font-weight: 500;
-            font-size: 14px;
+            margin: 0 0 $spacing-05 0;
+            color: $color-gold;
+            font-weight: $font-weight-medium;
+            font-size: $font-size-sm;
           }
           
           .quantity-controls {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: $spacing-025;
             
             button {
-              width: 32px;
-              height: 32px;
+              width: $spacing-2;
+              height: $spacing-2;
+              color: $color-gold;
+              transition: transform $transition-fast;
+              
+              &:hover {
+                transform: scale(1.1);
+              }
+              
+              &:active {
+                transform: scale(0.95);
+              }
               
               mat-icon {
-                font-size: 18px;
-                width: 18px;
-                height: 18px;
+                font-size: $font-size-lg;
+                width: $font-size-lg;
+                height: $font-size-lg;
               }
             }
             
             .quantity {
-              min-width: 32px;
+              min-width: $spacing-2;
               text-align: center;
-              font-weight: 500;
-              font-size: 14px;
+              font-weight: $font-weight-medium;
+              font-size: $font-size-sm;
+              color: $color-white;
             }
           }
         }
@@ -316,19 +473,28 @@
           
           .item-total {
             margin: 0;
-            font-weight: 600;
-            color: #333;
-            font-size: 14px;
+            font-weight: $font-weight-semibold;
+            color: $color-gold;
+            font-size: $font-size-sm;
           }
           
           button {
-            width: 32px;
-            height: 32px;
+            width: $spacing-2;
+            height: $spacing-2;
+            transition: transform $transition-fast;
+            
+            &:hover {
+              transform: scale(1.1);
+            }
+            
+            &:active {
+              transform: scale(0.95);
+            }
             
             mat-icon {
-              font-size: 18px;
-              width: 18px;
-              height: 18px;
+              font-size: $font-size-lg;
+              width: $font-size-lg;
+              height: $font-size-lg;
             }
           }
         }
@@ -337,36 +503,59 @@
   }
   
   .cart-sidebar-footer {
-    padding: 16px 20px;
-    background: #f9f9f9;
-    border-top: 1px solid #e0e0e0;
+    padding: $spacing-1 $spacing-1;
+    background: linear-gradient(135deg, rgba($color-primary, 0.2) 0%, rgba($color-primary-dark, 0.3) 100%);
+    border-top: $border-width-thin solid rgba($color-gold, 0.3);
     
     .cart-totals {
-      margin-bottom: 16px;
+      margin-bottom: $spacing-1;
       
       .total-row {
         display: flex;
         justify-content: space-between;
-        padding: 8px 0;
-        font-size: 14px;
+        padding: $spacing-05 0;
+        font-size: $font-size-sm;
+        color: $color-white;
         
         &.total {
-          font-size: 16px;
-          padding-top: 12px;
-          color: #3f51b5;
+          font-size: $font-size-base;
+          padding-top: $spacing-075;
+          color: $color-gold;
+          font-weight: $font-weight-semibold;
         }
       }
       
       mat-divider {
-        margin: 8px 0;
+        margin: $spacing-05 0;
+        border-top-color: rgba($color-white, 0.2) !important;
       }
     }
     
     .checkout-btn {
       width: 100%;
-      margin-bottom: 8px;
-      height: 44px;
-      font-size: 15px;
+      margin-bottom: $spacing-05;
+      height: $spacing-3; // 48px converted to rem
+      font-size: $font-size-base;
+      transition: transform $transition-base, box-shadow $transition-base;
+      
+      &[color="primary"], &[color="accent"] {
+        background-color: $color-primary !important;
+        color: $color-primary-contrast !important;
+        
+        &:hover {
+          background-color: $color-primary-dark !important;
+          transform: scale(1.05);
+          box-shadow:
+            0 0 20px rgba($color-gold, 0.9),
+            0 8px 25px rgba($color-gold, 0.5),
+            $shadow-xl;
+        }
+      }
+      
+      &:active {
+        transform: scale(0.98);
+        box-shadow: $shadow-sm;
+      }
       
       &:last-child {
         margin-bottom: 0;
@@ -374,7 +563,7 @@
     }
   }
   
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     width: 100%;
     right: -100%;
     
@@ -385,26 +574,26 @@
 }
 
 .app-footer {
-  background: #333;
-  color: white;
-  padding: 48px 24px 24px;
+  background: $color-gray-900;
+  color: $color-white;
+  padding: $spacing-3 $spacing-2 $spacing-2;
 
   .footer-content {
-    max-width: 1400px;
+    max-width: $spacing-90; // 1440px
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 32px;
-    margin-bottom: 32px;
+    grid-template-columns: repeat(auto-fit, minmax($size-250, 1fr)); // 250px
+    gap: $spacing-2;
+    margin-bottom: $spacing-2;
 
     .footer-section {
       h3 {
-        font-size: 18px;
-        margin: 0 0 16px 0;
+        font-size: $font-size-lg;
+        margin: 0 0 $spacing-1 0;
       }
 
       p {
-        color: #ccc;
+        color: $color-gray-400;
         margin: 0;
       }
 
@@ -414,14 +603,14 @@
         margin: 0;
 
         li {
-          margin-bottom: 8px;
+          margin-bottom: $spacing-05;
 
           a {
-            color: #ccc;
+            color: $color-gray-400;
             text-decoration: none;
 
             &:hover {
-              color: white;
+              color: $color-white;
             }
           }
         }
@@ -429,31 +618,108 @@
 
       .social-links {
         display: flex;
-        gap: 8px;
+        gap: $spacing-05;
       }
     }
   }
 
   .footer-bottom {
     text-align: center;
-    padding-top: 24px;
-    border-top: 1px solid #555;
+    padding-top: $spacing-2;
+    border-top: $border-width-thin solid $color-gray-700;
 
     p {
       margin: 0;
-      color: #ccc;
-      font-size: 14px;
+      color: $color-gray-400;
+      font-size: $font-size-sm;
     }
   }
 }
 
 ::ng-deep .categories-mega-menu {
   .mat-mdc-menu-content {
-    padding: 8px 0;
+    padding: $spacing-05 0;
+    background: $bg-gradient-premium !important;
   }
 
   button {
-    min-width: 200px;
+    min-width: $size-200; // 200px
+    color: $color-white !important;
+    transition: transform $transition-base, box-shadow $transition-base;
+    
+    &:hover {
+      background: rgba($color-white, 0.1) !important;
+      transform: translateY(-$spacing-025) scale(1.05);
+      box-shadow:
+        0 0 20px rgba($color-gold, 0.9),
+        0 8px 25px rgba($color-gold, 0.5),
+        $shadow-xl;
+    }
+    
+    &:active {
+      transform: scale(0.98) !important;
+      box-shadow: $shadow-sm;
+      background: rgba($color-gold, 0.2) !important;
+    }
+    
+    mat-icon {
+      color: $color-gold !important;
+    }
+    
+    span {
+      color: $color-white !important;
+    }
+  }
+  
+  .mat-divider {
+    border-top-color: rgba($color-white, 0.2) !important;
+  }
+}
+
+::ng-deep .user-dropdown-menu {
+  .mat-mdc-menu-content {
+    padding: $spacing-05 0;
+    background: $bg-gradient-premium !important;
+  }
+  
+  button {
+    color: $color-white !important;
+    transition: transform $transition-base, box-shadow $transition-base;
+    
+    &:hover {
+      background: rgba($color-white, 0.1) !important;
+      transform: translateY(-$spacing-025) scale(1.05);
+      box-shadow:
+        0 0 20px rgba($color-gold, 0.9),
+        0 8px 25px rgba($color-gold, 0.5),
+        $shadow-xl;
+    }
+    
+    &:active {
+      transform: scale(0.98) !important;
+      box-shadow: $shadow-sm;
+      background: rgba($color-gold, 0.2) !important;
+    }
+    
+    mat-icon {
+      color: $color-gold !important;
+    }
+  }
+  
+  .user-info {
+    background: rgba($color-gold, 0.15) !important;
+    
+    strong {
+      color: $color-white !important;
+    }
+    
+    small {
+      color: rgba($color-white, 0.7) !important;
+    }
+  }
+  
+  .mat-divider {
+    border-top-color: rgba($color-white, 0.2) !important;
   }
 }
 

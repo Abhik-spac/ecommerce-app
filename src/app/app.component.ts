@@ -9,9 +9,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
-import { AuthService, CartService } from '@ecommerce/shared';
+import { AuthService, CartService, ToastService } from '@ecommerce/shared';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -42,7 +42,7 @@ export class AppComponent {
   constructor(
     public authService: AuthService,
     public cartService: CartService,
-    private snackBar: MatSnackBar,
+    private toastService: ToastService,
     private router: Router
   ) {
     // Track current route
@@ -86,11 +86,7 @@ export class AppComponent {
 
   removeItem(itemId: string): void {
     this.cartService.removeItem(itemId);
-    this.snackBar.open('Item removed from cart', 'Close', {
-      duration: 2000,
-      horizontalPosition: 'end',
-      verticalPosition: 'top'
-    });
+    this.toastService.success('Item removed from cart');
   }
 
   onCartHover(show: boolean): void {
@@ -101,9 +97,7 @@ export class AppComponent {
 
   logout() {
     this.authService.logout();
-    this.snackBar.open('Logged out successfully', 'Close', {
-      duration: 3000
-    });
+    this.toastService.success('Logged out successfully');
   }
 }
 

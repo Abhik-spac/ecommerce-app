@@ -1,33 +1,77 @@
+@use '../../variables' as *;
+
 .product-list-container {
-  padding: 24px;
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
+  padding: $spacing-1;
+  background: $bg-gradient-premium;
+  min-height: 100vh;
+  
+  > * {
+    max-width: $spacing-85;
+    margin: 0 auto;
+  }
 }
 
 .header-section {
-  margin-bottom: 32px;
+  margin-bottom: $spacing-2;
 
   h1 {
-    font-size: 32px;
-    font-weight: 500;
-    margin-bottom: 24px;
-    color: #333;
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-medium;
+    margin-bottom: $spacing-1;
+    color: $color-white;
   }
 }
 
-.toolbar {
+::ng-deep .toolbar {
   display: flex;
-  gap: 16px;
+  gap: $spacing-1;
   align-items: center;
   flex-wrap: wrap;
 
+  .search-field, .sort-field {
+    .mat-mdc-text-field-wrapper {
+      background-color: rgba($color-white, 0.05);
+    }
+    
+    label {
+      color: rgba($color-white, 0.7) !important;
+    }
+    
+    input, .mat-mdc-select-value {
+      color: $color-white !important;
+    }
+    
+    .mat-mdc-form-field-icon-suffix mat-icon {
+      color: $color-gold !important;
+    }
+  }
+
   .search-field {
     flex: 1;
-    min-width: 300px;
+    min-width: 18.75rem;
   }
 
   .sort-field {
-    min-width: 200px;
+    min-width: 12.5rem;
+  }
+  
+  button[mat-raised-button] {
+    transition: transform $transition-base, box-shadow $transition-base;
+    
+    &:hover {
+      transform: scale(1.05);
+      box-shadow:
+        0 0 20px rgba($color-gold, 0.9),
+        0 8px 25px rgba($color-gold, 0.5),
+        $shadow-xl;
+    }
+    
+    &:active {
+      transform: scale(0.98);
+      box-shadow: $shadow-sm;
+    }
   }
 }
 
@@ -36,69 +80,83 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 64px;
-  gap: 16px;
+  padding: $spacing-4;
+  gap: $spacing-1;
 
   p {
-    color: #666;
-    font-size: 16px;
+    color: rgba($color-white, 0.7);
+    font-size: $font-size-base;
+  }
+  
+  mat-spinner {
+    ::ng-deep circle {
+      stroke: $color-gold !important;
+    }
   }
 }
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
-  margin-top: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
+  gap: $spacing-1;
+  margin-top: $spacing-1;
 }
 
-.product-card {
+::ng-deep .product-card {
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform $transition-fast, box-shadow $transition-fast;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  background: linear-gradient(135deg, rgba($color-primary, 0.15) 0%, rgba($color-primary-dark, 0.2) 100%) !important;
+  border: $border-width-thin solid rgba($color-gold, 0.2) !important;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-$spacing-025) scale(1.02);
+    box-shadow:
+      0 0 20px rgba($color-gold, 0.8),
+      0 8px 25px rgba($color-gold, 0.4),
+      $shadow-xl;
   }
 
   .product-image-container {
     position: relative;
     overflow: hidden;
-    background: #f5f5f5;
+    background: rgba($color-black, 0.3);
+    flex-shrink: 0;
 
     .product-image {
       width: 100%;
-      height: 250px;
+      height: 15.625rem;
       object-fit: cover;
+      display: block;
     }
 
     .badges {
       position: absolute;
-      top: 12px;
-      right: 12px;
+      top: $spacing-075;
+      right: $spacing-075;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: $spacing-05;
 
       mat-chip {
-        font-size: 12px;
-        font-weight: 600;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-semibold;
         
         &.badge-new {
-          background-color: #4caf50;
-          color: white;
+          background-color: $color-success;
+          color: $color-white;
         }
 
         &.badge-featured {
-          background-color: #ff9800;
-          color: white;
+          background-color: $color-warning;
+          color: $color-white;
         }
 
         &.badge-sale {
-          background-color: #f44336;
-          color: white;
+          background-color: $color-error;
+          color: $color-white;
         }
       }
     }
@@ -106,13 +164,13 @@
 
   mat-card-content {
     flex: 1;
-    padding: 16px;
+    padding: $spacing-1;
 
     .product-name {
-      font-size: 18px;
-      font-weight: 500;
-      margin: 0 0 8px 0;
-      color: #333;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-medium;
+      margin: 0 0 $spacing-05 0;
+      color: $color-white;
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
@@ -121,9 +179,9 @@
     }
 
     .product-description {
-      font-size: 14px;
-      color: #666;
-      margin: 0 0 12px 0;
+      font-size: $font-size-sm;
+      color: rgba($color-white, 0.7);
+      margin: 0 0 $spacing-075 0;
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
@@ -134,42 +192,42 @@
     .rating {
       display: flex;
       align-items: center;
-      gap: 4px;
-      margin-bottom: 12px;
+      gap: $spacing-025;
+      margin-bottom: $spacing-075;
 
       .star-icon {
-        color: #ffc107;
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
+        color: $color-gold;
+        font-size: $font-size-xl;
+        width: $font-size-xl;
+        height: $font-size-xl;
       }
 
       .rating-value {
-        font-weight: 600;
-        color: #333;
+        font-weight: $font-weight-semibold;
+        color: $color-white;
       }
 
       .review-count {
-        font-size: 14px;
-        color: #666;
+        font-size: $font-size-sm;
+        color: rgba($color-white, 0.6);
       }
     }
 
     .price-container {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: $spacing-075;
+      margin-bottom: $spacing-075;
 
       .current-price {
-        font-size: 24px;
-        font-weight: 700;
-        color: #1976d2;
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-bold;
+        color: $color-gold;
       }
 
       .compare-price {
-        font-size: 16px;
-        color: #999;
+        font-size: $font-size-base;
+        color: rgba($color-white, 0.5);
         text-decoration: line-through;
       }
     }
@@ -177,32 +235,67 @@
     .stock-status {
       display: flex;
       align-items: center;
-      gap: 4px;
-      font-size: 14px;
-      color: #666;
+      gap: $spacing-025;
+      font-size: $font-size-sm;
+      color: rgba($color-white, 0.7);
 
       &.in-stock {
-        color: #4caf50;
+        color: $color-success;
       }
 
       mat-icon {
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
+        font-size: $font-size-lg;
+        width: $font-size-lg;
+        height: $font-size-lg;
       }
     }
   }
 
   mat-card-actions {
-    padding: 16px;
+    padding: $spacing-1;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid rgba($color-white, 0.1);
 
     .add-to-cart-btn {
       flex: 1;
-      margin-right: 8px;
+      margin-right: $spacing-05;
+      background-color: $color-primary !important;
+      color: $color-primary-contrast !important;
+      transition: transform $transition-base, box-shadow $transition-base;
+      
+      &:hover:not([disabled]) {
+        background-color: $color-primary-dark !important;
+        transform: scale(1.05);
+        box-shadow:
+          0 0 20px rgba($color-gold, 0.9),
+          0 8px 25px rgba($color-gold, 0.5),
+          $shadow-xl;
+      }
+
+      &:active:not([disabled]) {
+        transform: scale(0.98);
+        box-shadow: $shadow-sm;
+      }
+      
+      &[disabled] {
+        background-color: $color-gray-300 !important;
+        color: $color-gray-500 !important;
+      }
+    }
+    
+    button[mat-icon-button] {
+      color: $color-gold;
+      transition: transform $transition-fast;
+      
+      &:hover {
+        transform: scale(1.1);
+      }
+      
+      &:active {
+        transform: scale(0.95);
+      }
     }
   }
 }
@@ -212,40 +305,57 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 64px;
+  padding: $spacing-4;
   text-align: center;
 
   .empty-icon {
-    font-size: 80px;
-    width: 80px;
-    height: 80px;
-    color: #ccc;
-    margin-bottom: 16px;
+    font-size: 5rem;
+    width: 5rem;
+    height: 5rem;
+    color: $color-gold;
+    margin-bottom: $spacing-1;
   }
 
   h2 {
-    font-size: 24px;
-    font-weight: 500;
-    margin: 0 0 8px 0;
-    color: #666;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-medium;
+    margin: 0 0 $spacing-05 0;
+    color: $color-white;
   }
 
   p {
-    font-size: 16px;
-    color: #999;
-    margin: 0 0 24px 0;
+    font-size: $font-size-base;
+    color: rgba($color-white, 0.7);
+    margin: 0 0 $spacing-1 0;
+  }
+  
+  button {
+    transition: transform $transition-base, box-shadow $transition-base;
+    
+    &:hover {
+      transform: scale(1.05);
+      box-shadow:
+        0 0 20px rgba($color-gold, 0.9),
+        0 8px 25px rgba($color-gold, 0.5),
+        $shadow-xl;
+    }
+    
+    &:active {
+      transform: scale(0.98);
+      box-shadow: $shadow-sm;
+    }
   }
 }
 
 // Responsive Design
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md) {
   .product-list-container {
-    padding: 16px;
+    padding: $spacing-1;
   }
 
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: $spacing-1;
   }
 
   .toolbar {

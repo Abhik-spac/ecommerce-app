@@ -63,6 +63,29 @@ Use these credentials to test authentication:
 - **Email Login**: test@example.com / password123
 - **OTP Login**: Any phone number / OTP: 123456
 
+## Test Payment Details
+
+Use these test card details for checkout:
+
+### Credit/Debit Card
+- **Card Number**: `4111 1111 1111 1111` (Visa test card)
+- **Cardholder Name**: Any name (e.g., `Test User`)
+- **Expiry Date**: `12/25` (any future date in MM/YY format)
+- **CVV**: `123` (any 3 digits)
+
+### Alternative Test Cards
+- **Mastercard**: `5555 5555 5555 4444`
+- **American Express**: `3782 822463 10005`
+
+### UPI Payment
+- **UPI ID**: `test@upi` (any format like `name@bank`)
+
+### Other Payment Methods
+- **Net Banking**: Select and proceed (no additional details required)
+- **Cash on Delivery**: Select and proceed (no additional details required)
+
+> **Note**: This is a demo application with basic validation. The payment form checks for proper format but doesn't process real transactions.
+
 ## Available Routes
 
 | Route | Description | Auth Required |

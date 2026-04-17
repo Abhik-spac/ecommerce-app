@@ -1,0 +1,46 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <h1>Welcome Back</h1>
+      <p>Sign in to your account</p>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" [(ngModel)]="email" name="email" required>
+          <mat-icon matPrefix>email</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hidePassword() ? 'password' : 'text'" 
+                 [(ngModel)]="password" name="password" required>
+          <mat-icon matPrefix>lock</mat-icon>
+          <button mat-icon-button matSuffix type="button" 
+                  (click)="hidePassword.set(!hidePassword())">
+            <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <div *ngIf="errorMessage()" class="error-message">
+          <mat-icon>error</mat-icon>
+          {{ errorMessage() }}
+        </div>
+
+        <button mat-raised-button color="primary" type="submit" 
+                class="login-btn" [disabled]="isLoading()">
+          <mat-spinner *ngIf="isLoading()" diameter="20"></mat-spinner>
+          <span *ngIf="!isLoading()">Sign In</span>
+        </button>
+      </form>
+
+      <div class="demo-credentials">
+        <p><strong>Demo Credentials:</strong></p>
+        <p>Customer: demo@example.com / demo123</p>
+        <p>Admin: admin@example.com / admin123</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

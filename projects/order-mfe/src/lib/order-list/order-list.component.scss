@@ -1,0 +1,205 @@
+@use '../../_variables' as *;
+
+.orders-container {
+  max-width: $container-xl;
+  margin: 0 auto;
+  padding: $spacing-3;
+
+  h1 {
+    margin: 0 0 $spacing-3 0;
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.orders-content {
+  padding: $spacing-3 0;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: $spacing-6;
+}
+
+.empty-state {
+  text-align: center;
+  padding: $spacing-6 $spacing-3;
+
+  mat-icon {
+    font-size: $icon-size-xxl;
+    width: $size-md;
+    height: $size-md;
+    color: $color-gray-400;
+    margin-bottom: $spacing-3;
+  }
+
+  h2 {
+    margin: 0 0 $spacing-1 + $spacing-05 0;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+  }
+
+  p {
+    margin: 0 0 $spacing-3 0;
+    color: $color-gray-500;
+    font-size: $font-size-base;
+  }
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.order-card {
+  mat-card-header {
+    padding: $spacing-2;
+    background: $color-gray-100;
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      .order-info {
+        h3 {
+          margin: 0 0 $spacing-05 0;
+          font-size: $font-size-lg;
+          font-weight: $font-weight-semibold;
+        }
+
+        .order-date {
+          margin: 0;
+          color: $color-text-secondary;
+          font-size: $font-size-sm;
+        }
+      }
+
+      mat-chip {
+        &.status-pending {
+          background: #fff3e0;
+          color: #f57c00;
+        }
+
+        &.status-processing {
+          background: #e3f2fd;
+          color: #1976d2;
+        }
+
+        &.status-shipped {
+          background: #e8f5e9;
+          color: #388e3c;
+        }
+
+        &.status-delivered {
+          background: #c8e6c9;
+          color: #2e7d32;
+        }
+
+        &.status-cancelled {
+          background: #ffebee;
+          color: #c62828;
+        }
+      }
+    }
+  }
+
+  mat-card-content {
+    padding: $spacing-3;
+
+    .order-items {
+      margin-bottom: $spacing-3;
+
+      .order-item {
+        display: flex;
+        gap: $spacing-2;
+        padding: $spacing-1 + $spacing-05 0;
+        border-bottom: 1px solid $color-gray-200;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        img {
+          width: $size-sm;
+          height: $size-sm;
+          object-fit: cover;
+          border-radius: $border-radius-md;
+        }
+
+        .item-details {
+          flex: 1;
+
+          h4 {
+            margin: 0 0 $spacing-1 0;
+            font-size: $font-size-base;
+            font-weight: $font-weight-medium;
+          }
+
+          p {
+            margin: $spacing-05 0;
+            color: $color-text-secondary;
+            font-size: $font-size-sm;
+          }
+
+          .price {
+            color: $color-primary;
+            font-weight: $font-weight-semibold;
+            font-size: $font-size-base;
+          }
+        }
+      }
+    }
+
+    .order-summary {
+      padding: $spacing-2;
+      background: $color-gray-50;
+      border-radius: $border-radius-md;
+      margin-bottom: $spacing-2;
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: $spacing-1 0;
+        font-size: $font-size-base;
+
+        &.total {
+          font-size: $font-size-xl;
+          font-weight: $font-weight-semibold;
+          color: $color-primary;
+          border-top: $border-width-normal solid $color-border-light;
+          padding-top: $spacing-1 + $spacing-05;
+          margin-top: $spacing-1;
+        }
+      }
+    }
+
+    .shipping-address {
+      h4 {
+        margin: 0 0 $spacing-1 + $spacing-05 0;
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
+      }
+
+      p {
+        margin: $spacing-05 0;
+        color: $color-text-secondary;
+        font-size: $font-size-sm;
+      }
+    }
+  }
+
+  mat-card-actions {
+    padding: $spacing-2;
+    border-top: 1px solid $color-gray-200;
+    display: flex;
+    gap: $spacing-1;
+    flex-wrap: wrap;
+  }
+}
+
+// Made with Bob

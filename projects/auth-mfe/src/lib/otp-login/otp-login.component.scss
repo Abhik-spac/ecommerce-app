@@ -1,0 +1,176 @@
+@use '../../_variables' as *;
+
+.otp-login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 64px - 200px);
+  padding: $spacing-1 + $spacing-05;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.otp-card {
+  width: 100%;
+  max-width: $size-500;
+
+  mat-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: ($spacing-1 + $spacing-05) ($spacing-1 + $spacing-05) 0;
+
+    h1 {
+      margin: 0 0 $spacing-05 0;
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-medium;
+    }
+
+    p {
+      margin: 0;
+      color: $color-text-secondary;
+      font-size: $font-size-base;
+    }
+  }
+
+  mat-card-content {
+    padding: $spacing-1 + $spacing-05;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-1;
+
+      .full-width {
+        width: 100%;
+      }
+
+      .error-message {
+        display: flex;
+        align-items: center;
+        gap: $spacing-05;
+        padding: $spacing-075;
+        background: $color-error-light;
+        color: $color-error-dark;
+        border-radius: $border-radius-sm;
+        font-size: $font-size-sm;
+
+        mat-icon {
+          font-size: $spacing-1 + $spacing-025;
+          width: $spacing-1 + $spacing-025;
+          height: $spacing-1 + $spacing-025;
+        }
+      }
+
+      .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-05;
+        margin-top: $spacing-05;
+
+        button[mat-raised-button] {
+          height: $spacing-3;
+          font-size: $font-size-base;
+          transition: transform $transition-base, box-shadow $transition-base;
+
+          &:active:not([disabled]) {
+            transform: scale(0.98);
+            box-shadow: $shadow-sm;
+          }
+
+          mat-spinner {
+            display: inline-block;
+            margin: 0 auto;
+          }
+        }
+      }
+    }
+
+    .success-message {
+      margin-top: $spacing-1;
+      padding: $spacing-1;
+      background: $color-success-light;
+      border-radius: $border-radius-sm;
+      text-align: center;
+
+      mat-icon {
+        color: $color-success;
+        font-size: $spacing-3;
+        width: $spacing-3;
+        height: $spacing-3;
+        margin-bottom: $spacing-05;
+      }
+
+      p {
+        margin: $spacing-025 0;
+        color: $color-success-dark;
+        font-weight: $font-weight-medium;
+      }
+
+      .otp-hint {
+        font-size: $font-size-xs;
+        color: $color-text-secondary;
+        font-weight: $font-weight-normal;
+      }
+    }
+
+    .otp-info {
+      text-align: center;
+      margin-bottom: $spacing-1 + $spacing-05;
+
+      p {
+        margin: $spacing-025 0;
+        color: $color-text-secondary;
+      }
+
+      .phone-display {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-semibold;
+        color: $color-text-primary;
+      }
+    }
+
+    .otp-input-container {
+      display: flex;
+      justify-content: center;
+      gap: $spacing-075;
+      margin: $spacing-1 + $spacing-05 0;
+
+      .otp-digit {
+        width: $size-50;
+        height: $size-60;
+        font-size: $font-size-xl;
+        font-weight: $font-weight-semibold;
+        text-align: center;
+        border: $border-width-normal solid $color-border-light;
+        border-radius: $border-radius-md;
+        outline: none;
+        transition: $transition-base;
+
+        &:focus {
+          border-color: $color-primary-light;
+          box-shadow: 0 0 0 $border-width-thick rgba(25, 118, 210, 0.1);
+        }
+
+        &:not(:placeholder-shown) {
+          border-color: $color-success;
+        }
+      }
+    }
+
+    .resend-section {
+      text-align: center;
+      margin-top: $spacing-1;
+
+      p {
+        color: $color-text-secondary;
+        font-size: $font-size-sm;
+      }
+    }
+  }
+}
+
+::ng-deep .mat-stepper-horizontal {
+  margin-top: $spacing-1 + $spacing-05;
+}
+
+// Made with Bob
