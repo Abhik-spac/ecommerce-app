@@ -1,6 +1,7 @@
-      <h1>My Orders</h1>
+<div class="orders-container">
+  <h1>My Orders</h1>
 
-      <mat-tab-group>
+  <mat-tab-group>
         <mat-tab label="All Orders">
           <div class="orders-content">
             <div *ngIf="isLoading()" class="loading">
@@ -33,7 +34,7 @@
                 <mat-card-content>
                   <div class="order-items">
                     <div *ngFor="let item of order.items" class="order-item">
-                      <img [src]="item.image" [alt]="item.name">
+                      <img [src]="item.image || 'no-image.svg'" [alt]="item.name">
                       <div class="item-details">
                         <h4>{{ item.name }}</h4>
                         <p>Quantity: {{ item.quantity }}</p>
@@ -108,7 +109,7 @@
                 <mat-card-content>
                   <div class="order-items">
                     <div *ngFor="let item of order.items" class="order-item">
-                      <img [src]="item.image" [alt]="item.name">
+                      <img [src]="item.image || 'no-image.svg'" [alt]="item.name">
                       <div class="item-details">
                         <h4>{{ item.name }}</h4>
                         <p>Quantity: {{ item.quantity }}</p>
@@ -139,7 +140,7 @@
                 <mat-card-content>
                   <div class="order-items">
                     <div *ngFor="let item of order.items" class="order-item">
-                      <img [src]="item.image" [alt]="item.name">
+                      <img [src]="item.image || 'no-image.svg'" [alt]="item.name">
                       <div class="item-details">
                         <h4>{{ item.name }}</h4>
                         <p>Quantity: {{ item.quantity }}</p>
@@ -157,4 +158,5 @@
             </div>
           </div>
         </mat-tab>
-      </mat-tab-group>
+  </mat-tab-group>
+</div>

@@ -283,3 +283,16 @@ $container-md: 768px;
 $container-lg: 1024px;
 $container-xl: 1200px;
 $container-xxl: 1400px;
+
+$theme-cta-primary-bg: linear-gradient(135deg, $color-secondary 0%, $color-secondary-dark 100%);
+$theme-cta-primary-bg-hover: linear-gradient(135deg, $color-secondary-light 0%, $color-secondary 100%);
+$theme-cta-primary-text: $color-white;
+$theme-cta-secondary-bg: rgba($color-white, 0.05);
+$theme-cta-secondary-bg-hover: rgba($color-white, 0.12);
+$theme-cta-secondary-text: $color-white;
+$theme-cta-secondary-border: rgba($color-gold, 0.35);
+$theme-cta-secondary-border-hover: rgba($color-gold, 0.7);
+$theme-cta-shadow-glow: 0 0 20px rgba($color-gold, 0.9), 0 8px 25px rgba($color-gold, 0.5), $shadow-xl;
+$theme-cta-shadow-soft: 0 0 15px rgba($color-gold, 0.6), 0 4px 15px rgba($color-gold, 0.3), $shadow-lg;
+$theme-cta-scale-hover: 1.05;
+$theme-cta-scale-active: 0.98;

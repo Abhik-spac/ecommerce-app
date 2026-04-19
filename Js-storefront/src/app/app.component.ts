@@ -1,6 +1,7 @@
 import { Component, signal, computed, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet, RouterModule, NavigationEnd } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +12,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
-import { AuthService, CartService, ToastService } from '@ecommerce/shared';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { AuthService, CartService, ToastService, ResponsiveService } from '@ecommerce/shared';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
@@ -22,6 +25,7 @@ import { Subscription } from 'rxjs';
     CommonModule,
     RouterOutlet,
     RouterModule,
+    FormsModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
@@ -31,7 +35,9 @@ import { Subscription } from 'rxjs';
     MatSidenavModule,
     MatListModule,
     MatSnackBarModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -39,13 +45,17 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnDestroy {
   isHomePage = signal(false);
   showCartSidebar = signal(false);
+  showMobileSearch = signal(false);
+  searchQuery = '';
+  mobileSearchQuery = '';
   private subscriptions = new Subscription();
 
   constructor(
     public authService: AuthService,
     public cartService: CartService,
     private toastService: ToastService,
-    private router: Router
+    private router: Router,
+    public responsive: ResponsiveService
   ) {
     // Track current route
     this.subscriptions.add(
@@ -62,8 +72,9 @@ export class AppComponent implements OnDestroy {
     // Watch for items being added to cart
     this.subscriptions.add(
       this.cartService.itemAdded$.subscribe(() => {
-        // Show cart sidebar when item is added (except on home page)
-        if (!this.isHomePage()) {
+        // Show cart sidebar when item is added (except on home page and mobile)
+        // On mobile, only show toast notification (handled in cart service)
+        if (!this.isHomePage() && !this.responsive.isMobile()) {
           this.showCartSidebar.set(true);
           
           // Auto-hide after 5 seconds
@@ -117,7 +128,8 @@ export class AppComponent implements OnDestroy {
   }
 
   onCartHover(show: boolean): void {
-    if (this.isHomePage()) {
+    // Only respond to hover on desktop (not mobile)
+    if (this.isHomePage() && !this.responsive.isMobile()) {
       this.showCartSidebar.set(show);
     }
   }
@@ -125,6 +137,35 @@ export class AppComponent implements OnDestroy {
   logout() {
     this.authService.logout();
     this.toastService.success('Logged out successfully');
+  }
+
+  onSearch(): void {
+    if (this.searchQuery.trim()) {
+      this.router.navigate(['/products'], {
+        queryParams: { search: this.searchQuery.trim() }
+      });
+    }
+  }
+
+  onMobileSearch(): void {
+    if (this.mobileSearchQuery.trim()) {
+      this.router.navigate(['/products'], {
+        queryParams: { search: this.mobileSearchQuery.trim() }
+      });
+      this.showMobileSearch.set(false);
+      this.mobileSearchQuery = '';
+    }
+  }
+
+  toggleMobileSearch(): void {
+    this.showMobileSearch.set(!this.showMobileSearch());
+    if (this.showMobileSearch()) {
+      // Focus on input after a short delay to allow animation
+      setTimeout(() => {
+        const input = document.querySelector('.mobile-search-overlay input') as HTMLInputElement;
+        if (input) input.focus();
+      }, 100);
+    }
   }
 }
 

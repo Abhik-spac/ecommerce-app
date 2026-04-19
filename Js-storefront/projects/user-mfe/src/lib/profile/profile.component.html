@@ -1,6 +1,7 @@
-      <h1>My Profile</h1>
+<div class="profile-container">
+  <h1>My Profile</h1>
 
-      <mat-tab-group>
+  <mat-tab-group>
         <!-- Personal Information Tab -->
         <mat-tab label="Personal Information">
           <mat-card>
@@ -36,7 +37,7 @@
                 </div>
 
                 <div class="form-actions">
-                  <button mat-raised-button color="primary" type="submit"
+                  <button mat-raised-button color="accent" type="submit"
                           [disabled]="!profileForm.valid || isSaving()">
                     {{ isSaving() ? 'Saving...' : 'Save Changes' }}
                   </button>
@@ -95,7 +96,7 @@
                 </div>
 
                 <div class="form-actions">
-                  <button mat-raised-button color="primary" type="submit"
+                  <button mat-raised-button color="accent" type="submit"
                           [disabled]="!passwordForm.valid || isSaving()">
                     {{ isSaving() ? 'Updating...' : 'Update Password' }}
                   </button>
@@ -112,7 +113,7 @@
               <div class="addresses-section">
                 <div class="section-header">
                   <h3>Saved Addresses</h3>
-                  <button mat-raised-button color="primary" (click)="addNewAddress()">
+                  <button mat-raised-button color="accent" (click)="addNewAddress()">
                     <mat-icon>add</mat-icon>
                     Add New Address
                   </button>
@@ -180,7 +181,7 @@
                       <h4>Email Notifications</h4>
                       <p>Receive updates about your orders and offers</p>
                     </div>
-                    <button mat-button color="primary">Manage</button>
+                    <button mat-button color="accent">Manage</button>
                   </div>
 
                   <div class="preference-item">
@@ -189,7 +190,7 @@
                       <h4>Language</h4>
                       <p>English (US)</p>
                     </div>
-                    <button mat-button color="primary">Change</button>
+                    <button mat-button color="accent">Change</button>
                   </div>
 
                   <div class="preference-item">
@@ -198,7 +199,7 @@
                       <h4>Currency</h4>
                       <p>INR (₹)</p>
                     </div>
-                    <button mat-button color="primary">Change</button>
+                    <button mat-button color="accent">Change</button>
                   </div>
                 </div>
 
@@ -219,4 +220,5 @@
             </mat-card-content>
           </mat-card>
         </mat-tab>
-      </mat-tab-group>
+  </mat-tab-group>
+</div>

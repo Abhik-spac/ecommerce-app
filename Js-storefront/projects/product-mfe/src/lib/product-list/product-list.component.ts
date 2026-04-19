@@ -1,6 +1,6 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,8 +11,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatMenuModule } from '@angular/material/menu';
 import { ProductService } from '../product.service';
 import { CartService } from '@ecommerce/shared';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -29,24 +35,58 @@ import { CartService } from '@ecommerce/shared';
     MatSelectModule,
     MatProgressSpinnerModule,
     MatChipsModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatSliderModule,
+    MatCheckboxModule,
+    MatExpansionModule,
+    MatDividerModule,
+    MatMenuModule
   ],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
   products = signal<any[]>([]);
+  filteredProducts = signal<any[]>([]);
   isLoading = signal(true);
   searchQuery = '';
   sortBy = 'name';
   
+  // Filter states
+  selectedTags: string[] = [];
+  minPrice = 0;
+  maxPrice = 100000;
+  priceRange = [0, 100000];
+  minRating = 0;
+  
+  // Mobile filter toggle
+  showFilters = false;
+  
+  // Available filter options (based on actual product tags)
+  availableTags = ['laptop', 'phone', 'audio', 'wearable', 'tablet', 'camera', 'featured', 'new'];
+  
+  private subscriptions = new Subscription();
+  
   constructor(
     private productService: ProductService,
-    public cartService: CartService
+    public cartService: CartService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
+    // Subscribe to query params to handle search from global header
+    this.subscriptions.add(
+      this.route.queryParams.subscribe(params => {
+        if (params['search']) {
+          this.searchQuery = params['search'];
+        }
+        this.loadProducts();
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   loadProducts(): void {
@@ -65,6 +105,7 @@ export class ProductListComponent implements OnInit {
     this.productService.getProducts(params).subscribe({
       next: (response) => {
         this.products.set(response.products);
+        this.applyFilters();
         this.isLoading.set(false);
       },
       error: (error) => {
@@ -74,12 +115,85 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  onSearch(): void {
-    this.loadProducts();
+  applyFilters(): void {
+    let filtered = [...this.products()];
+    
+    // If there's a search query, show search results without additional filtering
+    // This prevents filters from hiding search results
+    if (this.searchQuery) {
+      this.filteredProducts.set(filtered);
+      return;
+    }
+    
+    // Filter by tags
+    if (this.selectedTags.length > 0) {
+      filtered = filtered.filter(p => {
+        const productTags = (p.tags || []).map((t: string) => t.toLowerCase());
+        return this.selectedTags.some(tag =>
+          productTags.includes(tag.toLowerCase())
+        );
+      });
+    }
+    
+    // Filter by price range
+    filtered = filtered.filter(p =>
+      p.price >= this.priceRange[0] && p.price <= this.priceRange[1]
+    );
+    
+    // Filter by rating
+    if (this.minRating > 0) {
+      filtered = filtered.filter(p => (p.rating || 0) >= this.minRating);
+    }
+    
+    this.filteredProducts.set(filtered);
   }
 
   onSortChange(): void {
     this.loadProducts();
+  }
+
+  onTagChange(tag: string, checked: boolean): void {
+    if (checked) {
+      this.selectedTags.push(tag);
+    } else {
+      this.selectedTags = this.selectedTags.filter(t => t !== tag);
+    }
+    this.applyFilters();
+  }
+
+  onPriceRangeChange(): void {
+    this.applyFilters();
+  }
+
+  onRatingChange(rating: number): void {
+    this.minRating = rating;
+    this.applyFilters();
+  }
+
+  clearFilters(): void {
+    this.selectedTags = [];
+    this.priceRange = [0, 100000];
+    this.minRating = 0;
+    this.searchQuery = '';
+    this.loadProducts();
+  }
+
+  get activeFiltersCount(): number {
+    let count = 0;
+    if (this.selectedTags.length > 0) count++;
+    if (this.priceRange[0] > 0 || this.priceRange[1] < 100000) count++;
+    if (this.minRating > 0) count++;
+    return count;
+  }
+
+  getSortLabel(): string {
+    const labels: { [key: string]: string } = {
+      'name': 'Name',
+      'price': 'Price',
+      'rating': 'Rating',
+      'createdAt': 'Newest'
+    };
+    return labels[this.sortBy] || 'Sort';
   }
 
   addToCart(product: any, event: Event): void {

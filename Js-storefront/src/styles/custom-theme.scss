@@ -1,0 +1,562 @@
+@use '@angular/material' as mat;
+@use './variables' as *;
+
+// Include the common styles for Angular Material
+@include mat.core();
+
+// Define custom color palettes
+$custom-gold-palette: (
+  50: $theme-gold-50,
+  100: $theme-gold-100,
+  200: $theme-gold-200,
+  300: $theme-gold-300,
+  400: $theme-gold-400,
+  500: $theme-gold-500,
+  600: $theme-gold-600,
+  700: $theme-gold-700,
+  800: $theme-gold-800,
+  900: $theme-gold-900,
+  A100: $theme-gold-200,
+  A200: $theme-gold-300,
+  A400: $theme-gold-500,
+  A700: $theme-gold-700,
+  contrast: (
+    50: $theme-contrast-dark,
+    100: $theme-contrast-dark,
+    200: $theme-contrast-dark,
+    300: $theme-contrast-dark,
+    400: $theme-contrast-dark,
+    500: $theme-contrast-dark,
+    600: $theme-contrast-dark,
+    700: $theme-contrast-dark,
+    800: $color-white,
+    900: $color-white,
+    A100: $theme-contrast-dark,
+    A200: $theme-contrast-dark,
+    A400: $theme-contrast-dark,
+    A700: $theme-contrast-dark,
+  )
+);
+
+$custom-magenta-palette: (
+  50: $theme-magenta-50,
+  100: $theme-magenta-100,
+  200: $theme-magenta-200,
+  300: $theme-magenta-300,
+  400: $theme-magenta-400,
+  500: $theme-magenta-500,
+  600: $theme-magenta-600,
+  700: $theme-magenta-700,
+  800: $theme-magenta-800,
+  900: $theme-magenta-900,
+  A100: $theme-magenta-a100,
+  A200: $theme-magenta-a200,
+  A400: $theme-magenta-a400,
+  A700: $theme-magenta-a700,
+  contrast: (
+    50: $theme-contrast-dark,
+    100: $theme-contrast-dark,
+    200: $theme-contrast-dark,
+    300: $theme-contrast-dark,
+    400: $color-white,
+    500: $color-white,
+    600: $color-white,
+    700: $color-white,
+    800: $color-white,
+    900: $color-white,
+    A100: $theme-contrast-dark,
+    A200: $color-white,
+    A400: $color-white,
+    A700: $color-white,
+  )
+);
+
+$custom-violet-palette: (
+  50: $theme-violet-50,
+  100: $theme-violet-100,
+  200: $theme-violet-200,
+  300: $theme-violet-300,
+  400: $theme-violet-400,
+  500: $theme-violet-500,
+  600: $theme-violet-600,
+  700: $theme-violet-700,
+  800: $theme-violet-800,
+  900: $theme-violet-900,
+  A100: $theme-violet-a100,
+  A200: $theme-violet-a200,
+  A400: $theme-violet-a400,
+  A700: $theme-violet-a700,
+  contrast: (
+    50: $theme-contrast-dark,
+    100: $theme-contrast-dark,
+    200: $theme-contrast-dark,
+    300: $color-white,
+    400: $color-white,
+    500: $color-white,
+    600: $color-white,
+    700: $color-white,
+    800: $color-white,
+    900: $color-white,
+    A100: $theme-contrast-dark,
+    A200: $color-white,
+    A400: $color-white,
+    A700: $color-white,
+  )
+);
+
+// Create the theme palettes - Using Magenta as primary and Violet as secondary
+$custom-primary: mat.m2-define-palette($custom-magenta-palette, 500);
+$custom-secondary: mat.m2-define-palette($custom-violet-palette, 500);
+$custom-accent: mat.m2-define-palette($custom-gold-palette, 500);
+$custom-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+// Define custom color configuration with white text
+$custom-color-config: (
+  primary: $custom-primary,
+  accent: $custom-accent,
+  warn: $custom-warn,
+  is-dark: true,
+  foreground: (
+    base: $color-white,
+    divider: $theme-border-medium,
+    dividers: $theme-border-medium,
+    disabled: $theme-text-disabled,
+    disabled-button: $theme-state-layer,
+    disabled-text: $theme-text-disabled,
+    elevation: $color-black,
+    hint-text: $theme-text-disabled,
+    secondary-text: $theme-text-secondary,
+    icon: $color-white,
+    icons: $color-white,
+    text: $color-white,
+    slider-min: $color-white,
+    slider-off: $theme-state-layer,
+    slider-off-active: $theme-state-layer,
+  ),
+  background: (
+    status-bar: $color-black,
+    app-bar: $color-bg-dark,
+    background: $color-bg-dark,
+    hover: $theme-overlay-subtle,
+    card: $color-primary-light,
+    dialog: $color-primary-light,
+    disabled-button: $theme-border-medium,
+    raised-button: $color-primary-light,
+    focused-button: $theme-border-medium,
+    selected-button: $color-primary-light,
+    selected-disabled-button: $color-primary-light,
+    disabled-button-toggle: $color-black,
+    unselected-chip: $color-primary-light,
+    disabled-list-option: $color-black,
+    tooltip: $color-primary-light,
+  ),
+);
+
+// Create the dark theme with custom colors
+$custom-theme: mat.m2-define-dark-theme((
+  color: $custom-color-config,
+  typography: mat.m2-define-typography-config(),
+  density: 0,
+));
+
+// Include theme styles for core and each component
+@include mat.all-component-themes($custom-theme);
+
+// CRITICAL: Override Material's CSS variables AFTER theme is included
+:root {
+  // Form field text colors
+  --mat-form-field-outlined-input-text-color: #{$color-white} !important;
+  --mat-form-field-filled-input-text-color: #{$color-white} !important;
+  --mat-form-field-input-text-color: #{$color-white} !important;
+  --mat-sys-on-surface: #{$color-white} !important;
+  --mat-form-field-outlined-caret-color: #{$color-gold} !important;
+  --mat-form-field-filled-caret-color: #{$color-gold} !important;
+  --mat-form-field-caret-color: #{$color-gold} !important;
+  --mdc-outlined-text-field-input-text-color: #{$color-white} !important;
+  --mdc-filled-text-field-input-text-color: #{$color-white} !important;
+  --mdc-theme-text-primary-on-background: #{$color-white} !important;
+  
+  // PRIMARY COLOR - Replace all blue with Magenta
+  --mat-primary: #{$color-secondary} !important;
+  --mdc-theme-primary: #{$color-secondary} !important;
+  --mat-app-primary: #{$color-secondary} !important;
+  --mat-sys-primary: #{$color-secondary} !important;
+  --mdc-ripple-color: #{$color-secondary} !important;
+  
+  // Focus and active states - Magenta
+  --mat-focus-indicator-color: #{$color-secondary} !important;
+  --mat-form-field-focus-state-layer-color: #{$color-secondary} !important;
+  --mat-form-field-state-layer-color: #{$color-secondary} !important;
+  
+  // Tab indicator - Gold (not blue!)
+  --mat-tab-header-active-focus-indicator-color: #{$color-gold} !important;
+  --mat-tab-header-active-hover-indicator-color: #{$color-gold} !important;
+  --mdc-tab-indicator-active-indicator-color: #{$color-gold} !important;
+  
+  // Remove any blue colors
+  --mat-blue: #{$color-secondary} !important;
+  --mdc-theme-secondary: #{$color-secondary} !important;
+}
+
+// Also override for dark theme specific variables
+.mat-app-background,
+body,
+html {
+  --mat-form-field-outlined-input-text-color: #{$color-white} !important;
+  --mat-form-field-filled-input-text-color: #{$color-white} !important;
+  --mat-form-field-input-text-color: #{$color-white} !important;
+  --mat-sys-on-surface: #{$color-white} !important;
+  --mdc-outlined-text-field-input-text-color: #{$color-white} !important;
+  --mdc-filled-text-field-input-text-color: #{$color-white} !important;
+  --mdc-theme-text-primary-on-background: #{$color-white} !important;
+}
+
+// CRITICAL: Override Material's default dark theme input colors
+// Material's dark theme sets input text to dark colors, we need white
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    background-color: rgba($color-white, 0.05) !important;
+  }
+  
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled) {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: rgba($color-white, 0.2) !important;
+    }
+    
+    &:hover .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: rgba($color-gold, 0.5) !important;
+      }
+    }
+    
+    &.mdc-text-field--focused .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: $color-gold !important;
+      }
+    }
+  }
+  
+  .mdc-floating-label {
+    color: $color-gold !important;
+  }
+  
+  .mat-mdc-input-element {
+    color: $color-white !important;
+    caret-color: $color-gold !important;
+    -webkit-text-fill-color: $color-white !important;
+  }
+  
+  input::placeholder {
+    color: rgba($color-white, 0.6) !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: rgba($color-white, 0.6) !important;
+  }
+  
+  // Force ALL input text to be white - override Material's dark theme
+  input {
+    color: $color-white !important;
+    -webkit-text-fill-color: $color-white !important;
+  }
+  
+  input[matInput] {
+    color: $color-white !important;
+    -webkit-text-fill-color: $color-white !important;
+  }
+  
+  .mdc-text-field__input {
+    color: $color-white !important;
+    -webkit-text-fill-color: $color-white !important;
+  }
+  
+  // All input types
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"],
+  input[type="number"] {
+    color: $color-white !important;
+    -webkit-text-fill-color: $color-white !important;
+  }
+}
+
+// Global input styling - MAXIMUM PRIORITY
+input,
+input[matInput],
+.mat-mdc-input-element,
+.mdc-text-field__input,
+.mat-mdc-form-field input,
+.mat-mdc-form-field .mat-mdc-input-element,
+.mat-mdc-form-field .mdc-text-field__input {
+  color: $color-white !important;
+  -webkit-text-fill-color: $color-white !important;
+}
+
+// Outlined text field inputs
+.mdc-text-field--outlined input,
+.mdc-text-field--outlined .mdc-text-field__input,
+.mdc-text-field--outlined .mat-mdc-input-element {
+  color: $color-white !important;
+  -webkit-text-fill-color: $color-white !important;
+}
+
+// Card styling
+// Card styling
+.mat-mdc-card {
+  background-color: rgba($color-white, 0.03);
+  border: $border-width-thin solid rgba($color-white, 0.1);
+}
+
+// CRITICAL: Override Material's outlined text field input color
+// This is the specific class Material uses that overrides our theme
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  color: $color-white !important;
+  -webkit-text-fill-color: $color-white !important;
+  caret-color: $color-gold !important;
+}
+
+// Also target when focused
+.mdc-text-field--outlined.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  color: $color-white !important;
+  -webkit-text-fill-color: $color-white !important;
+}
+
+// And when filled
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  color: $color-white !important;
+  -webkit-text-fill-color: $color-white !important;
+}
+
+// Material form field with outlined appearance
+.mat-mdc-form-field-type-mat-input .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  color: $color-white !important;
+  -webkit-text-fill-color: $color-white !important;
+}
+
+// Tab styling
+.mat-mdc-tab-group {
+  .mat-mdc-tab-labels {
+    background-color: rgba($color-white, 0.03);
+  }
+  
+  .mat-mdc-tab {
+    color: rgba($color-white, 0.7);
+    
+    &.mdc-tab--active {
+      .mdc-tab__text-label {
+        color: $color-gold !important;
+      }
+    }
+  }
+  
+  .mdc-tab-indicator__content--underline {
+    border-color: $color-gold !important;
+    border-width: $border-width-thick !important;
+  }
+  
+  .mat-mdc-tab-header {
+    border-bottom: $border-width-thin solid rgba($color-white, 0.1);
+  }
+  
+  .mdc-tab-indicator {
+    .mdc-tab-indicator__content {
+      border-color: $color-gold !important;
+    }
+  }
+  
+  .mat-mdc-tab.mdc-tab--active .mdc-tab-indicator .mdc-tab-indicator__content--underline {
+    border-color: $color-gold !important;
+  }
+  
+  // Additional tab indicator selectors
+  .mat-mdc-tab-header .mat-mdc-tab.mdc-tab--active {
+    .mdc-tab-indicator__content {
+      border-color: $color-gold !important;
+      background-color: $color-gold !important;
+    }
+  }
+}
+
+// Global tab indicator override
+.mat-mdc-tab-group .mat-mdc-tab .mdc-tab-indicator__content {
+  border-color: $color-gold !important;
+}
+
+.mat-mdc-tab-group .mdc-tab--active .mdc-tab-indicator__content {
+  border-color: $color-gold !important;
+  background-color: $color-gold !important;
+}
+
+// Button styling
+.mat-mdc-raised-button.mat-accent {
+  &:hover:not([disabled]) {
+    box-shadow: $theme-cta-shadow-soft;
+  }
+}
+
+// Shared premium CTA button pattern
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button {
+  border-radius: 0 !important;
+  transition:
+    transform $transition-base,
+    box-shadow $transition-base,
+    background $transition-base,
+    background-color $transition-base,
+    border-color $transition-base,
+    color $transition-base;
+
+  &:hover:not([disabled]) {
+    transform: scale($theme-cta-scale-hover);
+  }
+
+  &:active:not([disabled]) {
+    transform: scale($theme-cta-scale-active);
+    box-shadow: $shadow-sm;
+  }
+}
+
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-unelevated-button.mat-primary,
+.mat-mdc-raised-button[color='primary'],
+.mat-mdc-unelevated-button[color='primary'],
+.mat-mdc-raised-button.mat-accent,
+.mat-mdc-unelevated-button.mat-accent,
+.mat-mdc-raised-button[color='accent'],
+.mat-mdc-unelevated-button[color='accent'] {
+  --mdc-filled-button-container-color: #{$color-secondary} !important;
+  --mdc-protected-button-container-color: #{$color-secondary} !important;
+  --mat-mdc-button-persistent-ripple-color: #{rgba($color-gold, 0.18)} !important;
+  --mat-mdc-button-ripple-color: #{rgba($color-gold, 0.18)} !important;
+  background: $theme-cta-primary-bg !important;
+  color: $theme-cta-primary-text !important;
+  box-shadow: $shadow-md;
+
+  &:hover:not([disabled]) {
+    background: $theme-cta-primary-bg-hover !important;
+    box-shadow: $theme-cta-shadow-glow !important;
+  }
+
+  &[disabled] {
+    background: rgba($color-white, 0.16) !important;
+    color: rgba($color-white, 0.45) !important;
+    box-shadow: none !important;
+  }
+}
+
+.mat-mdc-button.mat-primary,
+.mat-mdc-outlined-button.mat-primary,
+.mat-mdc-button[color='primary'],
+.mat-mdc-outlined-button[color='primary'] {
+  --mdc-outlined-button-outline-color: #{$theme-cta-secondary-border} !important;
+  --mat-mdc-button-persistent-ripple-color: #{rgba($color-gold, 0.14)} !important;
+  --mat-mdc-button-ripple-color: #{rgba($color-gold, 0.14)} !important;
+  background: $theme-cta-secondary-bg !important;
+  color: $theme-cta-secondary-text !important;
+  border-color: $theme-cta-secondary-border !important;
+  border-radius: 0 !important;
+  transition:
+    transform $transition-base,
+    box-shadow $transition-base,
+    background $transition-base,
+    border-color $transition-base,
+    color $transition-base;
+
+  &:hover:not([disabled]) {
+    background: $theme-cta-secondary-bg-hover !important;
+    border-color: $theme-cta-secondary-border-hover !important;
+    box-shadow: $theme-cta-shadow-soft !important;
+    transform: scale($theme-cta-scale-hover);
+  }
+
+  &:active:not([disabled]) {
+    transform: scale($theme-cta-scale-active);
+    box-shadow: $shadow-sm !important;
+  }
+
+  &[disabled] {
+    color: rgba($color-white, 0.45) !important;
+    border-color: rgba($color-white, 0.18) !important;
+    background: rgba($color-white, 0.04) !important;
+  }
+}
+
+// Links and anchors - Magenta
+a {
+  color: $color-secondary !important;
+  
+  &:hover {
+    color: $color-secondary-light !important;
+  }
+}
+
+// Checkbox and radio - Magenta when checked
+.mat-mdc-checkbox.mat-primary,
+.mat-mdc-radio-button.mat-primary {
+  --mdc-checkbox-selected-checkmark-color: #{$color-white} !important;
+  --mdc-checkbox-selected-icon-color: #{$color-secondary} !important;
+  --mdc-radio-selected-icon-color: #{$color-secondary} !important;
+  --mdc-checkbox-selected-hover-icon-color: #{$color-secondary-dark} !important;
+  --mdc-radio-selected-hover-icon-color: #{$color-secondary-dark} !important;
+}
+
+// Slider - Magenta
+.mat-mdc-slider.mat-primary {
+  --mdc-slider-handle-color: #{$color-secondary} !important;
+  --mdc-slider-focus-handle-color: #{$color-secondary} !important;
+  --mdc-slider-hover-handle-color: #{$color-secondary-dark} !important;
+  --mdc-slider-active-track-color: #{$color-secondary} !important;
+  --mdc-slider-inactive-track-color: rgba($color-secondary, 0.3) !important;
+}
+
+// Progress bar and spinner - Magenta
+.mat-mdc-progress-bar.mat-primary,
+.mat-mdc-progress-spinner.mat-primary {
+  --mdc-circular-progress-active-indicator-color: #{$color-secondary} !important;
+  --mdc-linear-progress-active-indicator-color: #{$color-secondary} !important;
+}
+
+// Chips - Magenta when selected
+.mat-mdc-chip.mat-primary {
+  --mdc-chip-elevated-container-color: #{$color-secondary} !important;
+  --mdc-chip-label-text-color: #{$color-white} !important;
+}
+
+// Form field focus - Magenta outline (not blue!)
+.mat-mdc-form-field.mat-focused {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: $color-secondary !important;
+  }
+  
+  .mdc-floating-label {
+    color: $color-secondary !important;
+  }
+}
+
+// Stepper - Magenta for active/completed steps
+.mat-step-header.mat-step-header-selected,
+.mat-step-header.mat-step-header-completed {
+  .mat-step-icon {
+    background-color: $color-secondary !important;
+    color: $color-white !important;
+  }
+}
+
+// Ripple effect - Magenta (not blue!)
+.mat-ripple-element {
+  background-color: rgba($color-secondary, 0.1) !important;
+}
+
+// Focus indicators - Magenta
+.mat-focus-indicator::before {
+  border-color: $color-secondary !important;
+}
+
+// Made with Bob

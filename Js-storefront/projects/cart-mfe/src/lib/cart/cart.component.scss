@@ -43,25 +43,24 @@
   }
   
   button {
-    background-color: $color-gold !important;
-    color: $color-primary !important;
+    background: $theme-cta-primary-bg !important;
+    color: $theme-cta-primary-text !important;
     font-weight: $font-weight-semibold;
     padding: $spacing-075 $spacing-2;
-    border-radius: $border-radius-md;
-    transition: transform $transition-base, box-shadow $transition-base, background-color $transition-base;
+    border-radius: 0 !important;
+    transition:
+      transform $transition-base,
+      box-shadow $transition-base,
+      background $transition-base;
     
     &:hover {
-      background-color: $color-gold-light !important;
-      transform: scale(1.05);
-      box-shadow:
-        0 0 20px rgba($color-gold, 0.9),
-        0 8px 25px rgba($color-gold, 0.5),
-        $shadow-xl;
+      background: $theme-cta-primary-bg-hover !important;
+      transform: scale($theme-cta-scale-hover);
+      box-shadow: $theme-cta-shadow-glow;
     }
     
     &:active {
-      background-color: $color-gold-dark !important;
-      transform: scale(0.98);
+      transform: scale($theme-cta-scale-active);
       box-shadow: $shadow-sm;
     }
   }
@@ -218,36 +217,48 @@
     height: $spacing-3;
     margin: $spacing-1 0 $spacing-05 0;
     font-size: $font-size-base;
-    background-color: $color-primary !important;
-    color: $color-primary-contrast !important;
-    transition: transform $transition-base, box-shadow $transition-base;
+    background: $theme-cta-primary-bg !important;
+    color: $theme-cta-primary-text !important;
+    border-radius: 0 !important;
+    transition:
+      transform $transition-base,
+      box-shadow $transition-base,
+      background $transition-base;
     
     &:hover {
-      background-color: $color-primary-dark !important;
-      transform: scale(1.05);
-      box-shadow:
-        0 0 20px rgba($color-gold, 0.9),
-        0 8px 25px rgba($color-gold, 0.5),
-        $shadow-xl;
+      background: $theme-cta-primary-bg-hover !important;
+      transform: scale($theme-cta-scale-hover);
+      box-shadow: $theme-cta-shadow-glow;
     }
 
     &:active {
-      transform: scale(0.98);
+      transform: scale($theme-cta-scale-active);
       box-shadow: $shadow-sm;
     }
   }
 
   button[mat-button] {
     width: 100%;
-    transition: transform $transition-base;
-    color: $color-white;
+    color: $theme-cta-secondary-text;
+    background: $theme-cta-secondary-bg;
+    border: $border-width-thin solid $theme-cta-secondary-border;
+    border-radius: 0 !important;
+    transition:
+      transform $transition-base,
+      box-shadow $transition-base,
+      background $transition-base,
+      border-color $transition-base;
 
     &:hover {
-      background: rgba($color-white, 0.05);
+      background: $theme-cta-secondary-bg-hover;
+      border-color: $theme-cta-secondary-border-hover;
+      box-shadow: $theme-cta-shadow-soft;
+      transform: scale($theme-cta-scale-hover);
     }
 
     &:active {
-      transform: scale(0.98);
+      transform: scale($theme-cta-scale-active);
+      box-shadow: $shadow-sm;
     }
   }
 }
