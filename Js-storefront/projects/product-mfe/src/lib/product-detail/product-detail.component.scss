@@ -289,19 +289,42 @@
       height: $spacing-3;
       font-size: $font-size-base;
       font-weight: $font-weight-semibold;
-      transition: transform $transition-base, box-shadow $transition-base;
+      border-radius: 0 !important;
+      transition:
+        transform $transition-base,
+        box-shadow $transition-base,
+        background $transition-base,
+        border-color $transition-base;
 
       &:hover:not([disabled]) {
-        transform: scale(1.05);
-        box-shadow:
-          0 0 20px rgba($color-gold, 0.9),
-          0 8px 25px rgba($color-gold, 0.5),
-          $shadow-xl;
+        transform: scale($theme-cta-scale-hover);
       }
 
       &:active:not([disabled]) {
-        transform: scale(0.98);
+        transform: scale($theme-cta-scale-active);
         box-shadow: $shadow-sm;
+      }
+    }
+
+    .add-to-cart-btn {
+      background: $theme-cta-primary-bg !important;
+      color: $theme-cta-primary-text !important;
+
+      &:hover:not([disabled]) {
+        background: $theme-cta-primary-bg-hover !important;
+        box-shadow: $theme-cta-shadow-glow;
+      }
+    }
+
+    .buy-now-btn {
+      background: $theme-cta-secondary-bg !important;
+      color: $theme-cta-secondary-text !important;
+      border: $border-width-thin solid $theme-cta-secondary-border !important;
+
+      &:hover:not([disabled]) {
+        background: $theme-cta-secondary-bg-hover !important;
+        border-color: $theme-cta-secondary-border-hover !important;
+        box-shadow: $theme-cta-shadow-soft;
       }
     }
 
@@ -534,6 +557,117 @@
   }
 }
 
+@media (max-width: $breakpoint-md) {
+  .product-detail-container {
+    padding: $spacing-075;
+  }
+  
+  .breadcrumb {
+    font-size: $font-size-xs;
+    gap: $spacing-025;
+    margin-bottom: $spacing-075;
+  }
+  
+  .product-content {
+    gap: $spacing-1;
+  }
+  
+  .product-info {
+    h1 {
+      font-size: $font-size-xl;
+    }
+    
+    .rating {
+      gap: $spacing-025;
+      
+      .star-icon {
+        font-size: $font-size-xl;
+        width: $font-size-xl;
+        height: $font-size-xl;
+      }
+      
+      .rating-value {
+        font-size: $font-size-base;
+      }
+      
+      .review-count {
+        font-size: $font-size-sm;
+      }
+    }
+    
+    .price-section .price-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-025;
+      
+      .current-price {
+        font-size: $font-size-2xl;
+      }
+      
+      .compare-price {
+        font-size: $font-size-lg;
+      }
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+      gap: $spacing-075;
+      
+      .add-to-cart-btn,
+      .buy-now-btn {
+        width: 100%;
+      }
+      
+      .wishlist-btn {
+        width: 100%;
+        
+        mat-icon {
+          font-size: $font-size-2xl;
+          width: $font-size-2xl;
+          height: $font-size-2xl;
+        }
+      }
+    }
+    
+    .attributes .attribute-list .attribute-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-025;
+      
+      .attr-name {
+        min-width: unset;
+      }
+    }
+  }
+  
+  ::ng-deep .info-tabs .tab-content {
+    padding: $spacing-075;
+    
+    h3 {
+      font-size: $font-size-xl;
+    }
+    
+    .reviews-summary {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-075;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .product-info {
+    h1 {
+      font-size: $font-size-lg;
+    }
+    
+    .description h3,
+    .attributes h3 {
+      font-size: $font-size-base;
+    }
+  }
+}
+
 // Made with Bob
 
 
@@ -567,24 +701,26 @@
   }
 
   button {
-    background-color: $color-primary !important;
-    color: $color-primary-contrast !important;
+    background: $theme-cta-primary-bg !important;
+    color: $theme-cta-primary-text !important;
     padding: $spacing-1 + $spacing-05 $spacing-3;
     font-size: $font-size-base;
     font-weight: $font-weight-medium;
-    transition: all $transition-base;
+    border-radius: 0 !important;
+    transition:
+      transform $transition-base,
+      box-shadow $transition-base,
+      background $transition-base;
 
     &:hover {
-      background-color: $color-primary-dark !important;
-      transform: scale(1.05);
-      box-shadow:
-        0 0 20px rgba($color-gold, 0.9),
-        0 8px 25px rgba($color-gold, 0.5),
-        $shadow-xl;
+      background: $theme-cta-primary-bg-hover !important;
+      transform: scale($theme-cta-scale-hover);
+      box-shadow: $theme-cta-shadow-glow;
     }
 
     &:active {
-      transform: scale(0.98);
+      transform: scale($theme-cta-scale-active);
+      box-shadow: $shadow-sm;
     }
   }
 }

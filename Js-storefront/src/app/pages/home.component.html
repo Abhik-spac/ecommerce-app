@@ -1,12 +1,52 @@
 <div class="home-container">
   <!-- Hero Section -->
-  <section class="hero-section">
+  <section class="hero-section" [style.background]="currentSlide.background">
+    <div class="hero-overlay"></div>
+
+    <button
+      mat-icon-button
+      type="button"
+      class="hero-nav hero-nav-prev"
+      aria-label="Previous hero slide"
+      (click)="previousSlide()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
+      type="button"
+      class="hero-nav hero-nav-next"
+      aria-label="Next hero slide"
+      (click)="nextSlide()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+
     <div class="hero-content">
-      <h1>Welcome to eCommerce Store</h1>
-      <p>Discover amazing products at unbeatable prices</p>
-      <button mat-raised-button color="primary" routerLink="/products" class="cta-button">
-        Shop Now
+      <span class="hero-eyebrow">{{ currentSlide.eyebrow }}</span>
+      <h1>{{ currentSlide.title }}</h1>
+      <p>{{ currentSlide.description }}</p>
+
+      <div class="hero-meta">{{ currentSlide.accent }}</div>
+
+      <button
+        mat-raised-button
+        color="primary"
+        [routerLink]="currentSlide.ctaLink"
+        class="cta-button">
+        {{ currentSlide.ctaLabel }}
+        <mat-icon>arrow_forward</mat-icon>
       </button>
+
+      <div class="hero-indicators" aria-label="Hero slider indicators">
+        <button
+          *ngFor="let slide of heroSlides; let i = index"
+          type="button"
+          class="hero-indicator"
+          [class.active]="i === currentSlideIndex"
+          [attr.aria-label]="'Go to slide ' + (i + 1)"
+          (click)="goToSlide(i)">
+        </button>
+      </div>
     </div>
   </section>
 

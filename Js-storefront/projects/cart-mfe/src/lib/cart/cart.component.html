@@ -14,7 +14,7 @@
     <div class="cart-items">
       <div *ngFor="let item of cartService.items()" class="cart-item">
         <div class="item-image">
-          <img [src]="item.image" [alt]="item.name">
+          <img [src]="item.image || 'no-image.svg'" [alt]="item.name">
         </div>
         <div class="item-details">
           <h3>{{ item.name }}</h3>

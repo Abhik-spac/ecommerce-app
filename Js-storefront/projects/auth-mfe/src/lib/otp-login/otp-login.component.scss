@@ -11,7 +11,7 @@
 
 .otp-card {
   width: 100%;
-  max-width: $size-500;
+  max-width: $size-dialog;
 
   mat-card-header {
     display: flex;
@@ -136,8 +136,8 @@
       margin: $spacing-1 + $spacing-05 0;
 
       .otp-digit {
-        width: $size-50;
-        height: $size-60;
+        width: $size-button-width-sm;
+        height: $size-input-height-md;
         font-size: $font-size-xl;
         font-weight: $font-weight-semibold;
         text-align: center;

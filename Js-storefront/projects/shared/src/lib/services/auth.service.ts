@@ -31,10 +31,16 @@ export class AuthService {
   login(email: string, password: string): Observable<any> {
     return this.mockData.login(email, password).pipe(
       tap(response => {
-        this.currentUser.set(response.user);
-        this.currentUserSubject.next(response.user);
+        const normalizedUser: User = {
+          ...response.user,
+          firstName: response.user.firstName ?? response.user.name ?? '',
+          lastName: response.user.lastName ?? '',
+          role: response.user.role === 'CUSTOMER' ? 'USER' : response.user.role
+        };
+        this.currentUser.set(normalizedUser);
+        this.currentUserSubject.next(normalizedUser);
         this.isAuthenticated.set(true);
-        localStorage.setItem('currentUser', JSON.stringify(response.user));
+        localStorage.setItem('currentUser', JSON.stringify(normalizedUser));
         localStorage.setItem('token', response.token);
       })
     );
@@ -48,7 +54,8 @@ export class AuthService {
       user: {
         id: Math.random().toString(36).substr(2, 9),
         email: userData.email,
-        name: userData.name,
+        firstName: userData.firstName || userData.name || '',
+        lastName: userData.lastName || '',
         role: 'USER'
       }
     }).pipe(delay(500));

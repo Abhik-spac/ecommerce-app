@@ -196,7 +196,7 @@
                 <div class="order-items">
                   <h3>Items ({{ cartService.itemCount() }})</h3>
                   <div *ngFor="let item of cartService.items()" class="order-item">
-                    <img [src]="item.image" [alt]="item.name" (click)="navigateToProduct(item.productId)" class="clickable">
+                    <img [src]="item.image || 'no-image.svg'" [alt]="item.name" (click)="navigateToProduct(item.productId)" class="clickable">
                     <div class="item-details">
                       <h4 (click)="navigateToProduct(item.productId)" class="clickable">{{ item.name }}</h4>
                       <p>Quantity: {{ item.quantity }}</p>

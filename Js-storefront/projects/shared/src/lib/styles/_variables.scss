@@ -204,16 +204,6 @@ $z-index-popover: 1060;
 $z-index-tooltip: 1070;
 
 // ============================================
-// BREAKPOINTS
-// ============================================
-$breakpoint-xs: 0;
-$breakpoint-sm: 576px;
-$breakpoint-md: 768px;
-$breakpoint-lg: 992px;
-$breakpoint-xl: 1200px;
-$breakpoint-2xl: 1400px;
-
-// ============================================
 // TYPOGRAPHY
 // ============================================
 $font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -253,26 +243,46 @@ $breakpoint-md: 768px;   // Medium devices (tablets)
 $breakpoint-lg: 968px;   // Large devices (desktops)
 $breakpoint-xl: 1200px;  // Extra large devices (large desktops)
 $breakpoint-xxl: 1400px; // Extra extra large devices
+$breakpoint-2xl: $breakpoint-xxl; // Compatibility alias
 
 // ============================================
 // SIZE VARIABLES (for width, height, etc.)
 // ============================================
 
-// Fixed sizes in rem
-$size-xs: 4rem;      // 64px
-$size-sm: 5rem;      // 80px
-$size-md: 6rem;      // 96px
-$size-lg: 8rem;      // 128px
-$size-xl: 10rem;     // 160px
-$size-xxl: 12rem;    // 192px
+// Semantic component size aliases
+$size-card-compact: $size-200;   // 200px
+$size-card-base: $size-250;      // 250px
+$size-sidebar: $size-300;        // 300px
+$size-sidebar-wide: $size-350;   // 350px
+$size-panel: $size-400;          // 400px
+$size-dialog: $size-500;         // 500px
+$size-dialog-wide: $size-600;    // 600px
+$size-hero-content: $size-800;   // 800px
+$size-layout-max: $size-1000;    // 1000px
+
+// Fixed semantic square sizes
+$size-square-sm: 4rem;      // 64px
+$size-square-md: 5rem;      // 80px
+$size-square-lg: 6rem;      // 96px
+$size-square-xl: 8rem;      // 128px
+$size-square-2xl: 10rem;    // 160px
+$size-square-3xl: 12rem;    // 192px
+
+// Legacy aliases retained for compatibility
+$size-xs: $size-square-sm;
+$size-sm: $size-square-md;
+$size-md: $size-square-lg;
+$size-lg: $size-square-xl;
+$size-xl: $size-square-2xl;
+$size-xxl: $size-square-3xl;
 
 // Icon sizes
-$icon-size-xs: 1rem;     // 16px
-$icon-size-sm: 1.5rem;   // 24px
-$icon-size-md: 2rem;     // 32px
-$icon-size-lg: 3rem;     // 48px
-$icon-size-xl: 4rem;     // 64px
-$icon-size-xxl: 6rem;    // 96px
+$icon-size-xs: $spacing-1;      // 16px
+$icon-size-sm: 1.5rem;          // 24px
+$icon-size-md: 2rem;            // 32px
+$icon-size-lg: 3rem;            // 48px
+$icon-size-xl: 4rem;            // 64px
+$icon-size-xxl: 6rem;           // 96px
 
 // Container max-widths
 $container-sm: 640px;
@@ -280,3 +290,66 @@ $container-md: 768px;
 $container-lg: 1024px;
 $container-xl: 1200px;
 $container-xxl: 1400px;
+
+// Semantic container aliases
+$container-content-sm: $container-sm;
+$container-content-md: $container-md;
+$container-content-lg: $container-lg;
+$container-content-xl: $container-xl;
+$container-content-2xl: $container-xxl;
+
+// ============================================
+// THEME TOKENS
+// ============================================
+
+// Shared theme alias tokens for Material/custom-theme.scss
+$theme-contrast-dark: rgba($color-black, 0.87);
+$theme-overlay-subtle: rgba($color-white, 0.04);
+$theme-overlay-soft: rgba($color-white, 0.05);
+$theme-border-soft: rgba($color-white, 0.1);
+$theme-border-medium: rgba($color-white, 0.12);
+$theme-border-strong: rgba($color-white, 0.2);
+$theme-text-disabled: rgba($color-white, 0.5);
+$theme-text-secondary: rgba($color-white, 0.7);
+$theme-state-layer: rgba($color-white, 0.3);
+
+$theme-gold-50: #fffbea;
+$theme-gold-100: #fff4c4;
+$theme-gold-200: #ffed9f;
+$theme-gold-300: #ffe679;
+$theme-gold-400: #ffe05c;
+$theme-gold-500: $color-gold;
+$theme-gold-600: #f5c400;
+$theme-gold-700: #e6b800;
+$theme-gold-800: #d6ac00;
+$theme-gold-900: #c69c00;
+
+$theme-magenta-50: #fce4ec;
+$theme-magenta-100: #f8bbd0;
+$theme-magenta-200: #f48fb1;
+$theme-magenta-300: #f06292;
+$theme-magenta-400: #ec407a;
+$theme-magenta-500: $color-secondary;
+$theme-magenta-600: $color-secondary-dark;
+$theme-magenta-700: #c2185b;
+$theme-magenta-800: #ad1457;
+$theme-magenta-900: #880e4f;
+$theme-magenta-a100: #ff80ab;
+$theme-magenta-a200: #ff4081;
+$theme-magenta-a400: #f50057;
+$theme-magenta-a700: #c51162;
+
+$theme-violet-50: #ede7f6;
+$theme-violet-100: #d1c4e9;
+$theme-violet-200: #b39ddb;
+$theme-violet-300: #9575cd;
+$theme-violet-400: #7e57c2;
+$theme-violet-500: #673ab7;
+$theme-violet-600: #5e35b1;
+$theme-violet-700: #512da8;
+$theme-violet-800: #4527a0;
+$theme-violet-900: #311b92;
+$theme-violet-a100: #b388ff;
+$theme-violet-a200: #7c4dff;
+$theme-violet-a400: #651fff;
+$theme-violet-a700: #6200ea;

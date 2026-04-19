@@ -258,21 +258,42 @@ $breakpoint-xxl: 1400px; // Extra extra large devices
 // SIZE VARIABLES (for width, height, etc.)
 // ============================================
 
-// Fixed sizes in rem
-$size-xs: 4rem;      // 64px
-$size-sm: 5rem;      // 80px
-$size-md: 6rem;      // 96px
-$size-lg: 8rem;      // 128px
-$size-xl: 10rem;     // 160px
-$size-xxl: 12rem;    // 192px
+// Semantic component size aliases
+$size-card-compact: $size-200;   // 200px
+$size-card-base: $size-250;      // 250px
+$size-sidebar: $size-300;        // 300px
+$size-sidebar-wide: $size-350;   // 350px
+$size-panel: $size-400;          // 400px
+$size-dialog: $size-500;         // 500px
+$size-dialog-wide: $size-600;    // 600px
+$size-hero-content: $size-800;   // 800px
+$size-layout-max: $size-1000;    // 1000px
+$size-button-width-sm: $size-50; // 50px
+$size-input-height-md: $size-60; // 60px
+
+// Fixed semantic square sizes
+$size-square-sm: 4rem;      // 64px
+$size-square-md: 5rem;      // 80px
+$size-square-lg: 6rem;      // 96px
+$size-square-xl: 8rem;      // 128px
+$size-square-2xl: 10rem;    // 160px
+$size-square-3xl: 12rem;    // 192px
+
+// Legacy aliases retained for compatibility
+$size-xs: $size-square-sm;
+$size-sm: $size-square-md;
+$size-md: $size-square-lg;
+$size-lg: $size-square-xl;
+$size-xl: $size-square-2xl;
+$size-xxl: $size-square-3xl;
 
 // Icon sizes
-$icon-size-xs: 1rem;     // 16px
-$icon-size-sm: 1.5rem;   // 24px
-$icon-size-md: 2rem;     // 32px
-$icon-size-lg: 3rem;     // 48px
-$icon-size-xl: 4rem;     // 64px
-$icon-size-xxl: 6rem;    // 96px
+$icon-size-xs: $spacing-1;      // 16px
+$icon-size-sm: 1.5rem;          // 24px
+$icon-size-md: 2rem;            // 32px
+$icon-size-lg: 3rem;            // 48px
+$icon-size-xl: 4rem;            // 64px
+$icon-size-xxl: 6rem;           // 96px
 
 // Container max-widths
 $container-sm: 640px;
@@ -280,3 +301,10 @@ $container-md: 768px;
 $container-lg: 1024px;
 $container-xl: 1200px;
 $container-xxl: 1400px;
+
+// Semantic container aliases
+$container-content-sm: $container-sm;
+$container-content-md: $container-md;
+$container-content-lg: $container-lg;
+$container-content-xl: $container-xl;
+$container-content-2xl: $container-xxl;

@@ -8,53 +8,176 @@
 }
 
 .hero-section {
-  background: linear-gradient(135deg, $color-secondary 0%, $color-secondary-dark 100%);
+  position: relative;
   color: $color-white;
-  padding: $spacing-8 $spacing-2; // 128px 32px
-  text-align: center;
+  padding: $spacing-8 $spacing-2;
   margin-bottom: $spacing-3;
+  overflow: hidden;
+  min-height: 34rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background $transition-slow;
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at top right, rgba($color-gold, 0.2) 0%, transparent 32%),
+      linear-gradient(135deg, rgba($color-black, 0.08) 0%, rgba($color-black, 0.45) 100%);
+    pointer-events: none;
+  }
+
+  .hero-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: $spacing-3;
+    height: $spacing-3;
+    background: rgba($color-white, 0.08);
+    border: $border-width-thin solid rgba($color-gold, 0.35);
+    color: $color-white;
+    transition:
+      transform $transition-base,
+      box-shadow $transition-base,
+      background $transition-base,
+      border-color $transition-base;
+
+    &:hover {
+      background: rgba($color-white, 0.16);
+      border-color: rgba($color-gold, 0.7);
+      box-shadow: $theme-cta-shadow-soft;
+    }
+
+    &:active {
+      transform: translateY(-50%) scale($theme-cta-scale-active);
+      box-shadow: $shadow-sm;
+    }
+
+    mat-icon {
+      color: $color-gold;
+      font-size: $font-size-2xl;
+      width: $font-size-2xl;
+      height: $font-size-2xl;
+    }
+  }
+
+  .hero-nav-prev {
+    left: $spacing-2;
+  }
+
+  .hero-nav-next {
+    right: $spacing-2;
+  }
 
   .hero-content {
-    max-width: $size-800; // 800px
+    position: relative;
+    z-index: 1;
+    max-width: $size-hero-content;
     margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: $spacing-05 $spacing-1;
+      margin-bottom: $spacing-1;
+      background: rgba($color-white, 0.08);
+      border: $border-width-thin solid rgba($color-gold, 0.3);
+      color: $color-gold;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
 
     h1 {
       font-size: $font-size-5xl;
       margin: 0 0 $spacing-1 0;
       font-weight: $font-weight-bold;
+      max-width: 50rem;
+      text-shadow: 0 0 $spacing-2 rgba($color-black, 0.3);
     }
 
     p {
       font-size: $font-size-2xl;
-      margin: 0 0 $spacing-2 0;
-      opacity: 0.9;
+      margin: 0 0 $spacing-1 + $spacing-05 0;
+      opacity: 0.92;
+      max-width: 44rem;
+    }
+
+    .hero-meta {
+      margin-bottom: $spacing-2;
+      color: rgba($color-white, 0.75);
+      font-size: $font-size-base;
+      font-weight: $font-weight-medium;
+      letter-spacing: 0.04em;
     }
 
     .cta-button {
       font-size: $font-size-lg;
       padding: $spacing-075 $spacing-2;
       height: auto;
-      background-color: $color-accent;
-      color: $color-accent-contrast;
+      min-width: $size-200;
+      background: $theme-cta-primary-bg;
+      color: $theme-cta-primary-text;
       border-radius: 0 !important;
-      transition: transform $transition-base, box-shadow $transition-base;
+      transition:
+        transform $transition-base,
+        box-shadow $transition-base,
+        background $transition-base;
 
       &:hover {
-        background-color: $color-accent-dark;
-        transform: scale(1.05);
-        box-shadow:
-          0 0 20px rgba($color-gold, 0.9),
-          0 8px 25px rgba($color-gold, 0.5),
-          $shadow-xl;
+        background: $theme-cta-primary-bg-hover;
+        transform: scale($theme-cta-scale-hover);
+        box-shadow: $theme-cta-shadow-glow;
       }
 
       &:active {
-        transform: scale(0.98);
+        transform: scale($theme-cta-scale-active);
         box-shadow: $shadow-sm;
       }
 
       mat-icon {
         margin-left: $spacing-05;
+      }
+    }
+
+    .hero-indicators {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: $spacing-075;
+      margin-top: $spacing-2;
+    }
+
+    .hero-indicator {
+      width: $spacing-075;
+      height: $spacing-075;
+      padding: 0;
+      border: 0;
+      border-radius: $border-radius-circle;
+      background: rgba($color-white, 0.35);
+      transition:
+        transform $transition-base,
+        background $transition-base,
+        box-shadow $transition-base;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba($color-gold, 0.75);
+        transform: scale(1.15);
+      }
+
+      &.active {
+        background: $color-gold;
+        box-shadow: 0 0 $spacing-1 rgba($color-gold, 0.55);
+        transform: scale(1.2);
       }
     }
   }
@@ -121,9 +244,9 @@
 
   .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax($size-200, 1fr)); // 200px
+    grid-template-columns: repeat(auto-fit, minmax($size-card-compact, 1fr));
     gap: $spacing-2;
-    max-width: $size-1000; // 1000px
+    max-width: $size-layout-max;
     margin: 0 auto;
 
     .feature-card {
@@ -188,38 +311,43 @@
     button {
       font-size: $font-size-base;
       padding: $spacing-075 $spacing-2;
+      min-width: $size-200;
       height: auto;
       border-radius: 0 !important;
-      transition: transform $transition-base, box-shadow $transition-base;
+      transition:
+        transform $transition-base,
+        box-shadow $transition-base,
+        background $transition-base,
+        border-color $transition-base;
 
       &:hover {
-        transform: scale(1.05);
-        box-shadow:
-          0 0 20px rgba($color-gold, 0.9),
-          0 8px 25px rgba($color-gold, 0.5),
-          $shadow-xl;
+        transform: scale($theme-cta-scale-hover);
       }
 
       &:active {
-        transform: scale(0.98);
+        transform: scale($theme-cta-scale-active);
         box-shadow: $shadow-sm;
       }
 
       &:first-child {
-        background-color: $color-cta;
-        color: $color-cta-contrast;
+        background: $theme-cta-primary-bg;
+        color: $theme-cta-primary-text;
 
         &:hover {
-          background-color: $color-cta-dark;
+          background: $theme-cta-primary-bg-hover;
+          box-shadow: $theme-cta-shadow-glow;
         }
       }
 
       &:last-child {
-        background-color: $color-accent;
-        color: $color-accent-contrast;
+        background: $theme-cta-secondary-bg;
+        color: $theme-cta-secondary-text;
+        border: $border-width-thin solid $theme-cta-secondary-border;
 
         &:hover {
-          background-color: $color-accent-dark;
+          background: $theme-cta-secondary-bg-hover;
+          border-color: $theme-cta-secondary-border-hover;
+          box-shadow: $theme-cta-shadow-soft;
         }
       }
     }
@@ -228,7 +356,21 @@
 
 @media (max-width: $breakpoint-md) {
   .hero-section {
-    padding: $spacing-4 $spacing-2; // 64px 32px
+    min-height: 28rem;
+    padding: $spacing-5 $spacing-2;
+
+    .hero-nav {
+      width: $spacing-2 + $spacing-05;
+      height: $spacing-2 + $spacing-05;
+    }
+
+    .hero-nav-prev {
+      left: $spacing-1;
+    }
+
+    .hero-nav-next {
+      right: $spacing-1;
+    }
 
     .hero-content {
       h1 {
@@ -245,6 +387,55 @@
   .features-section h2,
   .cta-section h2 {
     font-size: $font-size-3xl;
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .hero-section {
+    min-height: 24rem;
+    padding: $spacing-4 $spacing-1 + $spacing-05 $spacing-5;
+
+    .hero-nav {
+      top: auto;
+      bottom: $spacing-1 + $spacing-05;
+      transform: none;
+
+      &:active {
+        transform: scale($theme-cta-scale-active);
+      }
+    }
+
+    .hero-nav-prev {
+      left: calc(50% - #{$spacing-3});
+    }
+
+    .hero-nav-next {
+      right: calc(50% - #{$spacing-3});
+    }
+
+    .hero-content {
+      .hero-eyebrow {
+        font-size: $font-size-xs;
+        letter-spacing: 0.1em;
+      }
+
+      h1 {
+        font-size: $font-size-2xl;
+      }
+
+      p {
+        font-size: $font-size-base;
+      }
+
+      .hero-meta {
+        font-size: $font-size-sm;
+      }
+
+      .cta-button {
+        width: 100%;
+        min-width: unset;
+      }
+    }
   }
 }
 

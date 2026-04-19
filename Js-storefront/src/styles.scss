@@ -100,4 +100,62 @@ body {
   }
 }
 
+// Mobile Search Overlay Input Fix - MAXIMUM SPECIFICITY
+// Override Material Design Component's default text color
+.mobile-search-overlay .mobile-search-field .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  background-color: rgba($color-white, 0.95) !important;
+}
+
+.mobile-search-overlay .mobile-search-field .mat-mdc-form-field.mat-mdc-form-field .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  color: $color-black !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  -webkit-text-fill-color: $color-black !important;
+  opacity: 1 !important;
+  caret-color: $color-primary !important;
+  background-color: transparent !important;
+}
+
+.mobile-search-overlay .mobile-search-field input[matInput] {
+  color: $color-black !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  -webkit-text-fill-color: $color-black !important;
+  opacity: 1 !important;
+}
+
+.mobile-search-overlay .mobile-search-field .mdc-text-field__input {
+  color: $color-black !important;
+  -webkit-text-fill-color: $color-black !important;
+}
+
+.mobile-search-overlay .mobile-search-field input {
+  color: $color-black !important;
+  -webkit-text-fill-color: $color-black !important;
+}
+
+// Placeholder
+.mobile-search-overlay .mobile-search-field .mdc-text-field__input::placeholder,
+.mobile-search-overlay .mobile-search-field input::placeholder {
+  color: rgba($color-black, 0.5) !important;
+  -webkit-text-fill-color: rgba($color-black, 0.5) !important;
+  opacity: 1 !important;
+}
+
+// Label
+.mobile-search-overlay .mobile-search-field .mdc-floating-label,
+.mobile-search-overlay .mobile-search-field label {
+  color: rgba($color-black, 0.6) !important;
+}
+
+// Global placeholder styling for all form inputs
+input::placeholder,
+.mat-mdc-input-element::placeholder,
+.mdc-text-field__input::placeholder,
+input[matInput]::placeholder {
+  color: rgba($color-white, 0.6) !important;
+  -webkit-text-fill-color: rgba($color-white, 0.6) !important;
+  opacity: 1 !important;
+}
+
 // Made with Bob

@@ -51,7 +51,8 @@ export class LoginComponent {
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
         this.isLoading.set(false);
-        this.router.navigate(['/products']);
+        const returnUrl = new URLSearchParams(window.location.search).get('returnUrl');
+        this.router.navigateByUrl(returnUrl || '/products');
       },
       error: (error) => {
         this.isLoading.set(false);

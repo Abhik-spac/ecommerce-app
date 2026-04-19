@@ -1,0 +1,32 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="40" y1="32" x2="360" y2="368" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A1A1A"/>
+      <stop offset="0.55" stop-color="#2D2D2D"/>
+      <stop offset="1" stop-color="#111111"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="96" y1="110" x2="305" y2="290" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD700"/>
+      <stop offset="1" stop-color="#CCAC00"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="400" rx="28" fill="url(#bg)"/>
+  <rect x="24" y="24" width="352" height="352" rx="24" stroke="#FFD700" stroke-opacity="0.22" stroke-width="2"/>
+  <rect x="64" y="82" width="272" height="196" rx="18" fill="#FFFFFF" fill-opacity="0.04" stroke="#FFD700" stroke-opacity="0.18" stroke-width="2"/>
+
+  <path d="M120 244L173.5 188.5C177.8 184.04 184.92 183.77 189.55 187.9L219.86 214.96C224.53 219.13 231.72 218.81 236 214.25L259.79 188.89C264.6 183.76 272.79 183.63 277.76 188.6L314 224.84V250C314 258.84 306.84 266 298 266H122C113.16 266 106 258.84 106 250V244H120Z" fill="url(#accent)" fill-opacity="0.9"/>
+  <circle cx="166" cy="145" r="24" fill="#FFD700" fill-opacity="0.92"/>
+  <path d="M144 319H256" stroke="#FFE44D" stroke-width="10" stroke-linecap="round" stroke-opacity="0.95"/>
+  <path d="M172 108L228 164" stroke="#FFE44D" stroke-width="8" stroke-linecap="round" stroke-opacity="0.9"/>
+  <path d="M228 108L172 164" stroke="#FFE44D" stroke-width="8" stroke-linecap="round" stroke-opacity="0.9"/>
+
+  <text x="200" y="330" text-anchor="middle" fill="#FFFFFF" fill-opacity="0.92" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">
+    No Image
+  </text>
+  <text x="200" y="356" text-anchor="middle" fill="#FFFFFF" fill-opacity="0.6" font-family="Arial, Helvetica, sans-serif" font-size="16">
+    Product image unavailable
+  </text>
+</svg>
+
+<!-- Made with Bob -->

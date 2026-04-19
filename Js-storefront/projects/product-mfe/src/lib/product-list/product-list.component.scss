@@ -1,4 +1,5 @@
 @use '../../variables' as *;
+@use 'sass:color';
 
 .product-list-container {
   width: 100%;
@@ -11,66 +12,205 @@
     max-width: $spacing-85;
     margin: 0 auto;
   }
+  
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-05; // Reduce padding on mobile
+  }
 }
 
 .header-section {
   margin-bottom: $spacing-2;
 
-  h1 {
-    font-size: $font-size-4xl;
-    font-weight: $font-weight-medium;
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: $spacing-1;
-    color: $color-white;
+    flex-wrap: wrap;
+    gap: $spacing-1;
+
+    h1 {
+      font-size: $font-size-4xl;
+      font-weight: $font-weight-medium;
+      margin: 0;
+      color: $color-white;
+
+      @media (max-width: $breakpoint-sm) {
+        font-size: $font-size-2xl;
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: $spacing-1;
+
+      .results-count {
+        color: rgba($color-white, 0.7);
+        font-size: $font-size-sm;
+      }
+
+      .clear-filters-btn {
+        background: $theme-cta-primary-bg !important;
+        color: $theme-cta-primary-text !important;
+        border-radius: 0 !important;
+        transition:
+          transform $transition-base,
+          box-shadow $transition-base,
+          background $transition-base;
+
+        &:hover {
+          background: $theme-cta-primary-bg-hover !important;
+          transform: scale($theme-cta-scale-hover);
+          box-shadow: $theme-cta-shadow-glow;
+        }
+
+        &:active {
+          transform: scale($theme-cta-scale-active);
+          box-shadow: $shadow-sm;
+        }
+      }
+    }
   }
 }
 
-::ng-deep .toolbar {
-  display: flex;
-  gap: $spacing-1;
-  align-items: center;
-  flex-wrap: wrap;
-
-  .search-field, .sort-field {
-    .mat-mdc-text-field-wrapper {
-      background-color: rgba($color-white, 0.05);
+// Sort Bar
+.sort-bar {
+  margin-bottom: $spacing-2;
+  
+  .sort-controls {
+    display: flex;
+    align-items: center;
+    gap: $spacing-1;
+    flex-wrap: wrap;
+    
+    .filter-toggle-btn {
+      display: none; // Hidden on desktop
+      background: linear-gradient(135deg, rgba($color-white, 0.08) 0%, rgba($color-white, 0.12) 100%);
+      border: $border-width-thin solid rgba($color-gold, 0.3);
+      color: $color-white;
+      padding: $spacing-05 $spacing-1;
+      height: 40px;
+      transition: all $transition-base;
+      position: relative;
+      
+      @media (max-width: $breakpoint-md) {
+        display: flex; // Show on mobile
+      }
+      
+      &:hover {
+        background: linear-gradient(135deg, rgba($color-white, 0.12) 0%, rgba($color-white, 0.16) 100%);
+        border-color: $color-gold;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba($color-gold, 0.2);
+      }
+      
+      mat-icon {
+        color: $color-gold;
+      }
+      
+      .filter-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: $color-accent;
+        color: $color-white;
+        border-radius: $border-radius-full;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-bold;
+      }
     }
     
-    label {
-      color: rgba($color-white, 0.7) !important;
+    .sort-button {
+      background: linear-gradient(135deg, rgba($color-white, 0.08) 0%, rgba($color-white, 0.12) 100%);
+      border: $border-width-thin solid rgba($color-gold, 0.3);
+      color: $color-white;
+      padding: $spacing-05 $spacing-1;
+      height: 40px;
+      transition: all $transition-base;
+      
+      &:hover {
+        background: linear-gradient(135deg, rgba($color-white, 0.12) 0%, rgba($color-white, 0.16) 100%);
+        border-color: $color-gold;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba($color-gold, 0.2);
+      }
+      
+      mat-icon {
+        color: $color-gold;
+        
+        &:last-child {
+          color: rgba($color-white, 0.7);
+        }
+      }
     }
     
-    input, .mat-mdc-select-value {
-      color: $color-white !important;
-    }
-    
-    .mat-mdc-form-field-icon-suffix mat-icon {
-      color: $color-gold !important;
+    .active-search {
+      display: flex;
+      align-items: center;
+      gap: $spacing-05;
+      padding: $spacing-05 $spacing-1;
+      background: linear-gradient(135deg, rgba($color-gold, 0.15) 0%, rgba($color-gold, 0.2) 100%);
+      border: $border-width-thin solid rgba($color-gold, 0.3);
+      border-radius: $border-radius-md;
+      color: $color-white;
+      height: 40px;
+      
+      mat-icon {
+        color: $color-gold;
+        font-size: $font-size-lg;
+      }
+      
+      span {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+      }
+      
+      .clear-search-chip {
+        color: rgba($color-white, 0.7);
+        width: $spacing-2;
+        height: $spacing-2;
+        padding: 0;
+        
+        &:hover {
+          color: $color-white;
+          background: rgba($color-white, 0.1);
+        }
+        
+        mat-icon {
+          font-size: $font-size-base;
+          width: $font-size-base;
+          height: $font-size-base;
+        }
+      }
     }
   }
+}
 
-  .search-field {
-    flex: 1;
-    min-width: 18.75rem;
-  }
-
-  .sort-field {
-    min-width: 12.5rem;
+// Sort Menu Styling
+::ng-deep .mat-mdc-menu-panel {
+  background: $bg-gradient-premium !important;
+  
+  .mat-mdc-menu-content {
+    padding: $spacing-05 0 !important;
   }
   
-  button[mat-raised-button] {
-    transition: transform $transition-base, box-shadow $transition-base;
+  button.mat-mdc-menu-item {
+    color: $color-white !important;
+    transition: all $transition-fast;
     
     &:hover {
-      transform: scale(1.05);
-      box-shadow:
-        0 0 20px rgba($color-gold, 0.9),
-        0 8px 25px rgba($color-gold, 0.5),
-        $shadow-xl;
+      background: rgba($color-white, 0.1) !important;
     }
     
-    &:active {
-      transform: scale(0.98);
-      box-shadow: $shadow-sm;
+    mat-icon {
+      color: $color-gold !important;
+      margin-right: $spacing-05;
     }
   }
 }
@@ -95,11 +235,292 @@
   }
 }
 
+// Content wrapper with sidebar and products
+.content-wrapper {
+  display: flex;
+  gap: $spacing-2;
+  align-items: flex-start;
+
+  @media (max-width: $breakpoint-md) {
+    flex-direction: column;
+  }
+}
+
+// Filter Sidebar
+.filter-sidebar {
+  width: $size-sidebar;
+  flex-shrink: 0;
+  position: sticky;
+  top: $spacing-1;
+  max-height: calc(100vh - $spacing-2);
+  overflow-y: auto;
+  background: linear-gradient(135deg, rgba($color-primary, 0.15) 0%, rgba($color-primary-dark, 0.2) 100%);
+  border: $border-width-thin solid rgba($color-gold, 0.2);
+  border-radius: $border-radius-md;
+  padding: $spacing-1 + $spacing-05;
+  box-shadow: $shadow-xl;
+
+  @media (max-width: $breakpoint-md) {
+    width: 85%; // 85% width instead of 100%
+    max-width: 400px;
+    position: fixed;
+    top: 64px; // Below header (header height is typically 64px)
+    left: 0;
+    bottom: 0;
+    z-index: 1001; // Above backdrop
+    max-height: calc(100vh - 64px);
+    border-radius: 0;
+    border-right: 2px solid $color-gold;
+    padding-top: $spacing-1; // Add top padding
+    transform: translateX(-100%); // Hidden by default (off-screen)
+    transition: transform 0.3s ease-out; // Smooth slide animation
+    
+    &.show-mobile {
+      transform: translateX(0); // Slide in when shown
+    }
+    
+    // Add backdrop
+    &::before {
+      content: '';
+      position: fixed;
+      top: 64px; // Start below header
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba($color-black, 0.7);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease-out;
+      pointer-events: none; // Don't block clicks when hidden
+    }
+    
+    &.show-mobile::before {
+      opacity: 1;
+      pointer-events: auto; // Allow clicks when shown
+    }
+  }
+
+  .filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-1;
+
+    h2 {
+      margin: 0;
+      font-size: $font-size-xl;
+      color: $color-white;
+      font-weight: $font-weight-medium;
+    }
+
+    .filter-actions {
+      display: flex;
+      gap: $spacing-05;
+      
+      button {
+        color: $color-gold;
+        
+        &:hover {
+          background: rgba($color-white, 0.1);
+        }
+      }
+      
+      .close-filters-btn {
+        display: none; // Hidden on desktop
+        
+        @media (max-width: $breakpoint-md) {
+          display: inline-flex !important; // Always show on mobile
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+  }
+
+  ::ng-deep .mat-divider {
+    border-top-color: rgba($color-white, 0.2) !important;
+    margin-bottom: $spacing-1;
+  }
+
+  ::ng-deep .filter-panel {
+    background: transparent !important;
+    box-shadow: none !important;
+    margin-bottom: $spacing-075;
+    border: $border-width-thin solid rgba($color-gold, 0.2);
+    border-radius: $border-radius-sm;
+
+    &.mat-expanded {
+      border-color: rgba($color-gold, 0.4);
+    }
+
+    .mat-expansion-panel-header {
+      background: rgba($color-white, 0.05) !important;
+      color: $color-white !important;
+      border-radius: $border-radius-sm;
+      padding: $spacing-075 $spacing-1;
+      height: auto;
+      min-height: 48px;
+
+      &:hover {
+        background: rgba($color-white, 0.1) !important;
+      }
+
+      .mat-expansion-panel-header-title {
+        display: flex;
+        align-items: center;
+        gap: $spacing-05;
+        color: $color-white !important;
+        font-weight: $font-weight-medium;
+
+        mat-icon {
+          color: $color-gold;
+          font-size: $font-size-xl;
+          width: $font-size-xl;
+          height: $font-size-xl;
+        }
+
+        .filter-count {
+          margin-left: auto;
+          background: $color-gold;
+          color: $color-black;
+          padding: 2px $spacing-05;
+          border-radius: $border-radius-full;
+          font-size: $font-size-xs;
+          font-weight: $font-weight-bold;
+          min-width: 20px;
+          text-align: center;
+        }
+      }
+    }
+
+    .mat-expansion-panel-body {
+      padding: $spacing-1 !important;
+      background: rgba($color-black, 0.2);
+    }
+  }
+
+  .filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-05;
+
+    ::ng-deep mat-checkbox {
+      color: $color-white !important;
+
+      .mdc-checkbox__background {
+        border-color: rgba($color-gold, 0.5) !important;
+      }
+
+      &.mat-mdc-checkbox-checked .mdc-checkbox__background {
+        background-color: $color-gold !important;
+        border-color: $color-gold !important;
+      }
+
+      .mdc-label {
+        color: $color-white !important;
+      }
+    }
+
+    &.price-filter {
+      .price-inputs {
+        display: flex;
+        align-items: center;
+        gap: $spacing-05;
+
+        mat-form-field {
+          flex: 1;
+
+          ::ng-deep {
+            .mat-mdc-text-field-wrapper {
+              background-color: rgba($color-white, 0.1) !important;
+            }
+
+            .mat-mdc-input-element {
+              color: $color-white !important;
+            }
+
+            label {
+              color: rgba($color-white, 0.7) !important;
+            }
+
+            .mdc-notched-outline__leading,
+            .mdc-notched-outline__notch,
+            .mdc-notched-outline__trailing {
+              border-color: rgba($color-gold, 0.3) !important;
+            }
+          }
+        }
+
+        .price-separator {
+          color: rgba($color-white, 0.7);
+        }
+      }
+    }
+
+    &.rating-filter {
+      .rating-btn {
+        justify-content: flex-start;
+        color: $color-white !important;
+        border-color: rgba($color-gold, 0.3) !important;
+        transition: all $transition-fast;
+
+        &:hover {
+          background: rgba($color-white, 0.1) !important;
+          border-color: $color-gold !important;
+        }
+
+        &.active {
+          background: rgba($color-gold, 0.2) !important;
+          border-color: $color-gold !important;
+          color: $color-gold !important;
+        }
+
+        mat-icon {
+          color: $color-gold;
+          margin-right: $spacing-025;
+        }
+      }
+    }
+  }
+}
+
+// Products Section
+.products-section {
+  flex: 1;
+  min-width: 0;
+  
+  @media (max-width: $breakpoint-md) {
+    padding: 0 $spacing-05; // Add horizontal padding on mobile
+  }
+}
+
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
-  gap: $spacing-1;
-  margin-top: $spacing-1;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: $spacing-3;
+
+  @media (max-width: $breakpoint-lg) {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: $spacing-2;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-1;
+  }
+
+  // Single column on mobile phones - centered
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr !important;
+    gap: $spacing-1;
+    justify-items: center; // Center the cards
+    
+    // Make cards take reasonable width
+    > * {
+      width: 100%;
+      max-width: 400px; // Limit max width for better appearance
+    }
+  }
 }
 
 ::ng-deep .product-card {
@@ -261,27 +682,28 @@
     .add-to-cart-btn {
       flex: 1;
       margin-right: $spacing-05;
-      background-color: $color-primary !important;
-      color: $color-primary-contrast !important;
-      transition: transform $transition-base, box-shadow $transition-base;
+      background: $theme-cta-primary-bg !important;
+      color: $theme-cta-primary-text !important;
+      border-radius: 0 !important;
+      transition:
+        transform $transition-base,
+        box-shadow $transition-base,
+        background $transition-base;
       
       &:hover:not([disabled]) {
-        background-color: $color-primary-dark !important;
-        transform: scale(1.05);
-        box-shadow:
-          0 0 20px rgba($color-gold, 0.9),
-          0 8px 25px rgba($color-gold, 0.5),
-          $shadow-xl;
+        background: $theme-cta-primary-bg-hover !important;
+        transform: scale($theme-cta-scale-hover);
+        box-shadow: $theme-cta-shadow-glow;
       }
 
       &:active:not([disabled]) {
-        transform: scale(0.98);
+        transform: scale($theme-cta-scale-active);
         box-shadow: $shadow-sm;
       }
       
       &[disabled] {
-        background-color: $color-gray-300 !important;
-        color: $color-gray-500 !important;
+        background: rgba($color-white, 0.16) !important;
+        color: rgba($color-white, 0.45) !important;
       }
     }
     
@@ -330,18 +752,22 @@
   }
   
   button {
-    transition: transform $transition-base, box-shadow $transition-base;
+    background: $theme-cta-primary-bg !important;
+    color: $theme-cta-primary-text !important;
+    border-radius: 0 !important;
+    transition:
+      transform $transition-base,
+      box-shadow $transition-base,
+      background $transition-base;
     
     &:hover {
-      transform: scale(1.05);
-      box-shadow:
-        0 0 20px rgba($color-gold, 0.9),
-        0 8px 25px rgba($color-gold, 0.5),
-        $shadow-xl;
+      background: $theme-cta-primary-bg-hover !important;
+      transform: scale($theme-cta-scale-hover);
+      box-shadow: $theme-cta-shadow-glow;
     }
     
     &:active {
-      transform: scale(0.98);
+      transform: scale($theme-cta-scale-active);
       box-shadow: $shadow-sm;
     }
   }
@@ -350,23 +776,80 @@
 // Responsive Design
 @media (max-width: $breakpoint-md) {
   .product-list-container {
-    padding: $spacing-1;
+    padding: $spacing-075;
+  }
+  
+  .header-section h1 {
+    font-size: $font-size-3xl;
   }
 
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-    gap: $spacing-1;
+    gap: $spacing-075;
   }
 
-  .toolbar {
+  ::ng-deep .toolbar {
     flex-direction: column;
     align-items: stretch;
+    gap: $spacing-075;
 
     .search-field,
     .sort-field {
       width: 100%;
       min-width: unset;
     }
+    
+    button[mat-raised-button] {
+      width: 100%;
+    }
+  }
+  
+  ::ng-deep .product-card {
+    .product-image-container .product-image {
+      height: 12rem;
+    }
+    
+    mat-card-content {
+      padding: $spacing-075;
+      
+      .product-name {
+        font-size: $font-size-base;
+      }
+      
+      .product-description {
+        font-size: $font-size-xs;
+      }
+      
+      .price-container .current-price {
+        font-size: $font-size-xl;
+      }
+    }
+    
+    mat-card-actions {
+      padding: $spacing-075;
+      flex-direction: column;
+      gap: $spacing-05;
+      
+      .add-to-cart-btn {
+        width: 100%;
+        margin-right: 0;
+      }
+      
+      button[mat-icon-button] {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+    gap: $spacing-05;
+  }
+  
+  .header-section h1 {
+    font-size: $font-size-2xl;
   }
 }
 

@@ -1,4 +1,10 @@
-@use '../../_variables' as *;
+@use "../../_variables" as *;
+
+:host {
+  display: block;
+  background: $color-bg-dark;
+  min-height: 100vh;
+}
 
 .profile-container {
   max-width: $container-xl;
@@ -9,11 +15,43 @@
     margin: 0 0 $spacing-3 0;
     font-size: $font-size-4xl;
     font-weight: $font-weight-medium;
+    color: $color-gold !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+
+::ng-deep .mat-mdc-tab-group {
+  .mat-mdc-tab-labels {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: $border-radius-md $border-radius-md 0 0;
+  }
+
+  .mat-mdc-tab {
+    color: $color-gray-400;
+
+    &.mdc-tab--active {
+      .mdc-tab__text-label {
+        color: $color-gold;
+      }
+    }
+  }
+
+  .mat-mdc-tab-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mdc-tab-indicator__content--underline {
+    border-color: $color-gold;
+    border-width: 3px;
   }
 }
 
 mat-card {
   margin-top: $spacing-3;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: $border-radius-lg;
 
   mat-card-content {
     padding: $spacing-3;
@@ -27,6 +65,134 @@ mat-card {
     margin: 0 0 $spacing-3 0;
     font-size: $font-size-xl;
     font-weight: $font-weight-medium;
+    color: $color-gold !important;
+  }
+}
+
+// Force form section titles to be gold
+::ng-deep .form-section h3 {
+  color: $color-gold !important;
+}
+
+h3 {
+  color: $color-gold !important;
+}
+
+::ng-deep .mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled) {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &:hover .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: rgba(212, 175, 55, 0.5);
+      }
+    }
+
+    &.mdc-text-field--focused .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: $color-gold;
+      }
+    }
+  }
+
+  .mat-mdc-form-field-label,
+  .mdc-floating-label {
+    color: $color-gray-400;
+  }
+
+  .mat-mdc-input-element {
+    color: $color-white;
+  }
+
+  .mat-mdc-form-field-icon-prefix mat-icon {
+    color: $color-gold;
+  }
+}
+// All tab indicator underlines should be gold (not blue)
+::ng-deep  .mat-mdc-tab .mdc-tab-indicator__content--underline {
+    border-color: $color-gold !important;
+    background-color: $color-gold !important;
+  }
+
+
+// CRITICAL: Force label visibility with GOLD color
+::ng-deep mat-label {
+  color: $color-gold !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+::ng-deep .mat-mdc-form-field mat-label {
+  color: $color-gold !important;
+}
+
+::ng-deep .mat-mdc-form-field .mdc-floating-label {
+  color: $color-gold !important;
+  -webkit-text-fill-color: $color-gold !important;
+}
+
+::ng-deep .mat-mdc-form-field.mat-focused .mdc-floating-label {
+  color: $color-gold !important;
+  -webkit-text-fill-color: $color-gold !important;
+}
+
+::ng-deep .mat-mdc-form-field .mat-mdc-form-field-label {
+  color: $color-gold !important;
+}
+
+::ng-deep .mat-mdc-form-field .mdc-notched-outline__notch .mdc-floating-label {
+  color: $color-gold !important;
+  -webkit-text-fill-color: $color-gold !important;
+}
+
+// Active tab focus state - gold color
+::ng-deep
+  .mat-mdc-tab.mdc-tab--active:focus
+  .mdc-tab-indicator__content--underline {
+  border-color: $color-gold !important;
+  background-color: $color-gold !important;
+}
+
+::ng-deep .mat-mdc-tab.mdc-tab--active:focus .mdc-tab__text-label {
+  color: $color-gold !important;
+
+  
+}
+
+// Button hover effects matching theme
+::ng-deep .mat-mdc-raised-button.mat-accent {
+  transition: all 0.3s ease !important;
+
+  &:hover:not([disabled]) {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4) !important;
+    filter: brightness(1.15) !important;
+  }
+
+  &:active:not([disabled]) {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3) !important;
+  }
+}
+
+::ng-deep .mat-mdc-button.mat-accent {
+  transition: all 0.3s ease !important;
+
+  &:hover:not([disabled]) {
+    background: rgba(255, 215, 0, 0.1) !important;
+    transform: translateX(4px) !important;
   }
 }
 
@@ -68,6 +234,7 @@ mat-card {
       margin: 0;
       font-size: $font-size-xl;
       font-weight: $font-weight-medium;
+      color: $color-gold;
     }
   }
 
@@ -79,12 +246,13 @@ mat-card {
       font-size: $icon-size-xl;
       width: $size-xs;
       height: $size-xs;
-      color: $color-gray-400;
+      color: $color-gold;
+      opacity: 0.5;
       margin-bottom: $spacing-2;
     }
 
     p {
-      color: $color-gray-500;
+      color: $color-gray-400;
       font-size: $font-size-base;
     }
   }
@@ -95,6 +263,16 @@ mat-card {
     gap: $spacing-2;
 
     .address-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: rgba(212, 175, 55, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.1);
+      }
+
       mat-card-content {
         padding: $spacing-2;
 
@@ -108,6 +286,7 @@ mat-card {
             margin: 0;
             font-size: $font-size-base;
             font-weight: $font-weight-semibold;
+            color: $color-gold;
           }
 
           .address-actions {
@@ -118,7 +297,7 @@ mat-card {
 
         p {
           margin: $spacing-05 0;
-          color: $color-text-secondary;
+          color: $color-gray-400;
           font-size: $font-size-sm;
         }
       }
@@ -131,6 +310,7 @@ mat-card {
     margin: $spacing-3 0 $spacing-2 0;
     font-size: $font-size-xl;
     font-weight: $font-weight-medium;
+    color: $color-gold;
 
     &:first-child {
       margin-top: 0;
@@ -141,15 +321,15 @@ mat-card {
     display: flex;
     justify-content: space-between;
     padding: $spacing-1 + $spacing-05 0;
-    border-bottom: 1px solid $color-gray-200;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
     .label {
-      color: $color-text-secondary;
+      color: $color-gray-400;
       font-weight: $font-weight-medium;
     }
 
     .value {
-      color: $color-text-primary;
+      color: $color-white;
     }
   }
 
@@ -159,14 +339,14 @@ mat-card {
       align-items: center;
       gap: $spacing-2;
       padding: $spacing-2 0;
-      border-bottom: 1px solid $color-gray-200;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
       &:last-child {
         border-bottom: none;
       }
 
       mat-icon {
-        color: $color-text-secondary;
+        color: $color-gold;
       }
 
       .preference-content {
@@ -176,11 +356,12 @@ mat-card {
           margin: 0 0 $spacing-05 0;
           font-size: $font-size-base;
           font-weight: $font-weight-medium;
+          color: $color-white;
         }
 
         p {
           margin: 0;
-          color: $color-text-secondary;
+          color: $color-gray-400;
           font-size: $font-size-sm;
         }
       }
@@ -191,17 +372,26 @@ mat-card {
     display: flex;
     gap: $spacing-2;
     margin-top: $spacing-2;
+    flex-wrap: wrap;
 
     button {
       display: flex;
       align-items: center;
       gap: $spacing-1;
+      border-color: rgba(244, 67, 54, 0.5);
+      color: #f44336;
+
+      &:hover {
+        background: rgba(244, 67, 54, 0.1);
+        border-color: #f44336;
+      }
     }
   }
 }
 
-mat-divider {
+::ng-deep mat-divider {
   margin: $spacing-3 0;
+  border-top-color: rgba(255, 255, 255, 0.1);
 }
 
 // Made with Bob

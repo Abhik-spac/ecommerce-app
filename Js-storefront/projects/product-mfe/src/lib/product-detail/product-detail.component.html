@@ -9,7 +9,7 @@
     <!-- Product Images -->
     <div class="product-images">
       <div class="main-image">
-        <img [src]="product().images[0]?.url" [alt]="product().name">
+        <img [src]="product().images[0]?.url || 'no-image.svg'" [alt]="product().name">
         
         <!-- Badges -->
         <div class="badges">

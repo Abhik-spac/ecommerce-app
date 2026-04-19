@@ -1,36 +1,65 @@
 @use '../../_variables' as *;
 
-.orders-container {
-  max-width: $container-xl;
-  margin: 0 auto;
-  padding: $spacing-3;
+:host {
+  display: block;
+  min-height: 100vh;
+  background: $bg-gradient-premium;
+  color: $color-white;
+}
 
-  h1 {
-    margin: 0 0 $spacing-3 0;
-    font-size: $font-size-4xl;
-    font-weight: $font-weight-medium;
-  }
+h1 {
+  margin: 0 0 $spacing-3 0;
+  padding: $spacing-3 $spacing-3 0;
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-bold;
+  color: $color-white;
 }
 
 .orders-content {
-  padding: $spacing-3 0;
+  padding: $spacing-3;
 }
 
 .loading {
   display: flex;
   justify-content: center;
   padding: $spacing-6;
+
+  ::ng-deep .mat-mdc-progress-spinner circle {
+    stroke: $color-gold;
+  }
+}
+
+::ng-deep .mat-mdc-tab-group {
+  --mdc-tab-indicator-active-indicator-color: #{$color-gold};
+  --mat-tab-header-active-label-text-color: #{$color-gold};
+  --mat-tab-header-active-ripple-color: #{rgba($color-gold, 0.18)};
+  --mat-tab-header-inactive-ripple-color: #{rgba($color-white, 0.1)};
+  --mat-tab-header-inactive-label-text-color: #{rgba($color-white, 0.75)};
+  --mat-tab-header-divider-color: #{rgba($color-white, 0.12)};
+  --mat-tab-header-pagination-icon-color: #{$color-white};
+  --mat-tab-header-inactive-focus-label-text-color: #{$color-white};
+  --mat-tab-header-inactive-hover-label-text-color: #{$color-gold};
+  --mat-tab-header-active-focus-label-text-color: #{$color-gold};
+  --mat-tab-header-active-hover-label-text-color: #{$color-gold};
+  --mat-tab-header-active-focus-indicator-color: #{$color-gold};
+  --mat-tab-header-active-hover-indicator-color: #{$color-gold};
+  --mat-tab-header-inactive-focus-indicator-color: #{rgba($color-gold, 0.35)};
+  --mat-tab-header-inactive-hover-indicator-color: #{rgba($color-gold, 0.35)};
 }
 
 .empty-state {
   text-align: center;
   padding: $spacing-6 $spacing-3;
+  background: linear-gradient(135deg, rgba($color-primary, 0.15) 0%, rgba($color-primary-dark, 0.2) 100%);
+  border: $border-width-thin solid rgba($color-gold, 0.2);
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-xl;
 
   mat-icon {
     font-size: $icon-size-xxl;
-    width: $size-md;
-    height: $size-md;
-    color: $color-gray-400;
+    width: $size-square-2xl;
+    height: $size-square-2xl;
+    color: $color-gold;
     margin-bottom: $spacing-3;
   }
 
@@ -38,13 +67,34 @@
     margin: 0 0 $spacing-1 + $spacing-05 0;
     font-size: $font-size-2xl;
     font-weight: $font-weight-medium;
-    color: $color-text-secondary;
+    color: $color-white;
   }
 
   p {
     margin: 0 0 $spacing-3 0;
-    color: $color-gray-500;
+    color: rgba($color-white, 0.72);
     font-size: $font-size-base;
+  }
+
+  button {
+    background: $theme-cta-primary-bg !important;
+    color: $theme-cta-primary-text !important;
+    border-radius: 0 !important;
+    transition:
+      transform $transition-base,
+      box-shadow $transition-base,
+      background $transition-base;
+
+    &:hover {
+      background: $theme-cta-primary-bg-hover !important;
+      transform: scale($theme-cta-scale-hover);
+      box-shadow: $theme-cta-shadow-glow;
+    }
+
+    &:active {
+      transform: scale($theme-cta-scale-active);
+      box-shadow: $shadow-sm;
+    }
   }
 }
 
@@ -55,9 +105,15 @@
 }
 
 .order-card {
+  background: linear-gradient(135deg, rgba($color-primary, 0.16) 0%, rgba($color-primary-dark, 0.24) 100%) !important;
+  border: $border-width-thin solid rgba($color-gold, 0.22);
+  box-shadow: $shadow-xl !important;
+  overflow: hidden;
+
   mat-card-header {
     padding: $spacing-2;
-    background: $color-gray-100;
+    background: rgba($color-white, 0.05);
+    border-bottom: $border-width-thin solid rgba($color-gold, 0.14);
 
     .order-header {
       display: flex;
@@ -70,39 +126,49 @@
           margin: 0 0 $spacing-05 0;
           font-size: $font-size-lg;
           font-weight: $font-weight-semibold;
+          color: $color-white;
         }
 
         .order-date {
           margin: 0;
-          color: $color-text-secondary;
+          color: rgba($color-white, 0.7);
           font-size: $font-size-sm;
         }
       }
 
       mat-chip {
+        color: $color-white !important;
+        font-weight: $font-weight-semibold;
+        border: $border-width-thin solid transparent;
+
         &.status-pending {
-          background: #fff3e0;
-          color: #f57c00;
+          background: rgba($color-warning, 0.18);
+          color: $color-warning-light !important;
+          border-color: rgba($color-warning, 0.35);
         }
 
         &.status-processing {
-          background: #e3f2fd;
-          color: #1976d2;
+          background: rgba($color-info, 0.18);
+          color: $color-info-light !important;
+          border-color: rgba($color-info, 0.35);
         }
 
         &.status-shipped {
-          background: #e8f5e9;
-          color: #388e3c;
+          background: rgba($color-secondary, 0.18);
+          color: $color-secondary-light !important;
+          border-color: rgba($color-secondary, 0.35);
         }
 
         &.status-delivered {
-          background: #c8e6c9;
-          color: #2e7d32;
+          background: rgba($color-success, 0.18);
+          color: $color-success-light !important;
+          border-color: rgba($color-success, 0.35);
         }
 
         &.status-cancelled {
-          background: #ffebee;
-          color: #c62828;
+          background: rgba($color-error, 0.18);
+          color: #ff9a9a !important;
+          border-color: rgba($color-error, 0.35);
         }
       }
     }
@@ -110,44 +176,52 @@
 
   mat-card-content {
     padding: $spacing-3;
+    color: $color-white;
 
     .order-items {
       margin-bottom: $spacing-3;
 
       .order-item {
         display: flex;
+        align-items: flex-start;
         gap: $spacing-2;
         padding: $spacing-1 + $spacing-05 0;
-        border-bottom: 1px solid $color-gray-200;
+        border-bottom: $border-width-thin solid rgba($color-white, 0.1);
 
         &:last-child {
           border-bottom: none;
         }
 
         img {
-          width: $size-sm;
-          height: $size-sm;
+          width: $size-square-xl;
+          height: $size-square-xl;
           object-fit: cover;
           border-radius: $border-radius-md;
+          border: $border-width-thin solid rgba($color-gold, 0.24);
+          background: rgba($color-white, 0.06);
+          box-shadow: $shadow-md;
+          flex-shrink: 0;
         }
 
         .item-details {
           flex: 1;
+          min-width: 0;
 
           h4 {
             margin: 0 0 $spacing-1 0;
             font-size: $font-size-base;
             font-weight: $font-weight-medium;
+            color: $color-white;
           }
 
           p {
             margin: $spacing-05 0;
-            color: $color-text-secondary;
+            color: rgba($color-white, 0.72);
             font-size: $font-size-sm;
           }
 
           .price {
-            color: $color-primary;
+            color: $color-gold;
             font-weight: $font-weight-semibold;
             font-size: $font-size-base;
           }
@@ -157,23 +231,30 @@
 
     .order-summary {
       padding: $spacing-2;
-      background: $color-gray-50;
+      background: rgba($color-white, 0.06);
+      border: $border-width-thin solid rgba($color-gold, 0.14);
       border-radius: $border-radius-md;
       margin-bottom: $spacing-2;
 
       .summary-row {
         display: flex;
         justify-content: space-between;
+        gap: $spacing-1;
         padding: $spacing-1 0;
         font-size: $font-size-base;
+        color: rgba($color-white, 0.82);
 
         &.total {
           font-size: $font-size-xl;
           font-weight: $font-weight-semibold;
-          color: $color-primary;
-          border-top: $border-width-normal solid $color-border-light;
+          color: $color-white;
+          border-top: $border-width-normal solid rgba($color-gold, 0.18);
           padding-top: $spacing-1 + $spacing-05;
           margin-top: $spacing-1;
+
+          span:last-child {
+            color: $color-gold;
+          }
         }
       }
     }
@@ -183,11 +264,12 @@
         margin: 0 0 $spacing-1 + $spacing-05 0;
         font-size: $font-size-base;
         font-weight: $font-weight-semibold;
+        color: $color-white;
       }
 
       p {
         margin: $spacing-05 0;
-        color: $color-text-secondary;
+        color: rgba($color-white, 0.72);
         font-size: $font-size-sm;
       }
     }
@@ -195,10 +277,132 @@
 
   mat-card-actions {
     padding: $spacing-2;
-    border-top: 1px solid $color-gray-200;
+    border-top: $border-width-thin solid rgba($color-gold, 0.14);
     display: flex;
     gap: $spacing-1;
     flex-wrap: wrap;
+    background: rgba($color-white, 0.03);
+
+    button {
+      border-radius: 0 !important;
+      color: $theme-cta-secondary-text !important;
+      background: $theme-cta-secondary-bg;
+      border: $border-width-thin solid $theme-cta-secondary-border;
+      transition:
+        transform $transition-base,
+        box-shadow $transition-base,
+        background $transition-base,
+        border-color $transition-base,
+        color $transition-base;
+
+      &:hover {
+        background: $theme-cta-secondary-bg-hover;
+        border-color: $theme-cta-secondary-border-hover;
+        transform: scale($theme-cta-scale-hover);
+        box-shadow: $theme-cta-shadow-soft;
+      }
+
+      &:active {
+        transform: scale($theme-cta-scale-active);
+        box-shadow: $shadow-sm;
+      }
+
+      mat-icon {
+        color: $color-gold !important;
+      }
+
+      &[color='warn'] {
+        color: #ff9a9a !important;
+        border-color: rgba($color-error, 0.45);
+        background: rgba($color-error, 0.12);
+
+        &:hover {
+          background: rgba($color-error, 0.2);
+          border-color: rgba($color-error, 0.7);
+          box-shadow: 0 0 15px rgba($color-error, 0.35), $shadow-lg;
+        }
+
+        mat-icon {
+          color: #ff9a9a !important;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  h1 {
+    padding: $spacing-2 $spacing-2 0;
+    font-size: $font-size-3xl;
+  }
+
+  .orders-content {
+    padding: $spacing-2;
+  }
+
+  .order-card {
+    mat-card-header .order-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-075;
+    }
+
+    mat-card-content {
+      padding: $spacing-2;
+
+      .order-items .order-item {
+        flex-direction: column;
+        align-items: flex-start;
+
+        img {
+          width: 100%;
+          height: auto;
+          max-width: $size-square-2xl;
+        }
+      }
+
+      .order-summary {
+        padding: $spacing-1;
+      }
+    }
+
+    mat-card-actions {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  h1 {
+    padding: $spacing-1 + $spacing-05 $spacing-1 + $spacing-05 0;
+    font-size: $font-size-2xl;
+  }
+
+  .orders-content {
+    padding: $spacing-1 + $spacing-05;
+  }
+
+  .order-card {
+    mat-card-header {
+      padding: $spacing-1;
+    }
+
+    mat-card-content {
+      padding: $spacing-1;
+
+      .order-summary .summary-row {
+        font-size: $font-size-sm;
+
+        &.total {
+          font-size: $font-size-lg;
+        }
+      }
+    }
   }
 }
 

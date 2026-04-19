@@ -1,8 +1,13 @@
 @use '../../_variables' as *;
 
+// Prevent horizontal overflow on mobile
+* {
+  box-sizing: border-box;
+}
+
 .checkout-container {
   display: grid;
-  grid-template-columns: 1fr $size-350;
+  grid-template-columns: 1fr $size-sidebar-wide;
   gap: $spacing-3;
   padding: $spacing-3;
   max-width: $container-xxl;
@@ -12,15 +17,35 @@
 
   @media (max-width: $breakpoint-lg) {
     grid-template-columns: 1fr;
+    padding: $spacing-2;
+    gap: $spacing-2;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    padding: $spacing-1;
+    gap: $spacing-1 + $spacing-05;
   }
 }
 
 .checkout-content {
+  max-width: 100%;
+  overflow-x: hidden;
+
   h1 {
     margin: 0 0 $spacing-3 0;
     font-size: $font-size-4xl;
     font-weight: $font-weight-medium;
     color: $color-white;
+
+    @media (max-width: $breakpoint-md) {
+      font-size: $font-size-3xl;
+      margin-bottom: $spacing-2;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-size-2xl;
+      margin-bottom: $spacing-1 + $spacing-05;
+    }
   }
 }
 
@@ -30,6 +55,13 @@
   border: $border-width-thin solid rgba($color-gold, 0.2);
   box-shadow: $shadow-xl;
   overflow: visible !important;
+  max-width: 100%;
+
+  @media (max-width: $breakpoint-sm) {
+    margin-bottom: $spacing-1 + $spacing-05;
+    margin-left: 0;
+    margin-right: 0;
+  }
 
   mat-card-header {
     color: $color-white;
@@ -42,9 +74,21 @@
   mat-card-content {
     padding: $spacing-3;
     color: $color-white;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-2;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      padding: $spacing-1 + $spacing-05;
+    }
   }
   
   .mat-mdc-form-field {
+    max-width: 100%;
+    box-sizing: border-box;
     .mat-mdc-text-field-wrapper {
       background-color: rgba($color-white, 0.1) !important;
     }
@@ -104,16 +148,33 @@
 
 ::ng-deep .mat-stepper-horizontal {
   background: transparent !important;
+  max-width: 100%;
+  overflow-x: hidden;
   
   .mat-horizontal-stepper-header-container {
     background: linear-gradient(135deg, rgba($color-primary, 0.2) 0%, rgba($color-primary-dark, 0.3) 100%) !important;
     border-bottom: $border-width-thin solid rgba($color-gold, 0.2);
+    max-width: 100%;
+
+    @media (max-width: $breakpoint-sm) {
+      padding: $spacing-1 0;
+    }
   }
   
   .mat-step-header {
+    @media (max-width: $breakpoint-sm) {
+      padding: $spacing-1 $spacing-05 !important;
+    }
+
     .mat-step-icon {
       background-color: rgba($color-gold, 0.3) !important;
       color: $color-white !important;
+
+      @media (max-width: $breakpoint-sm) {
+        width: $size-square-lg !important;
+        height: $size-square-lg !important;
+        font-size: $font-size-sm !important;
+      }
     }
     
     .mat-step-icon-selected {
@@ -123,6 +184,10 @@
     
     .mat-step-label {
       color: rgba($color-white, 0.7) !important;
+
+      @media (max-width: $breakpoint-sm) {
+        font-size: $font-size-xs !important;
+      }
     }
     
     .mat-step-label-selected {
@@ -242,70 +307,88 @@
   flex-wrap: wrap;
   overflow: visible;
 
+  @media (max-width: $breakpoint-md) {
+    margin: $spacing-2 $spacing-1 + $spacing-05;
+    gap: $spacing-1;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    flex-direction: column;
+    margin: $spacing-1 + $spacing-05 $spacing-1;
+    gap: $spacing-1;
+  }
+
   button {
-    min-width: $size-120;
+    min-width: $size-button-width-md;
     display: flex;
     align-items: center;
     gap: $spacing-05;
-    transition: transform $transition-base, box-shadow $transition-base;
+    border-radius: 0 !important;
+    transition:
+      transform $transition-base,
+      box-shadow $transition-base,
+      background $transition-base,
+      border-color $transition-base,
+      color $transition-base;
+
+    @media (max-width: $breakpoint-sm) {
+      width: 100%;
+      min-width: unset;
+      justify-content: center;
+    }
     
     &[color="primary"] {
-      background-color: $color-primary !important;
-      color: $color-primary-contrast !important;
+      background: $theme-cta-primary-bg !important;
+      color: $theme-cta-primary-text !important;
       
       &:hover:not([disabled]) {
-        background-color: $color-primary-dark !important;
-        transform: scale(1.05);
-        box-shadow:
-          0 0 20px rgba($color-gold, 0.9),
-          0 8px 25px rgba($color-gold, 0.5),
-          $shadow-xl;
+        background: $theme-cta-primary-bg-hover !important;
+        transform: scale($theme-cta-scale-hover);
+        box-shadow: $theme-cta-shadow-glow;
       }
 
       &:active:not([disabled]) {
-        transform: scale(0.98);
+        transform: scale($theme-cta-scale-active);
         box-shadow: $shadow-sm;
       }
 
       &[disabled] {
-        background-color: $color-gray-300 !important;
-        color: $color-gray-500 !important;
+        background: rgba($color-white, 0.12) !important;
+        color: rgba($color-white, 0.45) !important;
         opacity: 0.6;
         cursor: not-allowed;
+        box-shadow: none !important;
         
         mat-icon {
-          color: $color-gray-500 !important;
+          color: rgba($color-white, 0.45) !important;
         }
       }
     }
     
     &[mat-button]:not([color="primary"]) {
-      color: $color-white !important;
-      border: $border-width-thin solid rgba($color-gold, 0.3);
-      background: rgba($color-white, 0.05);
+      color: $theme-cta-secondary-text !important;
+      border: $border-width-thin solid $theme-cta-secondary-border;
+      background: $theme-cta-secondary-bg;
       
       mat-icon {
         color: $color-gold !important;
       }
       
       &:hover {
-        background: rgba($color-white, 0.1);
-        border-color: $color-gold;
-        transform: scale(1.05);
-        box-shadow:
-          0 0 15px rgba($color-gold, 0.6),
-          0 4px 15px rgba($color-gold, 0.3),
-          $shadow-lg;
+        background: $theme-cta-secondary-bg-hover;
+        border-color: $theme-cta-secondary-border-hover;
+        transform: scale($theme-cta-scale-hover);
+        box-shadow: $theme-cta-shadow-soft;
       }
       
       &:active {
-        transform: scale(0.98);
+        transform: scale($theme-cta-scale-active);
         box-shadow: $shadow-sm;
       }
     }
 
     &:active:not([disabled]):not([color="primary"]) {
-      transform: scale(0.98);
+      transform: scale($theme-cta-scale-active);
     }
 
     mat-icon {
@@ -320,11 +403,20 @@
     content: '';
     flex: 1;
     order: -1;
+
+    @media (max-width: $breakpoint-sm) {
+      display: none;
+    }
   }
 
   button:first-child {
     margin-right: auto;
     order: -2;
+
+    @media (max-width: $breakpoint-sm) {
+      margin-right: 0;
+      order: 0;
+    }
   }
 }
 
@@ -334,6 +426,14 @@
   mat-card-content {
     overflow: visible !important;
     padding: $spacing-3 $spacing-4 !important;
+
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-2 $spacing-3 !important;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      padding: $spacing-1 + $spacing-05 $spacing-2 !important;
+    }
   }
   
   .order-items {
@@ -343,11 +443,22 @@
     margin-left: -$spacing-2;
     margin-right: -$spacing-2;
 
+    @media (max-width: $breakpoint-sm) {
+      padding: 0 $spacing-1;
+      margin-left: -$spacing-1;
+      margin-right: -$spacing-1;
+    }
+
     h3 {
       margin: 0 0 $spacing-2 0;
       font-size: $font-size-lg;
       font-weight: $font-weight-medium;
       color: $color-white;
+
+      @media (max-width: $breakpoint-sm) {
+        font-size: $font-size-base;
+        margin-bottom: $spacing-1 + $spacing-05;
+      }
     }
 
     .order-item {
@@ -357,6 +468,12 @@
       margin: 0 (-$spacing-1);
       border-bottom: 1px solid rgba($color-white, 0.1);
       transition: all $transition-base;
+
+      @media (max-width: $breakpoint-sm) {
+        gap: $spacing-1;
+        padding: $spacing-1;
+        margin: 0;
+      }
 
       &:last-child {
         border-bottom: none;
@@ -371,12 +488,17 @@
       }
 
       img {
-        width: $size-sm;
-        height: $size-sm;
+        width: $size-square-xl;
+        height: $size-square-xl;
         object-fit: cover;
         border-radius: $border-radius-md;
         border: $border-width-thin solid rgba($color-gold, 0.3);
         transition: all $transition-base;
+
+        @media (max-width: $breakpoint-sm) {
+          width: $size-input-height-md;
+          height: $size-input-height-md;
+        }
 
         &.clickable {
           cursor: pointer;
@@ -391,6 +513,7 @@
 
       .item-details {
         flex: 1;
+        min-width: 0;
 
         h4 {
           margin: 0 0 $spacing-1 0;
@@ -398,6 +521,11 @@
           font-weight: $font-weight-medium;
           color: $color-white;
           transition: all $transition-base;
+
+          @media (max-width: $breakpoint-sm) {
+            font-size: $font-size-sm;
+            margin-bottom: $spacing-05;
+          }
 
           &.clickable {
             cursor: pointer;
@@ -413,12 +541,21 @@
           margin: $spacing-05 0;
           color: rgba($color-white, 0.7);
           font-size: $font-size-sm;
+
+          @media (max-width: $breakpoint-sm) {
+            font-size: $font-size-xs;
+            margin: $spacing-025 0;
+          }
         }
 
         .price {
           color: $color-gold;
           font-weight: $font-weight-semibold;
           font-size: $font-size-base;
+
+          @media (max-width: $breakpoint-sm) {
+            font-size: $font-size-sm;
+          }
         }
       }
     }

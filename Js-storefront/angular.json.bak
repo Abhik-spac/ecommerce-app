@@ -57,7 +57,7 @@
 							}
 						],
 						"styles": [
-							"src/styles/custom-theme.scss",
+							"@angular/material/prebuilt-themes/indigo-pink.css",
 							"src/styles.scss"
 						],
 						"scripts": []
@@ -82,7 +82,7 @@
 							}
 						],
 						"styles": [
-							"src/styles/custom-theme.scss",
+							"@angular/material/prebuilt-themes/indigo-pink.css",
 							"src/styles.scss"
 						],
 						"scripts": []
@@ -191,7 +191,7 @@
 							}
 						],
 						"styles": [
-							"src/styles/custom-theme.scss",
+							"@angular/material/prebuilt-themes/indigo-pink.css",
 							"projects/b2b-app/src/styles.scss"
 						],
 						"scripts": []
@@ -324,7 +324,7 @@
 							}
 						],
 						"styles": [
-							"src/styles/custom-theme.scss",
+							"@angular/material/prebuilt-themes/indigo-pink.css",
 							"projects/admin-app/src/styles.scss"
 						],
 						"scripts": []
@@ -447,7 +447,7 @@
 						"inlineStyleLanguage": "scss",
 						"assets": [],
 						"styles": [
-							"src/styles/custom-theme.scss",
+							"@angular/material/prebuilt-themes/indigo-pink.css",
 							"projects/product-mfe/src/styles.scss"
 						],
 						"scripts": [],
@@ -543,7 +543,7 @@
 						"inlineStyleLanguage": "scss",
 						"assets": [],
 						"styles": [
-							"src/styles/custom-theme.scss",
+							"@angular/material/prebuilt-themes/indigo-pink.css",
 							"projects/cart-mfe/src/styles.scss"
 						],
 						"scripts": [],
@@ -639,7 +639,7 @@
 						"inlineStyleLanguage": "scss",
 						"assets": [],
 						"styles": [
-							"src/styles/custom-theme.scss",
+							"@angular/material/prebuilt-themes/indigo-pink.css",
 							"projects/checkout-mfe/src/styles.scss"
 						],
 						"scripts": [],
@@ -735,7 +735,7 @@
 						"inlineStyleLanguage": "scss",
 						"assets": [],
 						"styles": [
-							"src/styles/custom-theme.scss",
+							"@angular/material/prebuilt-themes/indigo-pink.css",
 							"projects/order-mfe/src/styles.scss"
 						],
 						"scripts": [],
@@ -831,7 +831,7 @@
 						"inlineStyleLanguage": "scss",
 						"assets": [],
 						"styles": [
-							"src/styles/custom-theme.scss",
+							"@angular/material/prebuilt-themes/indigo-pink.css",
 							"projects/auth-mfe/src/styles.scss"
 						],
 						"scripts": [],
@@ -927,7 +927,7 @@
 						"inlineStyleLanguage": "scss",
 						"assets": [],
 						"styles": [
-							"src/styles/custom-theme.scss",
+							"@angular/material/prebuilt-themes/indigo-pink.css",
 							"projects/user-mfe/src/styles.scss"
 						],
 						"scripts": [],
