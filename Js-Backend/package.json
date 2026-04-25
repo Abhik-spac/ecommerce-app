@@ -1,0 +1,73 @@
+{
+  "name": "ecommerce-backend",
+  "version": "1.0.0",
+  "description": "Production-ready Node.js microservices backend for eCommerce platform",
+  "private": true,
+  "workspaces": [
+    "services/*",
+    "shared/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm:dev:*\"",
+    "dev:gateway": "npm run dev --workspace=services/api-gateway",
+    "dev:auth": "npm run dev --workspace=services/auth-service",
+    "dev:product": "npm run dev --workspace=services/product-service",
+    "dev:cart": "npm run dev --workspace=services/cart-service",
+    "dev:checkout": "npm run dev --workspace=services/checkout-service",
+    "dev:order": "npm run dev --workspace=services/order-service",
+    "dev:user": "npm run dev --workspace=services/user-service",
+    "build": "npm run build --workspaces",
+    "build:gateway": "npm run build --workspace=services/api-gateway",
+    "build:auth": "npm run build --workspace=services/auth-service",
+    "build:product": "npm run build --workspace=services/product-service",
+    "build:cart": "npm run build --workspace=services/cart-service",
+    "build:checkout": "npm run build --workspace=services/checkout-service",
+    "build:order": "npm run build --workspace=services/order-service",
+    "build:user": "npm run build --workspace=services/user-service",
+    "test": "npm run test --workspaces",
+    "test:coverage": "npm run test:coverage --workspaces",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write \"**/*.{ts,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,json,md}\"",
+    "docker:build": "docker-compose -f infrastructure/docker/docker-compose.yml build",
+    "docker:up": "docker-compose -f infrastructure/docker/docker-compose.yml up -d",
+    "docker:down": "docker-compose -f infrastructure/docker/docker-compose.yml down",
+    "docker:logs": "docker-compose -f infrastructure/docker/docker-compose.yml logs -f",
+    "db:migrate": "npm run migrate --workspaces",
+    "db:seed": "npm run seed --workspaces",
+    "clean": "rm -rf node_modules dist coverage && npm run clean --workspaces"
+  },
+  "keywords": [
+    "nodejs",
+    "typescript",
+    "microservices",
+    "ecommerce",
+    "express",
+    "mongodb",
+    "redis",
+    "jwt",
+    "rest-api"
+  ],
+  "author": "Your Company",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/redis": "^4.0.10",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "redis": "^5.12.1"
+  }
+}
