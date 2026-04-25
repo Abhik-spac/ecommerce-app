@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AuthService } from '@ecommerce/shared';
+import { AuthService, CartService } from '@ecommerce/shared';
 
 @Component({
   selector: 'app-login',
@@ -28,16 +28,15 @@ import { AuthService } from '@ecommerce/shared';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  private authService = inject(AuthService);
+  private cartService = inject(CartService);
+  private router = inject(Router);
+  
   email = '';
   password = '';
   hidePassword = signal(true);
   isLoading = signal(false);
   errorMessage = signal('');
-
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
 
   onSubmit(): void {
     if (!this.email || !this.password) {
@@ -47,12 +46,31 @@ export class LoginComponent {
 
     this.isLoading.set(true);
     this.errorMessage.set('');
+    
+    const guestId = this.authService.getGuestId();
 
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
-        this.isLoading.set(false);
-        const returnUrl = new URLSearchParams(window.location.search).get('returnUrl');
-        this.router.navigateByUrl(returnUrl || '/products');
+        // Merge guest cart if exists
+        if (guestId) {
+          this.cartService.mergeGuestCart(guestId).subscribe({
+            next: () => {
+              this.isLoading.set(false);
+              const returnUrl = new URLSearchParams(window.location.search).get('returnUrl');
+              this.router.navigateByUrl(returnUrl || '/');
+            },
+            error: () => {
+              // Continue even if merge fails
+              this.isLoading.set(false);
+              const returnUrl = new URLSearchParams(window.location.search).get('returnUrl');
+              this.router.navigateByUrl(returnUrl || '/');
+            }
+          });
+        } else {
+          this.isLoading.set(false);
+          const returnUrl = new URLSearchParams(window.location.search).get('returnUrl');
+          this.router.navigateByUrl(returnUrl || '/');
+        }
       },
       error: (error) => {
         this.isLoading.set(false);

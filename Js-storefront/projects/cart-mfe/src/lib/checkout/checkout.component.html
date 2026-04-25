@@ -1,0 +1,99 @@
+<div class="checkout-container">
+  <h1>Checkout</h1>
+
+  <div *ngIf="cartService.itemCount() === 0" class="empty-cart">
+    <mat-icon class="empty-icon">shopping_cart</mat-icon>
+    <h2>Your cart is empty</h2>
+    <p>Add some products to checkout!</p>
+    <button mat-raised-button color="primary" routerLink="/products">
+      Browse Products
+    </button>
+  </div>
+
+  <div *ngIf="cartService.itemCount() > 0" class="checkout-content">
+    <!-- Guest Checkout Form -->
+    <div *ngIf="showGuestForm()" class="guest-form-container">
+      <lib-guest-checkout-form
+        (formSubmit)="onGuestFormSubmit($event)"
+        (cancel)="onGuestFormCancel()"
+      ></lib-guest-checkout-form>
+    </div>
+
+    <!-- Order Summary -->
+    <div *ngIf="!showGuestForm()" class="order-summary-container">
+      <mat-card class="order-items">
+        <h2>Order Items</h2>
+        <mat-divider></mat-divider>
+        
+        <div *ngFor="let item of cartService.items()" class="order-item">
+          <div class="item-image">
+            <img [src]="item.image || 'no-image.svg'" [alt]="item.name">
+          </div>
+          <div class="item-info">
+            <h3>{{ item.name }}</h3>
+            <p class="item-quantity">Quantity: {{ item.quantity }}</p>
+          </div>
+          <div class="item-price">
+            <p>₹{{ (item.price * item.quantity) | number:'1.0-0' }}</p>
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="payment-summary">
+        <h2>Payment Summary</h2>
+        <mat-divider></mat-divider>
+        
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span>₹{{ cartService.subtotal() | number:'1.0-0' }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Tax (18%):</span>
+          <span>₹{{ cartService.tax() | number:'1.0-0' }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping:</span>
+          <span>Free</span>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="summary-row total">
+          <span>Total:</span>
+          <span>₹{{ cartService.total() | number:'1.0-0' }}</span>
+        </div>
+
+        <!-- Guest Data Summary -->
+        <div *ngIf="isGuest() && guestData()" class="guest-info">
+          <h3>Delivery Information</h3>
+          <p><strong>Name:</strong> {{ guestData()!.name }}</p>
+          <p><strong>Email:</strong> {{ guestData()!.email }}</p>
+          <p><strong>Mobile:</strong> {{ guestData()!.mobile }}</p>
+          <p><strong>Address:</strong></p>
+          <p class="address">
+            {{ guestData()!.address.street }}<br>
+            {{ guestData()!.address.city }}, {{ guestData()!.address.state }}<br>
+            {{ guestData()!.address.pincode }}, {{ guestData()!.address.country }}
+          </p>
+          <button mat-button color="accent" (click)="showGuestForm.set(true)">
+            Edit Information
+          </button>
+        </div>
+
+        <div class="action-buttons">
+          <button mat-button routerLink="/cart">
+            <mat-icon>arrow_back</mat-icon>
+            Back to Cart
+          </button>
+          <button 
+            mat-raised-button 
+            color="primary" 
+            (click)="proceedToPayment()"
+            [disabled]="isProcessing()"
+          >
+            <mat-spinner *ngIf="isProcessing()" diameter="20"></mat-spinner>
+            <span *ngIf="!isProcessing()">Place Order</span>
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

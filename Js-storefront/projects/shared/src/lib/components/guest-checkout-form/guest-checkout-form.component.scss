@@ -1,0 +1,174 @@
+@import '../styles/variables';
+
+.guest-checkout-form {
+  max-width: $size-dialog-wide;
+  margin: 0 auto;
+  padding: $spacing-2;
+  background: $color-white;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-md;
+
+  .form-header {
+    margin-bottom: $spacing-2;
+    text-align: center;
+
+    h2 {
+      color: $color-primary;
+      margin-bottom: $spacing-05;
+      font-size: $font-size-3xl;
+    }
+
+    p {
+      color: $color-text-secondary;
+      font-size: $font-size-sm;
+    }
+  }
+
+  .form-section {
+    margin-bottom: $spacing-2;
+
+    h3 {
+      color: $color-text-primary;
+      font-size: $font-size-xl;
+      margin-bottom: $spacing-1;
+      padding-bottom: $spacing-05;
+      border-bottom: $border-width-normal solid $color-border-light;
+    }
+  }
+
+  .form-group {
+    margin-bottom: $spacing-1 + $spacing-025;
+
+    label {
+      display: block;
+      margin-bottom: $spacing-05;
+      color: $color-text-primary;
+      font-weight: $font-weight-medium;
+      font-size: $font-size-sm;
+
+      .required {
+        color: $color-error;
+        margin-left: $spacing-0125;
+      }
+    }
+
+    input {
+      width: 100%;
+      padding: $spacing-075;
+      border: $border-width-thin solid $color-border-light;
+      border-radius: $border-radius-sm;
+      font-size: $font-size-base;
+      transition: $transition-base;
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+      }
+
+      &.invalid {
+        border-color: $color-error;
+
+        &:focus {
+          box-shadow: 0 0 0 3px rgba($color-error, 0.1);
+        }
+      }
+
+      &[readonly] {
+        background-color: $color-bg-secondary;
+        cursor: not-allowed;
+      }
+
+      &::placeholder {
+        color: $color-text-hint;
+      }
+    }
+
+    .error-message {
+      display: block;
+      margin-top: $spacing-025;
+      color: $color-error;
+      font-size: $font-size-sm;
+    }
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-1;
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: $spacing-1;
+    margin-top: $spacing-2;
+    padding-top: $spacing-2;
+    border-top: $border-width-thin solid $color-border-light;
+
+    .btn {
+      flex: 1;
+      padding: $spacing-0875 $spacing-2;
+      border: none;
+      border-radius: $border-radius-sm;
+      font-size: $font-size-base;
+      font-weight: $font-weight-medium;
+      cursor: pointer;
+      transition: $transition-base;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &.btn-primary {
+        background-color: $color-primary;
+        color: $color-white;
+
+        &:hover:not(:disabled) {
+          background-color: $color-primary-dark;
+          transform: translateY(-1px);
+          box-shadow: 0 4px 8px rgba($color-primary, 0.3);
+        }
+      }
+
+      &.btn-secondary {
+        background-color: $color-bg-secondary;
+        color: $color-text-primary;
+        border: $border-width-thin solid $color-border-light;
+
+        &:hover:not(:disabled) {
+          background-color: $color-bg-tertiary;
+        }
+      }
+    }
+
+    @media (max-width: $breakpoint-md) {
+      flex-direction: column-reverse;
+
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $breakpoint-md) {
+  .guest-checkout-form {
+    padding: $spacing-2;
+    margin: $spacing-1;
+
+    .form-header {
+      h2 {
+        font-size: $font-size-2xl;
+      }
+    }
+  }
+}
+
+// Made with Bob

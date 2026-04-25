@@ -1,6 +1,8 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
-import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Subject, tap, catchError, throwError } from 'rxjs';
 import { ToastService } from './toast.service';
+import { environment } from '../../../../../src/environments/environment';
 
 export interface CartItem {
   id: string;
@@ -15,7 +17,10 @@ export interface CartItem {
   providedIn: 'root'
 })
 export class CartService {
+  private http = inject(HttpClient);
   private toastService = inject(ToastService);
+  
+  private apiUrl = environment.apiUrls.cart;
   private cartItems = signal<CartItem[]>([]);
   private itemAddedSubject = new Subject<void>();
   
@@ -35,72 +40,103 @@ export class CartService {
   total = computed(() => this.subtotal() + this.tax());
 
   constructor() {
-    // Cart will be managed via API calls
-    // No localStorage usage - data will come from backend
+    // Load cart from backend on initialization
+    this.loadCart();
+  }
+
+  loadCart(): void {
+    this.http.get<any>(`${this.apiUrl}/cart`).pipe(
+      tap(response => {
+        this.cartItems.set(response.items || []);
+      }),
+      catchError(error => {
+        console.error('Load cart error:', error);
+        return throwError(() => error);
+      })
+    ).subscribe();
   }
 
   addToCart(product: any): void {
-    const existingItem = this.cartItems().find(item => item.productId === product.id);
+    const item = {
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+      image: product.images?.[0]?.url || ''
+    };
     
-    if (existingItem) {
-      this.updateQuantity(existingItem.id, existingItem.quantity + 1);
-      this.toastService.info(`Updated ${product.name} quantity in cart`);
-    } else {
-      const newItem: CartItem = {
-        id: Date.now().toString(),
-        productId: product.id,
-        name: product.name,
-        price: product.price,
-        quantity: 1,
-        image: product.images[0]?.url || ''
-      };
-      this.cartItems.update(items => [...items, newItem]);
-      this.toastService.success(`${product.name} added to cart!`);
-    }
-    
-    // Emit event that item was added
-    this.itemAddedSubject.next();
-    
-    // TODO: Call API to add item to cart
-    // this.http.post('/api/cart/items', newItem).subscribe(...)
+    this.http.post<any>(`${this.apiUrl}/cart/items`, item).pipe(
+      tap(response => {
+        this.cartItems.set(response.items || []);
+        this.toastService.success(`${product.name} added to cart!`);
+        this.itemAddedSubject.next();
+      }),
+      catchError(error => {
+        console.error('Add to cart error:', error);
+        this.toastService.error('Failed to add item to cart');
+        return throwError(() => error);
+      })
+    ).subscribe();
   }
 
-  updateQuantity(itemId: string, quantity: number): void {
+  updateQuantity(productId: string, quantity: number): void {
     if (quantity <= 0) {
-      this.removeItem(itemId);
+      this.removeItem(productId);
       return;
     }
     
-    this.cartItems.update(items =>
-      items.map(item =>
-        item.id === itemId ? { ...item, quantity } : item
-      )
-    );
-    
-    // TODO: Call API to update cart item quantity
-    // this.http.put(`/api/cart/items/${itemId}`, { quantity }).subscribe(...)
+    this.http.put<any>(`${this.apiUrl}/cart/items/${productId}`, { quantity }).pipe(
+      tap(response => {
+        this.cartItems.set(response.items || []);
+      }),
+      catchError(error => {
+        console.error('Update quantity error:', error);
+        this.toastService.error('Failed to update quantity');
+        return throwError(() => error);
+      })
+    ).subscribe();
   }
 
-  removeItem(itemId: string): void {
-    this.cartItems.update(items => items.filter(item => item.id !== itemId));
-    
-    // TODO: Call API to remove cart item
-    // this.http.delete(`/api/cart/items/${itemId}`).subscribe(...)
+  removeItem(productId: string): void {
+    this.http.delete<any>(`${this.apiUrl}/cart/items/${productId}`).pipe(
+      tap(response => {
+        this.cartItems.set(response.items || []);
+        this.toastService.info('Item removed from cart');
+      }),
+      catchError(error => {
+        console.error('Remove item error:', error);
+        this.toastService.error('Failed to remove item');
+        return throwError(() => error);
+      })
+    ).subscribe();
   }
 
   clearCart(): void {
-    this.cartItems.set([]);
-    
-    // TODO: Call API to clear cart
-    // this.http.delete('/api/cart').subscribe(...)
+    this.http.delete<any>(`${this.apiUrl}/cart`).pipe(
+      tap(() => {
+        this.cartItems.set([]);
+        this.toastService.info('Cart cleared');
+      }),
+      catchError(error => {
+        console.error('Clear cart error:', error);
+        this.toastService.error('Failed to clear cart');
+        return throwError(() => error);
+      })
+    ).subscribe();
   }
 
-  // TODO: Add method to load cart from API
-  // loadCart(): void {
-  //   this.http.get<CartItem[]>('/api/cart/items').subscribe(items => {
-  //     this.cartItems.set(items);
-  //   });
-  // }
+  mergeGuestCart(guestId: string) {
+    return this.http.post<any>(`${this.apiUrl}/cart/merge`, { guestId }).pipe(
+      tap(response => {
+        this.cartItems.set(response.items || []);
+        this.toastService.success('Cart merged successfully');
+      }),
+      catchError(error => {
+        console.error('Merge cart error:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }
 
 // Made with Bob

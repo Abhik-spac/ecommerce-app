@@ -6,48 +6,74 @@
     </mat-card-header>
 
     <mat-card-content>
-      <form (ngSubmit)="onSubmit()">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="name-row">
           <mat-form-field appearance="outline">
             <mat-label>First Name</mat-label>
-            <input matInput type="text" [(ngModel)]="formData.firstName" 
-                   name="firstName" required>
+            <input matInput type="text" formControlName="firstName">
             <mat-icon matPrefix>person</mat-icon>
+            <mat-error *ngIf="registerForm.get('firstName')?.hasError('required')">
+              First name is required
+            </mat-error>
+            <mat-error *ngIf="registerForm.get('firstName')?.hasError('minlength')">
+              Minimum 2 characters required
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Last Name</mat-label>
-            <input matInput type="text" [(ngModel)]="formData.lastName" 
-                   name="lastName" required>
+            <input matInput type="text" formControlName="lastName">
+            <mat-error *ngIf="registerForm.get('lastName')?.hasError('required')">
+              Last name is required
+            </mat-error>
+            <mat-error *ngIf="registerForm.get('lastName')?.hasError('minlength')">
+              Minimum 2 characters required
+            </mat-error>
           </mat-form-field>
         </div>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email</mat-label>
-          <input matInput type="email" [(ngModel)]="formData.email" 
-                 name="email" required>
+          <input matInput type="email" formControlName="email">
           <mat-icon matPrefix>email</mat-icon>
+          <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
+            Please enter a valid email
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Phone Number</mat-label>
-          <input matInput type="tel" [(ngModel)]="formData.phone" 
-                 name="phone" placeholder="+91 9876543210">
+          <input matInput type="tel" formControlName="phone">
           <mat-icon matPrefix>phone</mat-icon>
+          <mat-error *ngIf="registerForm.get('phone')?.hasError('pattern')">
+            Please enter a valid phone number
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Password</mat-label>
-          <input matInput [type]="hidePassword() ? 'password' : 'text'" 
-                 [(ngModel)]="formData.password" name="password" required>
+          <input matInput [type]="hidePassword() ? 'password' : 'text'"
+                 formControlName="password">
           <mat-icon matPrefix>lock</mat-icon>
           <button mat-icon-button matSuffix type="button"
                   (click)="hidePassword.set(!hidePassword())">
             <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
+          <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
+            Password is required
+          </mat-error>
+          <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
+            Minimum 8 characters required
+          </mat-error>
+          <mat-error *ngIf="registerForm.get('password')?.hasError('weakPassword')">
+            Password is too weak
+          </mat-error>
         </mat-form-field>
 
-        <div class="password-strength" *ngIf="formData.password">
+        <div class="password-strength" *ngIf="password?.value">
           <div class="strength-bar">
             <div class="strength-fill" [style.width.%]="passwordStrength()"></div>
           </div>
@@ -58,38 +84,44 @@
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Confirm Password</mat-label>
-          <input matInput [type]="hideConfirmPassword() ? 'password' : 'text'" 
-                 [(ngModel)]="formData.confirmPassword" name="confirmPassword" required>
+          <input matInput [type]="hideConfirmPassword() ? 'password' : 'text'"
+                 formControlName="confirmPassword">
           <mat-icon matPrefix>lock</mat-icon>
           <button mat-icon-button matSuffix type="button"
                   (click)="hideConfirmPassword.set(!hideConfirmPassword())">
             <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
+          <mat-error *ngIf="registerForm.get('confirmPassword')?.hasError('required')">
+            Please confirm your password
+          </mat-error>
         </mat-form-field>
 
-        <div *ngIf="formData.password && formData.confirmPassword && !passwordsMatch()" 
+        <div *ngIf="password?.value && confirmPassword?.value && !passwordsMatch()"
              class="password-mismatch">
           <mat-icon>error</mat-icon>
           Passwords do not match
         </div>
 
-        <mat-checkbox [(ngModel)]="formData.acceptTerms" name="acceptTerms" 
-                      class="terms-checkbox">
-          I agree to the <a href="#" (click)="$event.preventDefault()">Terms & Conditions</a> 
+        <mat-checkbox formControlName="acceptTerms" class="terms-checkbox">
+          I agree to the <a href="#" (click)="$event.preventDefault()">Terms & Conditions</a>
           and <a href="#" (click)="$event.preventDefault()">Privacy Policy</a>
         </mat-checkbox>
+        <div *ngIf="registerForm.get('acceptTerms')?.touched && registerForm.get('acceptTerms')?.hasError('required')"
+             class="error-text">
+          You must accept the terms and conditions
+        </div>
+
+        <button mat-raised-button color="primary" type="submit"
+                class="register-button"
+                [disabled]="isLoading() || !registerForm.valid">
+          <mat-spinner *ngIf="isLoading()" diameter="20"></mat-spinner>
+          <span *ngIf="!isLoading()">Create Account</span>
+        </button>
 
         <div *ngIf="errorMessage()" class="error-message">
           <mat-icon>error</mat-icon>
           {{ errorMessage() }}
         </div>
-
-        <button mat-raised-button color="primary" type="submit" 
-                class="register-button"
-                [disabled]="isLoading() || !isFormValid()">
-          <mat-spinner *ngIf="isLoading()" diameter="20"></mat-spinner>
-          <span *ngIf="!isLoading()">Create Account</span>
-        </button>
       </form>
 
       <mat-divider class="divider"></mat-divider>
@@ -97,12 +129,12 @@
       <div class="social-login">
         <p>Or sign up with</p>
         <div class="social-buttons">
-          <button mat-stroked-button (click)="socialLogin('google')" 
+          <button mat-stroked-button (click)="socialLogin('google')"
                   [disabled]="isLoading()">
             <img src="https://www.google.com/favicon.ico" alt="Google" width="20">
             Google
           </button>
-          <button mat-stroked-button (click)="socialLogin('facebook')" 
+          <button mat-stroked-button (click)="socialLogin('facebook')"
                   [disabled]="isLoading()">
             <img src="https://www.facebook.com/favicon.ico" alt="Facebook" width="20">
             Facebook

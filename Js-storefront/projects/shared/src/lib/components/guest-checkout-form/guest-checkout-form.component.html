@@ -1,0 +1,142 @@
+<div class="guest-checkout-form">
+  <div class="form-header">
+    <h2>Guest Checkout</h2>
+    <p>Please provide your details to complete the order</p>
+  </div>
+
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+    <!-- Personal Information -->
+    <div class="form-section">
+      <h3>Personal Information</h3>
+      
+      <div class="form-group">
+        <label for="name">Full Name <span class="required">*</span></label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          placeholder="Enter your full name"
+          [class.invalid]="isFieldInvalid('name')"
+        />
+        <span class="error-message" *ngIf="isFieldInvalid('name')">
+          {{ getErrorMessage('name') }}
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email <span class="required">*</span></label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="your.email@example.com"
+          [class.invalid]="isFieldInvalid('email')"
+        />
+        <span class="error-message" *ngIf="isFieldInvalid('email')">
+          {{ getErrorMessage('email') }}
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="mobile">Mobile Number <span class="required">*</span></label>
+        <input
+          type="tel"
+          id="mobile"
+          formControlName="mobile"
+          placeholder="10-digit mobile number"
+          maxlength="10"
+          [class.invalid]="isFieldInvalid('mobile')"
+        />
+        <span class="error-message" *ngIf="isFieldInvalid('mobile')">
+          {{ getErrorMessage('mobile') }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Shipping Address -->
+    <div class="form-section" formGroupName="address">
+      <h3>Shipping Address</h3>
+      
+      <div class="form-group">
+        <label for="street">Street Address <span class="required">*</span></label>
+        <input
+          type="text"
+          id="street"
+          formControlName="street"
+          placeholder="House/Flat No., Street Name"
+          [class.invalid]="isFieldInvalid('address.street')"
+        />
+        <span class="error-message" *ngIf="isFieldInvalid('address.street')">
+          {{ getErrorMessage('address.street') }}
+        </span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="city">City <span class="required">*</span></label>
+          <input
+            type="text"
+            id="city"
+            formControlName="city"
+            placeholder="City"
+            [class.invalid]="isFieldInvalid('address.city')"
+          />
+          <span class="error-message" *ngIf="isFieldInvalid('address.city')">
+            {{ getErrorMessage('address.city') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="state">State <span class="required">*</span></label>
+          <input
+            type="text"
+            id="state"
+            formControlName="state"
+            placeholder="State"
+            [class.invalid]="isFieldInvalid('address.state')"
+          />
+          <span class="error-message" *ngIf="isFieldInvalid('address.state')">
+            {{ getErrorMessage('address.state') }}
+          </span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="pincode">Pincode <span class="required">*</span></label>
+          <input
+            type="text"
+            id="pincode"
+            formControlName="pincode"
+            placeholder="6-digit pincode"
+            maxlength="6"
+            [class.invalid]="isFieldInvalid('address.pincode')"
+          />
+          <span class="error-message" *ngIf="isFieldInvalid('address.pincode')">
+            {{ getErrorMessage('address.pincode') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country <span class="required">*</span></label>
+          <input
+            type="text"
+            id="country"
+            formControlName="country"
+            readonly
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isSubmitting()">
+        Cancel
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? 'Processing...' : 'Continue to Payment' }}
+      </button>
+    </div>
+  </form>
+</div>

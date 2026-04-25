@@ -54,7 +54,7 @@ export class AppComponent implements OnDestroy {
     public authService: AuthService,
     public cartService: CartService,
     private toastService: ToastService,
-    private router: Router,
+    public router: Router,
     public responsive: ResponsiveService
   ) {
     // Track current route

@@ -1,0 +1,182 @@
+@import '@ecommerce/shared/styles/variables';
+
+.checkout-container {
+  max-width: $container-xl;
+  margin: 0 auto;
+  padding: $spacing-2;
+
+  h1 {
+    color: $color-primary;
+    margin-bottom: $spacing-2;
+    font-size: $font-size-4xl;
+  }
+
+  .empty-cart {
+    text-align: center;
+    padding: $spacing-4 $spacing-2;
+
+    .empty-icon {
+      font-size: $size-square-md;
+      width: $size-square-md;
+      height: $size-square-md;
+      color: $color-gray-400;
+      margin-bottom: $spacing-1;
+    }
+
+    h2 {
+      color: $color-gray-800;
+      margin-bottom: $spacing-05;
+    }
+
+    p {
+      color: $color-text-secondary;
+      margin-bottom: $spacing-2;
+    }
+  }
+
+  .checkout-content {
+    .guest-form-container {
+      max-width: $size-800;
+      margin: 0 auto;
+    }
+
+    .order-summary-container {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: $spacing-2;
+
+      @media (max-width: $breakpoint-lg) {
+        grid-template-columns: 1fr;
+      }
+
+      .order-items {
+        h2 {
+          color: $color-primary;
+          margin-bottom: $spacing-1;
+        }
+
+        .order-item {
+          display: flex;
+          align-items: center;
+          gap: $spacing-1;
+          padding: $spacing-1 0;
+          border-bottom: $border-width-thin solid $color-border-light;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          .item-image {
+            width: $size-square-md;
+            height: $size-square-md;
+            flex-shrink: 0;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              border-radius: $border-radius-sm;
+            }
+          }
+
+          .item-info {
+            flex: 1;
+
+            h3 {
+              font-size: $font-size-base;
+              color: $color-text-primary;
+              margin-bottom: $spacing-025;
+            }
+
+            .item-quantity {
+              color: $color-text-secondary;
+              font-size: $font-size-sm;
+            }
+          }
+
+          .item-price {
+            font-weight: $font-weight-semibold;
+            color: $color-primary;
+            font-size: $font-size-lg;
+          }
+        }
+      }
+
+      .payment-summary {
+        height: fit-content;
+        position: sticky;
+        top: $spacing-2;
+
+        h2 {
+          color: $color-primary;
+          margin-bottom: $spacing-1;
+        }
+
+        .summary-row {
+          display: flex;
+          justify-content: space-between;
+          padding: $spacing-075 0;
+          color: $color-gray-800;
+
+          &.total {
+            font-size: $font-size-xl;
+            font-weight: $font-weight-semibold;
+            color: $color-primary;
+            padding: $spacing-1 0;
+          }
+        }
+
+        .guest-info {
+          margin-top: $spacing-2;
+          padding-top: $spacing-2;
+          border-top: $border-width-thin solid $color-border-light;
+
+          h3 {
+            color: $color-primary;
+            font-size: $font-size-lg;
+            margin-bottom: $spacing-1;
+          }
+
+          p {
+            margin: $spacing-05 0;
+            color: $color-gray-800;
+
+            strong {
+              color: $color-text-primary;
+            }
+
+            &.address {
+              padding: $spacing-075;
+              background: $color-gray-100;
+              border-radius: $border-radius-sm;
+              margin-top: $spacing-05;
+              line-height: $line-height-relaxed;
+            }
+          }
+
+          button {
+            margin-top: $spacing-1;
+          }
+        }
+
+        .action-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-1;
+          margin-top: $spacing-2;
+
+          button {
+            width: 100%;
+
+            mat-spinner {
+              display: inline-block;
+              margin-right: $spacing-05;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Made with Bob
