@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/products', productRoutes);
+app.use('/api/v1/products', productRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
@@ -23,7 +23,7 @@ app.get('/health', (req, res) => {
 
 // MongoDB connection
 mongoose
-  .connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/product-db')
+  .connect(process.env.MONGODB_URI!)
   .then(() => {
     console.log('✅ MongoDB connected');
     app.listen(PORT, () => {

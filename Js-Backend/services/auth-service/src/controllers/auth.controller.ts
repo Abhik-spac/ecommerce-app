@@ -41,6 +41,7 @@ export const register = async (req: Request, res: Response) => {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        phone: user.phone,
         role: user.role,
       },
     });
@@ -79,6 +80,7 @@ export const login = async (req: Request, res: Response) => {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        phone: user.phone,
         role: user.role,
       },
     });
@@ -244,6 +246,65 @@ export const verifyToken = async (req: Request, res: Response) => {
     res.json({ user });
   } catch (error) {
     console.error('Verify token error:', error);
+    res.status(401).json({ error: 'Invalid token' });
+  }
+};
+
+// Create Guest Session
+export const createGuestSession = async (req: Request, res: Response) => {
+  try {
+    const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const token = jwt.sign({ guestId, type: 'guest' }, JWT_SECRET, {
+      expiresIn: JWT_EXPIRES_IN,
+    });
+    
+    res.json({
+      guestId,
+      token,
+      type: 'guest',
+      expiresIn: JWT_EXPIRES_IN
+    });
+  } catch (error) {
+    console.error('Create guest session error:', error);
+    res.status(500).json({ error: 'Failed to create guest session' });
+  }
+};
+
+// Get Current User (works for both authenticated users and guests)
+export const getCurrentUser = async (req: Request, res: Response) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ error: 'No token provided' });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    
+    if (decoded.type === 'guest') {
+      return res.json({
+        type: 'guest',
+        guestId: decoded.guestId
+      });
+    }
+    
+    const user = await User.findById(decoded.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({
+      type: 'user',
+      user: {
+        id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Get current user error:', error);
     res.status(401).json({ error: 'Invalid token' });
   }
 };

@@ -19,7 +19,7 @@ app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routes
-app.use('/api/auth', authRoutes);
+app.use('/api/v1/auth', authRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
@@ -28,7 +28,7 @@ app.get('/health', (req, res) => {
 
 // MongoDB connection
 mongoose
-  .connect(process.env.MONGODB_URI || 'mongodb://admin:admin123@localhost:27017/auth-db?authSource=admin')
+  .connect(process.env.MONGODB_URI!)
   .then(() => {
     console.log('Connected to MongoDB');
     app.listen(PORT, () => {

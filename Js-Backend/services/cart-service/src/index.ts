@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import { createClient } from 'redis';
 import dotenv from 'dotenv';
 import cartRoutes from './routes/cart.routes';
@@ -6,7 +7,13 @@ import cartRoutes from './routes/cart.routes';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT!;
+
+// CORS configuration
+app.use(cors({
+  origin: process.env.CORS_ORIGINS!.split(','),
+  credentials: true
+}));
 
 app.use(express.json());
 

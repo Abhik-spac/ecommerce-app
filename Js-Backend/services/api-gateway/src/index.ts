@@ -17,7 +17,7 @@ dotenv.config();
 
 // Create Express app
 const app: Application = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT!;
 
 // Simple logger (instead of importing from common)
 const log = {
@@ -30,7 +30,7 @@ const log = {
 // Middleware
 app.use(helmet()); // Security headers
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:4200', 'http://localhost:4300', 'http://localhost:4400'],
+  origin: process.env.ALLOWED_ORIGINS!.split(','),
   credentials: true,
   optionsSuccessStatus: 200,
 }));
@@ -94,12 +94,12 @@ app.get('/api-docs', (req: Request, res: Response) => {
 
 // Service URLs from environment variables
 const SERVICES = {
-  AUTH: process.env.AUTH_SERVICE_URL || 'http://localhost:3001',
-  PRODUCT: process.env.PRODUCT_SERVICE_URL || 'http://localhost:3002',
-  CART: process.env.CART_SERVICE_URL || 'http://localhost:3003',
-  CHECKOUT: process.env.CHECKOUT_SERVICE_URL || 'http://localhost:3004',
-  ORDER: process.env.ORDER_SERVICE_URL || 'http://localhost:3005',
-  USER: process.env.USER_SERVICE_URL || 'http://localhost:3006',
+  AUTH: process.env.AUTH_SERVICE_URL!,
+  PRODUCT: process.env.PRODUCT_SERVICE_URL!,
+  CART: process.env.CART_SERVICE_URL!,
+  CHECKOUT: process.env.CHECKOUT_SERVICE_URL!,
+  ORDER: process.env.ORDER_SERVICE_URL!,
+  USER: process.env.USER_SERVICE_URL!,
 };
 
 // Proxy configuration

@@ -1,17 +1,18 @@
 import { Router } from 'express';
-import { getCart, addToCart, updateCartItem, removeFromCart, clearCart } from '../controllers/cart.controller';
-import { authenticate } from '../middleware/auth.middleware';
+import { getCart, addToCart, updateCartItem, removeFromCart, clearCart, mergeGuestCart } from '../controllers/cart.controller';
+import { authenticate, authenticateOrGuest } from '../middleware/auth.middleware';
 
 const router = Router();
 
-// All cart routes require authentication
-router.use(authenticate);
+// Cart operations (allow both users and guests)
+router.get('/', authenticateOrGuest, getCart);
+router.post('/items', authenticateOrGuest, addToCart);
+router.put('/items/:productId', authenticateOrGuest, updateCartItem);
+router.delete('/items/:productId', authenticateOrGuest, removeFromCart);
+router.delete('/', authenticateOrGuest, clearCart);
 
-router.get('/', getCart);
-router.post('/items', addToCart);
-router.put('/items/:productId', updateCartItem);
-router.delete('/items/:productId', removeFromCart);
-router.delete('/', clearCart);
+// Merge guest cart (requires authenticated user)
+router.post('/merge', authenticate, mergeGuestCart);
 
 export default router;
 

@@ -1,13 +1,16 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 
+const CART_SERVICE_URL = process.env.CART_SERVICE_URL!;
+const ORDER_SERVICE_URL = process.env.ORDER_SERVICE_URL!;
+
 export class CheckoutController {
   async initiateCheckout(req: Request, res: Response) {
     try {
       const { userId, cartId, shippingAddress, billingAddress } = req.body;
       
       // Validate cart
-      const cartResponse = await axios.get(`http://localhost:3003/api/v1/cart`, {
+      const cartResponse = await axios.get(`${CART_SERVICE_URL}/api/v1/cart`, {
         headers: { 'x-user-id': userId }
       });
       
@@ -43,7 +46,18 @@ export class CheckoutController {
   
   async processPayment(req: Request, res: Response) {
     try {
-      const { checkoutId, paymentMethod, paymentDetails } = req.body;
+      const { checkoutId, paymentMethod, paymentDetails, userType, guestData } = req.body;
+      
+      // Validate guest data if guest checkout
+      if (userType === 'guest') {
+        const validation = this.validateGuestData(guestData);
+        if (!validation.isValid) {
+          return res.status(400).json({
+            success: false,
+            message: validation.error
+          });
+        }
+      }
       
       // Simulate payment processing
       const paymentResult = {
@@ -56,9 +70,11 @@ export class CheckoutController {
       };
       
       // Create order after successful payment
-      const orderResponse = await axios.post('http://localhost:3005/api/v1/orders', {
+      const orderResponse = await axios.post(`${ORDER_SERVICE_URL}/api/v1/orders`, {
         checkoutId,
         paymentResult,
+        userType,
+        guestData,
         ...req.body,
       });
       
@@ -72,6 +88,50 @@ export class CheckoutController {
     } catch (error: any) {
       res.status(500).json({ success: false, message: error.message });
     }
+  }
+  
+  private validateGuestData(guestData: any): { isValid: boolean; error?: string } {
+    if (!guestData) {
+      return { isValid: false, error: 'Guest data is required for guest checkout' };
+    }
+    
+    const { name, email, mobile, address } = guestData;
+    
+    // Validate required fields
+    if (!name || !email || !mobile || !address) {
+      return {
+        isValid: false,
+        error: 'Guest checkout requires: name, email, mobile, and address'
+      };
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return { isValid: false, error: 'Invalid email format' };
+    }
+    
+    // Validate mobile format (10 digits)
+    const mobileRegex = /^[0-9]{10}$/;
+    if (!mobileRegex.test(mobile.replace(/\D/g, ''))) {
+      return { isValid: false, error: 'Invalid mobile number (must be 10 digits)' };
+    }
+    
+    // Validate address fields
+    if (!address.street || !address.city || !address.state || !address.pincode) {
+      return {
+        isValid: false,
+        error: 'Address must include: street, city, state, and pincode'
+      };
+    }
+    
+    // Validate pincode (6 digits)
+    const pincodeRegex = /^[0-9]{6}$/;
+    if (!pincodeRegex.test(address.pincode)) {
+      return { isValid: false, error: 'Invalid pincode (must be 6 digits)' };
+    }
+    
+    return { isValid: true };
   }
   
   async validateAddress(req: Request, res: Response) {

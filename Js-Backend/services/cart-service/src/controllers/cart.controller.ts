@@ -116,6 +116,63 @@ export const clearCart = async (req: Request, res: Response) => {
   }
 };
 
+export const mergeGuestCart = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user?.id;
+    const userType = (req as any).user?.type;
+    const { guestId } = req.body;
+    
+    if (!userId || userType !== 'user') {
+      return res.status(403).json({ error: 'Only authenticated users can merge carts' });
+    }
+    
+    if (!guestId) {
+      return res.status(400).json({ error: 'Guest ID is required' });
+    }
+    
+    // Get both carts
+    const guestCart = await cartService.getCart(guestId);
+    const userCart = await cartService.getCart(userId);
+    
+    // If guest cart is empty, just return user cart
+    if (!guestCart.items || guestCart.items.length === 0) {
+      return res.json(userCart);
+    }
+    
+    // Merge items
+    const mergedItems = [...(userCart.items || [])];
+    
+    for (const guestItem of guestCart.items) {
+      const existingIndex = mergedItems.findIndex((i: any) => i.productId === guestItem.productId);
+      if (existingIndex >= 0) {
+        // Add quantities if item exists
+        mergedItems[existingIndex].quantity += guestItem.quantity;
+      } else {
+        // Add new item
+        mergedItems.push(guestItem);
+      }
+    }
+    
+    // Calculate pricing for merged cart
+    const mergedCart = {
+      items: mergedItems,
+      pricing: calculatePricing(mergedItems)
+    };
+    
+    // Save merged cart to user's cart
+    await saveCart(userId, mergedCart);
+    
+    // Delete guest cart
+    const { redis } = require('../index');
+    await redis.del(`cart:${guestId}`);
+    
+    res.json(mergedCart);
+  } catch (error) {
+    console.error('Merge cart error:', error);
+    res.status(500).json({ error: 'Failed to merge carts' });
+  }
+};
+
 // Helper functions
 function calculatePricing(items: any[]) {
   const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
