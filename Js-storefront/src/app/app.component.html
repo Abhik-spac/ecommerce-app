@@ -47,7 +47,7 @@
       </a>
       <!-- Not Authenticated -->
       <ng-container *ngIf="!authService.isAuthenticated()">
-        <a mat-list-item routerLink="/login" (click)="sidenav.close()">
+        <a mat-list-item [routerLink]="['/login']" [queryParams]="{returnUrl: router.url}" (click)="sidenav.close()">
           <mat-icon matListItemIcon>login</mat-icon>
           <span matListItemTitle>Login</span>
         </a>
@@ -165,7 +165,7 @@
           </button>
 
           <!-- Not Authenticated -->
-          <button mat-button *ngIf="!authService.isAuthenticated()" routerLink="/login">
+          <button mat-button *ngIf="!authService.isAuthenticated()" [routerLink]="['/login']" [queryParams]="{returnUrl: router.url}">
             <mat-icon>login</mat-icon>
             Login
           </button>

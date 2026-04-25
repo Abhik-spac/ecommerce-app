@@ -1,6 +1,4 @@
 {
-	"b2bApp": "http://localhost:4300/remoteEntry.json",
-	"adminApp": "http://localhost:4400/remoteEntry.json",
 	"productMfe": "http://localhost:4201/remoteEntry.json",
 	"cartMfe": "http://localhost:4202/remoteEntry.json",
 	"checkoutMfe": "http://localhost:4203/remoteEntry.json",

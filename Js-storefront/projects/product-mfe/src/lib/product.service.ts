@@ -1,23 +1,25 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { MockDataService } from '@ecommerce/shared';
+import { environment } from '../../../../src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  constructor(private mockData: MockDataService) {}
+  private http = inject(HttpClient);
+  private apiUrl = environment.apiUrls.product;
 
   getProducts(params?: any): Observable<any> {
-    return this.mockData.getProducts(params);
+    return this.http.get(`${this.apiUrl}/products`, { params });
   }
 
   getProductById(id: string): Observable<any> {
-    return this.mockData.getProductById(id);
+    return this.http.get(`${this.apiUrl}/products/${id}`);
   }
 
   searchProducts(query: string): Observable<any> {
-    return this.mockData.getProducts({ search: query });
+    return this.http.get(`${this.apiUrl}/products`, { params: { search: query } });
   }
 }
 
