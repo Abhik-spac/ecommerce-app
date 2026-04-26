@@ -1,12 +1,17 @@
 import { Routes } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/native-federation';
 import { authGuard, guestGuard } from './guards/auth.guard';
-import { HomeComponent } from './pages/home.component';
+import { HomeComponent } from './pages/home/home.component';
+import { WishlistComponent } from './pages/wishlist/wishlist.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomeComponent
+  },
+  {
+    path: 'wishlist',
+    component: WishlistComponent
   },
   // Product MFE routes
   {
@@ -34,19 +39,18 @@ export const routes: Routes = [
       loadRemoteModule('userMfe', './Routes').then(m => m.USER_ROUTES),
     canActivate: [authGuard]
   },
-  // Checkout MFE routes (protected)
+  // Checkout MFE routes (accessible to both guests and authenticated users)
   {
     path: 'checkout',
     loadChildren: () =>
-      loadRemoteModule('checkoutMfe', './Routes').then(m => m.CHECKOUT_ROUTES),
-    canActivate: [authGuard]
+      loadRemoteModule('checkoutMfe', './Routes').then(m => m.CHECKOUT_ROUTES)
   },
-  // Order MFE routes (protected)
+  // Order MFE routes
+  // Order list is protected, but confirmation is accessible to guests
   {
     path: 'orders',
     loadChildren: () =>
-      loadRemoteModule('orderMfe', './Routes').then(m => m.ORDER_ROUTES),
-    canActivate: [authGuard]
+      loadRemoteModule('orderMfe', './Routes').then(m => m.ORDER_ROUTES)
   },
   {
     path: '**',

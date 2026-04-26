@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, OnDestroy } from '@angular/core';
+import { Component, OnInit, signal, OnDestroy, HostListener, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -16,8 +16,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ProductService } from '../product.service';
-import { CartService } from '@ecommerce/shared';
+import { CartService, WishlistService, AuthService } from '@ecommerce/shared';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -40,23 +41,30 @@ import { Subscription } from 'rxjs';
     MatCheckboxModule,
     MatExpansionModule,
     MatDividerModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule
   ],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
-export class ProductListComponent implements OnInit, OnDestroy {
+export class ProductListComponent implements OnInit, OnDestroy, AfterViewInit {
   products = signal<any[]>([]);
   filteredProducts = signal<any[]>([]);
   isLoading = signal(true);
+  isLoadingMore = signal(false);
   searchQuery = '';
   sortBy = 'name';
+  
+  // Pagination
+  currentPage = 1;
+  totalPages = 1;
+  hasMore = true;
   
   // Filter states
   selectedTags: string[] = [];
   minPrice = 0;
-  maxPrice = 100000;
-  priceRange = [0, 100000];
+  maxPrice = 500000;
+  priceRange = [0, 500000];
   minRating = 0;
   
   // Mobile filter toggle
@@ -65,11 +73,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
   // Available filter options (based on actual product tags)
   availableTags = ['laptop', 'phone', 'audio', 'wearable', 'tablet', 'camera', 'featured', 'new'];
   
+  @ViewChild('loadMoreTrigger') loadMoreTrigger?: ElementRef;
+  private observer?: IntersectionObserver;
   private subscriptions = new Subscription();
   
   constructor(
     private productService: ProductService,
     public cartService: CartService,
+    public wishlistService: WishlistService,
+    public authService: AuthService,
     private route: ActivatedRoute
   ) {}
 
@@ -85,13 +97,50 @@ export class ProductListComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+  ngAfterViewInit(): void {
+    // Set up Intersection Observer for infinite scroll
+    this.setupIntersectionObserver();
   }
 
-  loadProducts(): void {
-    this.isLoading.set(true);
-    const params: any = {};
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+    this.observer?.disconnect();
+  }
+
+  private setupIntersectionObserver(): void {
+    const options = {
+      root: null,
+      rootMargin: '200px',
+      threshold: 0.1
+    };
+
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && this.hasMore && !this.isLoadingMore()) {
+          this.loadMoreProducts();
+        }
+      });
+    }, options);
+
+    // Observe the trigger element if it exists
+    if (this.loadMoreTrigger) {
+      this.observer.observe(this.loadMoreTrigger.nativeElement);
+    }
+  }
+
+  loadProducts(reset: boolean = true): void {
+    if (reset) {
+      this.isLoading.set(true);
+      this.currentPage = 1;
+      this.products.set([]);
+    } else {
+      this.isLoadingMore.set(true);
+    }
+    
+    const params: any = {
+      page: this.currentPage,
+      limit: 15
+    };
     
     if (this.searchQuery) {
       params.search = this.searchQuery;
@@ -104,15 +153,28 @@ export class ProductListComponent implements OnInit, OnDestroy {
     
     this.productService.getProducts(params).subscribe({
       next: (response) => {
-        this.products.set(response.products);
+        const newProducts = reset ? response.products : [...this.products(), ...response.products];
+        this.products.set(newProducts);
+        this.totalPages = response.pagination.pages;
+        this.hasMore = this.currentPage < response.pagination.pages;
         this.applyFilters();
         this.isLoading.set(false);
+        this.isLoadingMore.set(false);
       },
       error: (error) => {
         console.error('Error loading products:', error);
         this.isLoading.set(false);
+        this.isLoadingMore.set(false);
       }
     });
+  }
+
+  loadMoreProducts(): void {
+    if (!this.hasMore || this.isLoadingMore()) {
+      return;
+    }
+    this.currentPage++;
+    this.loadProducts(false);
   }
 
   applyFilters(): void {
@@ -172,7 +234,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   clearFilters(): void {
     this.selectedTags = [];
-    this.priceRange = [0, 100000];
+    this.priceRange = [0, 500000];
     this.minRating = 0;
     this.searchQuery = '';
     this.loadProducts();
@@ -199,6 +261,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
   addToCart(product: any, event: Event): void {
     event.stopPropagation();
     this.cartService.addToCart(product);
+  }
+
+  toggleWishlist(product: any, event: Event): void {
+    event.stopPropagation();
+    this.wishlistService.toggleWishlist(product._id, product.name);
+  }
+
+  isInWishlist(productId: string): boolean {
+    return this.wishlistService.isInWishlist(productId);
   }
 
   getDiscountPercentage(product: any): number {

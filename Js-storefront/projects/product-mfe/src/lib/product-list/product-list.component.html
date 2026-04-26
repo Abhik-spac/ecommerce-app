@@ -165,7 +165,7 @@
 
       <!-- Products Grid -->
       <div *ngIf="!isLoading()" class="products-grid">
-        <mat-card *ngFor="let product of filteredProducts()" class="product-card" [routerLink]="['/products', product.id]">
+        <mat-card *ngFor="let product of filteredProducts()" class="product-card" [routerLink]="['/products', product._id]">
       <!-- Product Image -->
       <div class="product-image-container">
         <img mat-card-image [src]="product.images[0]?.url || 'no-image.svg'" [alt]="product.name" class="product-image">
@@ -218,8 +218,13 @@
           <mat-icon>shopping_cart</mat-icon>
           Add to Cart
         </button>
-        <button mat-icon-button color="accent" (click)="$event.stopPropagation()">
-          <mat-icon>favorite_border</mat-icon>
+        <button
+          *ngIf="authService.isAuthenticated()"
+          mat-icon-button
+          [color]="isInWishlist(product._id) ? 'warn' : 'accent'"
+          (click)="toggleWishlist(product, $event)"
+          [matTooltip]="isInWishlist(product._id) ? 'Remove from wishlist' : 'Add to wishlist'">
+          <mat-icon>{{isInWishlist(product._id) ? 'favorite' : 'favorite_border'}}</mat-icon>
         </button>
       </mat-card-actions>
         </mat-card>
@@ -234,6 +239,21 @@
           <mat-icon>refresh</mat-icon>
           Clear All Filters
         </button>
+      </div>
+
+      <!-- Intersection Observer Trigger -->
+      <div #loadMoreTrigger class="load-more-trigger"></div>
+
+      <!-- Loading More Indicator -->
+      <div *ngIf="isLoadingMore()" class="loading-more">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading more products...</p>
+      </div>
+
+      <!-- End of Results -->
+      <div *ngIf="!isLoading() && !isLoadingMore() && !hasMore && filteredProducts().length > 0" class="end-of-results">
+        <mat-icon>check_circle</mat-icon>
+        <p>You've reached the end of the product list</p>
       </div>
     </div>
   </div>

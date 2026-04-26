@@ -1,9 +1,12 @@
-import { Injectable, signal } from '@angular/core';
-import { Observable, of, delay } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map, catchError, of } from 'rxjs';
 
 export interface Order {
-  id: string;
-  userId: string;
+  _id?: string;
+  id?: string;
+  userId?: string;
+  guestId?: string;
   items: any[];
   subtotal: number;
   tax: number;
@@ -12,158 +15,135 @@ export interface Order {
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   paymentMethod: string;
   shippingAddress: any;
+  billingAddress?: any;
   createdAt: Date;
   updatedAt: Date;
+}
+
+interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  message?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private orders = signal<Order[]>([]);
+  private http = inject(HttpClient);
+  private apiUrl = this.getApiUrl();
 
-  constructor() {
-    this.loadMockOrders();
+  private getApiUrl(): string {
+    const baseUrl = (window as any).__env?.ORDER_SERVICE_URL || 'http://localhost:3000/api/v1';
+    return `${baseUrl}/orders`;
   }
 
-  private loadMockOrders(): void {
-    // Load mock orders from localStorage or create sample data
-    const savedOrders = localStorage.getItem('orders');
-    if (savedOrders) {
-      this.orders.set(JSON.parse(savedOrders));
-    } else {
-      // Create sample orders
-      const mockOrders: Order[] = [
-        {
-          id: 'ORD1234567890',
-          userId: 'user1',
-          items: [
-            {
-              id: '1',
-              productId: '1',
-              name: 'Premium Laptop',
-              price: 75999,
-              quantity: 1,
-              image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400'
-            }
-          ],
-          subtotal: 75999,
-          tax: 13679.82,
-          shipping: 0,
-          total: 89678.82,
-          status: 'delivered',
-          paymentMethod: 'card',
-          shippingAddress: {
-            firstName: 'John',
-            lastName: 'Doe',
-            address1: '123 Main Street',
-            address2: 'Apt 4B',
-            city: 'Mumbai',
-            state: 'Maharashtra',
-            postalCode: '400001',
-            country: 'India',
-            phone: '+91 9876543210'
-          },
-          createdAt: new Date('2024-01-15'),
-          updatedAt: new Date('2024-01-20')
-        },
-        {
-          id: 'ORD1234567891',
-          userId: 'user1',
-          items: [
-            {
-              id: '2',
-              productId: '2',
-              name: 'Smartphone Pro',
-              price: 54999,
-              quantity: 1,
-              image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400'
-            }
-          ],
-          subtotal: 54999,
-          tax: 9899.82,
-          shipping: 0,
-          total: 64898.82,
-          status: 'shipped',
-          paymentMethod: 'upi',
-          shippingAddress: {
-            firstName: 'John',
-            lastName: 'Doe',
-            address1: '123 Main Street',
-            address2: 'Apt 4B',
-            city: 'Mumbai',
-            state: 'Maharashtra',
-            postalCode: '400001',
-            country: 'India',
-            phone: '+91 9876543210'
-          },
-          createdAt: new Date('2024-02-01'),
-          updatedAt: new Date('2024-02-05')
-        }
-      ];
-      this.orders.set(mockOrders);
-      this.saveOrders();
-    }
-  }
-
+  /**
+   * Get all orders for the current user
+   */
   getOrders(): Observable<Order[]> {
-    return of(this.orders()).pipe(delay(500));
-  }
-
-  getOrder(orderId: string): Observable<Order | undefined> {
-    const order = this.orders().find(o => o.id === orderId);
-    return of(order).pipe(delay(300));
-  }
-
-  createOrder(orderData: Partial<Order>): Observable<Order> {
-    const newOrder: Order = {
-      id: 'ORD' + Date.now(),
-      userId: orderData.userId || 'user1',
-      items: orderData.items || [],
-      subtotal: orderData.subtotal || 0,
-      tax: orderData.tax || 0,
-      shipping: orderData.shipping || 0,
-      total: orderData.total || 0,
-      status: 'pending',
-      paymentMethod: orderData.paymentMethod || 'card',
-      shippingAddress: orderData.shippingAddress || {},
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-
-    this.orders.update(orders => [...orders, newOrder]);
-    this.saveOrders();
-
-    return of(newOrder).pipe(delay(1000));
-  }
-
-  updateOrderStatus(orderId: string, status: Order['status']): Observable<Order | undefined> {
-    this.orders.update(orders =>
-      orders.map(order =>
-        order.id === orderId
-          ? { ...order, status, updatedAt: new Date() }
-          : order
-      )
+    return this.http.get<ApiResponse<Order[]>>(this.apiUrl).pipe(
+      map(response => response.data || []),
+      catchError(error => {
+        console.error('Error fetching orders:', error);
+        return of([]);
+      })
     );
-    this.saveOrders();
-
-    const updatedOrder = this.orders().find(o => o.id === orderId);
-    return of(updatedOrder).pipe(delay(500));
   }
 
+  /**
+   * Get a specific order by ID
+   */
+  getOrder(orderId: string): Observable<Order | undefined> {
+    return this.http.get<ApiResponse<Order>>(`${this.apiUrl}/${orderId}`).pipe(
+      map(response => {
+        if (response.success && response.data) {
+          // Normalize the order ID
+          const order = response.data;
+          if (order._id && !order.id) {
+            order.id = order._id;
+          }
+          return order;
+        }
+        return undefined;
+      }),
+      catchError(error => {
+        console.error(`Error fetching order ${orderId}:`, error);
+        return of(undefined);
+      })
+    );
+  }
+
+  /**
+   * Create a new order
+   */
+  createOrder(orderData: Partial<Order>): Observable<Order> {
+    return this.http.post<ApiResponse<Order>>(this.apiUrl, orderData).pipe(
+      map(response => response.data)
+    );
+  }
+
+  /**
+   * Update order status
+   */
+  updateOrderStatus(orderId: string, status: Order['status']): Observable<Order | undefined> {
+    return this.http.patch<ApiResponse<Order>>(`${this.apiUrl}/${orderId}/status`, { status }).pipe(
+      map(response => response.data),
+      catchError(error => {
+        console.error(`Error updating order ${orderId} status:`, error);
+        return of(undefined);
+      })
+    );
+  }
+
+  /**
+   * Cancel an order
+   */
   cancelOrder(orderId: string): Observable<Order | undefined> {
     return this.updateOrderStatus(orderId, 'cancelled');
   }
 
+  /**
+   * Download invoice for an order
+   */
   downloadInvoice(orderId: string): Observable<Blob> {
-    // Simulate PDF generation
-    const pdfContent = `Invoice for Order #${orderId}`;
-    const blob = new Blob([pdfContent], { type: 'application/pdf' });
-    return of(blob).pipe(delay(1000));
+    return this.http.get(`${this.apiUrl}/${orderId}/invoice`, {
+      responseType: 'blob'
+    }).pipe(
+      catchError(error => {
+        console.error(`Error downloading invoice for order ${orderId}:`, error);
+        // Return empty blob on error
+        return of(new Blob());
+      })
+    );
   }
 
-  private saveOrders(): void {
-    localStorage.setItem('orders', JSON.stringify(this.orders()));
+  /**
+   * Track guest orders by email/phone - returns all orders for the contact
+   */
+  trackGuestOrders(email?: string, phone?: string): Observable<Order[]> {
+    return this.http.post<ApiResponse<Order[]> & { count?: number }>(`${this.apiUrl}/track`, {
+      email,
+      phone
+    }).pipe(
+      map(response => {
+        if (response.success && response.data) {
+          // Normalize order IDs for all orders
+          const orders = Array.isArray(response.data) ? response.data : [response.data];
+          return orders.map(order => {
+            if (order._id && !order.id) {
+              order.id = order._id;
+            }
+            return order;
+          });
+        }
+        return [];
+      }),
+      catchError(error => {
+        console.error('Error tracking guest orders:', error);
+        return of([]);
+      })
+    );
   }
 }
 

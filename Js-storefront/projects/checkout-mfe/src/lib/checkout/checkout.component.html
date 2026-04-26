@@ -1,6 +1,6 @@
     <div class="checkout-container">
       <div class="checkout-content">
-        <h1>Checkout</h1>
+        <h1>Checkout <span *ngIf="isGuest()" class="guest-badge">(Guest Checkout)</span></h1>
 
         <mat-stepper [linear]="true" #stepper>
           <!-- Step 1: Shipping Address -->
@@ -10,6 +10,21 @@
               
               <mat-card>
                 <mat-card-content>
+                  <!-- Saved Addresses Selector (for logged-in users) -->
+                  <div *ngIf="!isGuest() && savedAddresses().length > 0" class="saved-addresses">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Select Saved Address</mat-label>
+                      <mat-select (selectionChange)="onAddressSelect($event.value)">
+                        <mat-option value="">Enter new address</mat-option>
+                        <mat-option *ngFor="let address of savedAddresses()" [value]="address._id">
+                          {{ address.firstName }} {{ address.lastName }} - {{ address.city }}, {{ address.state }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-icon matPrefix>bookmark</mat-icon>
+                    </mat-form-field>
+                    <mat-divider></mat-divider>
+                    <br>
+                  </div>
                   <div class="form-row">
                     <mat-form-field appearance="outline">
                       <mat-label>First Name</mat-label>
@@ -72,7 +87,7 @@
                     </mat-form-field>
                   </div>
 
-                  <mat-checkbox formControlName="saveAddress">
+                  <mat-checkbox *ngIf="!isGuest()" formControlName="saveAddress">
                     Save this address for future orders
                   </mat-checkbox>
                 </mat-card-content>
@@ -83,8 +98,9 @@
                   <mat-icon>arrow_back</mat-icon>
                   Back to Cart
                 </button>
-                <button mat-raised-button color="primary" matStepperNext
-                        [disabled]="!shippingForm.valid">
+                <button mat-raised-button color="primary"
+                        [disabled]="!isShippingFormValid()"
+                        (click)="saveShippingAddress()">
                   Continue to Payment
                 </button>
               </div>
@@ -175,8 +191,9 @@
                   <mat-icon>arrow_back</mat-icon>
                   Back
                 </button>
-                <button mat-raised-button color="primary" matStepperNext
-                        [disabled]="!paymentForm.valid">
+                <button mat-raised-button color="primary"
+                        [disabled]="!isPaymentFormValid()"
+                        (click)="savePaymentMethod()">
                   Review Order
                 </button>
               </div>

@@ -14,7 +14,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { AuthService, CartService, ToastService, ResponsiveService } from '@ecommerce/shared';
+import { AuthService, CartService, WishlistService, ToastService, ResponsiveService } from '@ecommerce/shared';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
@@ -53,6 +53,7 @@ export class AppComponent implements OnDestroy {
   constructor(
     public authService: AuthService,
     public cartService: CartService,
+    public wishlistService: WishlistService,
     private toastService: ToastService,
     public router: Router,
     public responsive: ResponsiveService

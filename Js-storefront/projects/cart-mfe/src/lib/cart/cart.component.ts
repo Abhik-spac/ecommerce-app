@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { CartService } from '@ecommerce/shared';
+import { CartService, AuthService } from '@ecommerce/shared';
 
 @Component({
   selector: 'app-cart',
@@ -22,7 +22,10 @@ import { CartService } from '@ecommerce/shared';
   styleUrl: './cart.component.scss'
 })
 export class CartComponent {
-  constructor(public cartService: CartService) {}
+  constructor(
+    public cartService: CartService,
+    public authService: AuthService
+  ) {}
 }
 
 // Made with Bob

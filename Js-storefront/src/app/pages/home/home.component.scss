@@ -1,4 +1,4 @@
-@use '../../styles/variables' as *;
+@use '../../../styles/variables' as *;
 
 .home-container {
   max-width: 100%; // full width
@@ -13,7 +13,7 @@
   padding: $spacing-8 $spacing-2;
   margin-bottom: $spacing-3;
   overflow: hidden;
-  min-height: 34rem;
+  min-height: 34rem; // Custom hero height
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,7 +92,7 @@
       color: $color-gold;
       font-size: $font-size-sm;
       font-weight: $font-weight-semibold;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.12em; // Custom letter spacing for eyebrow
       text-transform: uppercase;
     }
 
@@ -100,7 +100,7 @@
       font-size: $font-size-5xl;
       margin: 0 0 $spacing-1 0;
       font-weight: $font-weight-bold;
-      max-width: 50rem;
+      max-width: $spacing-50;
       text-shadow: 0 0 $spacing-2 rgba($color-black, 0.3);
     }
 
@@ -108,7 +108,7 @@
       font-size: $font-size-2xl;
       margin: 0 0 $spacing-1 + $spacing-05 0;
       opacity: 0.92;
-      max-width: 44rem;
+      max-width: 44rem; // Custom content width
     }
 
     .hero-meta {
@@ -116,7 +116,7 @@
       color: rgba($color-white, 0.75);
       font-size: $font-size-base;
       font-weight: $font-weight-medium;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.04em; // Custom letter spacing for meta
     }
 
     .cta-button {
@@ -171,13 +171,13 @@
 
       &:hover {
         background: rgba($color-gold, 0.75);
-        transform: scale(1.15);
+        transform: scale(1.15); // Custom scale for indicator hover
       }
 
       &.active {
         background: $color-gold;
         box-shadow: 0 0 $spacing-1 rgba($color-gold, 0.55);
-        transform: scale(1.2);
+        transform: scale(1.2); // Custom scale for active indicator
       }
     }
   }

@@ -1,0 +1,148 @@
+<div class="track-order-container">
+  <mat-card class="track-order-card">
+    <mat-card-content>
+      <div class="header">
+        <mat-icon>search</mat-icon>
+        <h1>Track Your Order</h1>
+        <p class="subtitle">Enter your order details to track your shipment</p>
+      </div>
+
+      <!-- Tracking Form -->
+      <form [formGroup]="trackingForm" (ngSubmit)="onTrackOrder()" *ngIf="trackedOrders.length === 0">
+        <div class="contact-info">
+          <p class="info-text">
+            <mat-icon>info</mat-icon>
+            Enter your email or phone number to view all your orders
+          </p>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email Address</mat-label>
+            <input matInput formControlName="email" placeholder="your@email.com" type="email">
+            <mat-icon matPrefix>email</mat-icon>
+            <mat-error *ngIf="trackingForm.get('email')?.hasError('email')">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+
+          <div class="or-divider">
+            <span>OR</span>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="phone" placeholder="10-digit mobile number" type="tel">
+            <mat-icon matPrefix>phone</mat-icon>
+            <mat-error *ngIf="trackingForm.get('phone')?.hasError('pattern')">
+              Please enter a valid 10-digit phone number
+            </mat-error>
+          </mat-form-field>
+
+          <mat-error *ngIf="trackingForm.hasError('atLeastOneContact') && trackingForm.touched" class="form-error">
+            Please provide either email or phone number
+          </mat-error>
+        </div>
+
+        <div class="error-message" *ngIf="errorMessage">
+          <mat-icon>error</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="isLoading">
+            <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+            <mat-icon *ngIf="!isLoading">search</mat-icon>
+            <span *ngIf="!isLoading">Track Order</span>
+            <span *ngIf="isLoading">Tracking...</span>
+          </button>
+          <button mat-button type="button" routerLink="/">
+            <mat-icon>home</mat-icon>
+            Back to Home
+          </button>
+        </div>
+      </form>
+
+      <!-- Orders List -->
+      <div class="orders-list" *ngIf="trackedOrders.length > 0">
+        <div class="success-header">
+          <mat-icon>check_circle</mat-icon>
+          <h2>Your Orders ({{ trackedOrders.length }})</h2>
+        </div>
+
+        <div class="order-card" *ngFor="let order of trackedOrders">
+          <div class="order-header">
+            <div class="order-id">
+              <mat-icon>receipt</mat-icon>
+              <span>Order #{{ order.id || order._id }}</span>
+            </div>
+            <span class="status-badge" [ngClass]="'status-' + order.status.toLowerCase()">
+              {{ order.status }}
+            </span>
+          </div>
+
+          <div class="order-info-grid">
+            <div class="info-item">
+              <span class="label">Order Date:</span>
+              <span class="value">{{ formatDate(getOrderDate(order)) }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Total Amount:</span>
+              <span class="value">₹{{ (+order.total).toFixed(2) }}</span>
+            </div>
+            <div class="info-item" *ngIf="order.items && order.items.length">
+              <span class="label">Items:</span>
+              <span class="value">{{ order.items.length }} item(s)</span>
+            </div>
+          </div>
+
+          <div class="order-actions">
+            <button mat-raised-button color="primary" (click)="viewOrderDetails(order)">
+              <mat-icon>{{ isOrderExpanded(order) ? 'expand_less' : 'expand_more' }}</mat-icon>
+              {{ isOrderExpanded(order) ? 'Hide Details' : 'View Details' }}
+            </button>
+          </div>
+
+          <!-- Expanded Order Details -->
+          <div class="order-details-expanded" *ngIf="isOrderExpanded(order)">
+            <!-- Order Items -->
+            <div class="details-section" *ngIf="order.items && order.items.length > 0">
+              <h4>Order Items</h4>
+              <div class="item-card" *ngFor="let item of order.items">
+                <div class="item-info">
+                  <div class="item-name">{{ item.productName || item.product_name }}</div>
+                  <div class="item-details">
+                    <span>Quantity: {{ item.quantity }}</span>
+                    <span>Price: ₹{{ (+item.price).toFixed(2) }}</span>
+                  </div>
+                </div>
+                <div class="item-total">
+                  ₹{{ (+item.price * item.quantity).toFixed(2) }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Shipping Address -->
+            <div class="details-section" *ngIf="getShippingAddress(order)">
+              <h4>Shipping Address</h4>
+              <div class="address-content">
+                <p><strong>{{ getShippingAddress(order).fullName }}</strong></p>
+                <p>{{ getShippingAddress(order).address }}</p>
+                <p>{{ getShippingAddress(order).city }}, {{ getShippingAddress(order).state }} {{ getShippingAddress(order).zipCode }}</p>
+                <p>Phone: {{ getShippingAddress(order).phone }}</p>
+                <p *ngIf="getShippingAddress(order).email">Email: {{ getShippingAddress(order).email }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button mat-button (click)="trackedOrders = []; trackingForm.reset(); errorMessage = ''">
+            <mat-icon>search</mat-icon>
+            Track Different Orders
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- Made with Bob -->

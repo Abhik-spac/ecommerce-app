@@ -1,4 +1,4 @@
-@import '@ecommerce/shared/styles/variables';
+@use '../../_variables' as *;
 
 .checkout-container {
   max-width: $container-xl;
@@ -16,9 +16,9 @@
     padding: $spacing-4 $spacing-2;
 
     .empty-icon {
-      font-size: $size-square-md;
-      width: $size-square-md;
-      height: $size-square-md;
+      font-size: $icon-size-xxl;
+      width: $icon-size-xxl;
+      height: $icon-size-xxl;
       color: $color-gray-400;
       margin-bottom: $spacing-1;
     }
@@ -67,8 +67,8 @@
           }
 
           .item-image {
-            width: $size-square-md;
-            height: $size-square-md;
+            width: $icon-size-xxl;
+            height: $icon-size-xxl;
             flex-shrink: 0;
 
             img {
