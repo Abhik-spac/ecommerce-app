@@ -270,6 +270,79 @@ export const createGuestSession = async (req: Request, res: Response) => {
   }
 };
 
+// Refresh Token - Reissue token with correct secret
+export const refreshToken = async (req: Request, res: Response) => {
+  try {
+    const oldToken = req.headers.authorization?.split(' ')[1];
+    if (!oldToken) {
+      return res.status(401).json({ error: 'No token provided' });
+    }
+
+    // Try to decode without verification first to get the payload
+    const decoded = jwt.decode(oldToken) as any;
+    if (!decoded) {
+      return res.status(401).json({ error: 'Invalid token format' });
+    }
+
+    // Check if it's a guest token
+    if (decoded.type === 'guest' && decoded.guestId) {
+      // Reissue guest token with correct secret
+      const newToken = jwt.sign(
+        { guestId: decoded.guestId, type: 'guest' },
+        JWT_SECRET,
+        { expiresIn: JWT_EXPIRES_IN }
+      );
+      
+      return res.json({
+        token: newToken,
+        guestId: decoded.guestId,
+        type: 'guest',
+        message: 'Token refreshed successfully'
+      });
+    }
+
+    // For regular users, verify the old token first
+    try {
+      const verified = jwt.verify(oldToken, JWT_SECRET) as any;
+      const user = await User.findById(verified.id).select('-password');
+      
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Reissue user token
+      const newToken = jwt.sign(
+        { id: user._id, email: user.email, role: user.role },
+        JWT_SECRET,
+        { expiresIn: JWT_EXPIRES_IN }
+      );
+
+      return res.json({
+        token: newToken,
+        user: {
+          id: user._id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          phone: user.phone,
+          role: user.role,
+        },
+        type: 'user',
+        message: 'Token refreshed successfully'
+      });
+    } catch (verifyError) {
+      // Token verification failed, but we can still reissue for guests
+      return res.status(401).json({
+        error: 'Token verification failed',
+        message: 'Please login again'
+      });
+    }
+  } catch (error) {
+    console.error('Refresh token error:', error);
+    res.status(500).json({ error: 'Failed to refresh token' });
+  }
+};
+
 // Get Current User (works for both authenticated users and guests)
 export const getCurrentUser = async (req: Request, res: Response) => {
   try {

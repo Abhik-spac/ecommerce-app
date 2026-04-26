@@ -11,6 +11,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import rateLimit from 'express-rate-limit';
+import jwt from 'jsonwebtoken';
 
 // Load environment variables
 dotenv.config();
@@ -35,8 +36,19 @@ app.use(cors({
   optionsSuccessStatus: 200,
 }));
 app.use(compression()); // Response compression
-app.use(express.json()); // JSON body parser
-app.use(express.urlencoded({ extended: true })); // URL-encoded body parser
+// Don't parse body for API routes - let the proxy handle it
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/v1/')) {
+    return next();
+  }
+  express.json()(req, res, next);
+});
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/v1/')) {
+    return next();
+  }
+  express.urlencoded({ extended: true })(req, res, next);
+});
 app.use(morgan('combined')); // HTTP logging
 
 // Request logging middleware
@@ -64,6 +76,58 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 app.use('/api/', limiter);
+
+// JWT verification middleware - extracts userId/guestId from token and adds to headers
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const jwtMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization;
+  
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.substring(7);
+    
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as any;
+      
+      // Check if this is a guest user token
+      if (decoded.type === 'guest' && decoded.guestId) {
+        req.headers['x-guest-id'] = decoded.guestId;
+        log.debug(`JWT verified for guest: ${decoded.guestId}`);
+      } else {
+        // Regular user token
+        const userId = decoded.userId || decoded.id;
+        if (userId) {
+          req.headers['x-user-id'] = userId;
+          log.debug(`JWT verified for user: ${userId}`);
+        }
+      }
+    } catch (error) {
+      log.warn('Invalid JWT token - token may be expired or signed with different secret', { error: (error as Error).message });
+      // Try to decode without verification to extract user info (for development)
+      try {
+        const decoded = jwt.decode(token) as any;
+        if (decoded) {
+          if (decoded.type === 'guest' && decoded.guestId) {
+            req.headers['x-guest-id'] = decoded.guestId;
+            log.debug(`Using unverified guest token: ${decoded.guestId} (DEVELOPMENT ONLY)`);
+          } else {
+            const userId = decoded.userId || decoded.id;
+            if (userId) {
+              req.headers['x-user-id'] = userId;
+              log.debug(`Using unverified user token: ${userId} (DEVELOPMENT ONLY)`);
+            }
+          }
+        }
+      } catch (decodeError) {
+        log.error('Failed to decode JWT token', { error: (decodeError as Error).message });
+      }
+    }
+  }
+  
+  next();
+};
+
+// Apply JWT middleware to all API routes
+app.use('/api/', jwtMiddleware);
 
 // Health check endpoint
 app.get('/health', (req: Request, res: Response) => {
@@ -106,19 +170,36 @@ const SERVICES = {
 const proxyOptions = {
   changeOrigin: true,
   logLevel: 'debug' as const,
+  timeout: 10000, // 10 second timeout
+  proxyTimeout: 10000,
   onProxyReq: (proxyReq: any, req: any) => {
-    log.debug(`Proxying ${req.method} ${req.path}`);
+    // Forward the x-user-id header if it exists
+    if (req.headers['x-user-id']) {
+      proxyReq.setHeader('x-user-id', req.headers['x-user-id']);
+      log.debug(`Forwarding x-user-id: ${req.headers['x-user-id']}`);
+    }
+    // Forward the x-guest-id header if it exists
+    if (req.headers['x-guest-id']) {
+      proxyReq.setHeader('x-guest-id', req.headers['x-guest-id']);
+      log.debug(`Forwarding x-guest-id: ${req.headers['x-guest-id']}`);
+    }
+    log.debug(`Proxying ${req.method} ${req.path} to ${proxyReq.path}`);
+  },
+  onProxyRes: (proxyRes: any, req: any, res: any) => {
+    log.debug(`Received response from ${req.path}: ${proxyRes.statusCode}`);
   },
   onError: (err: Error, req: any, res: any) => {
     log.error('Proxy error:', err);
-    res.status(503).json({
-      success: false,
-      error: {
-        code: 'SERVICE_UNAVAILABLE',
-        message: 'Service temporarily unavailable',
-      },
-      timestamp: new Date().toISOString(),
-    });
+    if (!res.headersSent) {
+      res.status(503).json({
+        success: false,
+        error: {
+          code: 'SERVICE_UNAVAILABLE',
+          message: 'Service temporarily unavailable',
+        },
+        timestamp: new Date().toISOString(),
+      });
+    }
   },
 };
 

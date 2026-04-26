@@ -1,10 +1,139 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
+import { CheckoutSession } from '../models/checkout-session.model';
 
 const CART_SERVICE_URL = process.env.CART_SERVICE_URL!;
 const ORDER_SERVICE_URL = process.env.ORDER_SERVICE_URL!;
 
 export class CheckoutController {
+  // Save or update checkout session
+  async saveSession(req: Request, res: Response) {
+    try {
+      const userId = req.headers['x-user-id'] as string;
+      const guestId = req.headers['x-guest-id'] as string;
+      
+      if (!userId && !guestId) {
+        return res.status(400).json({
+          success: false,
+          message: 'User ID or Guest ID is required'
+        });
+      }
+
+      const {
+        currentStep,
+        shippingAddress,
+        billingAddress,
+        paymentMethod,
+        cartSnapshot,
+        totalAmount
+      } = req.body;
+
+      // Find existing session or create new one
+      const query = userId ? { userId, status: 'IN_PROGRESS' } : { guestId, status: 'IN_PROGRESS' };
+      let session = await CheckoutSession.findOne(query);
+
+      if (session) {
+        // Update existing session
+        session.currentStep = currentStep || session.currentStep;
+        session.shippingAddress = shippingAddress || session.shippingAddress;
+        session.billingAddress = billingAddress || session.billingAddress;
+        session.paymentMethod = paymentMethod || session.paymentMethod;
+        session.cartSnapshot = cartSnapshot || session.cartSnapshot;
+        session.totalAmount = totalAmount || session.totalAmount;
+        session.expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // Extend expiry
+        await session.save();
+      } else {
+        // Create new session
+        session = await CheckoutSession.create({
+          userId,
+          guestId,
+          currentStep: currentStep || 1,
+          shippingAddress,
+          billingAddress,
+          paymentMethod,
+          cartSnapshot,
+          totalAmount
+        });
+      }
+
+      res.json({
+        success: true,
+        data: session,
+        message: 'Checkout session saved successfully'
+      });
+    } catch (error: any) {
+      console.error('Save session error:', error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  // Get checkout session
+  async getSession(req: Request, res: Response) {
+    try {
+      const userId = req.headers['x-user-id'] as string;
+      const guestId = req.headers['x-guest-id'] as string;
+
+      if (!userId && !guestId) {
+        return res.status(400).json({
+          success: false,
+          message: 'User ID or Guest ID is required'
+        });
+      }
+
+      const query = userId ? { userId, status: 'IN_PROGRESS' } : { guestId, status: 'IN_PROGRESS' };
+      const session = await CheckoutSession.findOne(query).sort({ updatedAt: -1 });
+
+      if (!session) {
+        return res.json({
+          success: true,
+          data: null,
+          message: 'No active checkout session found'
+        });
+      }
+
+      res.json({
+        success: true,
+        data: session
+      });
+    } catch (error: any) {
+      console.error('Get session error:', error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  // Clear/abandon checkout session
+  async clearSession(req: Request, res: Response) {
+    try {
+      const userId = req.headers['x-user-id'] as string;
+      const guestId = req.headers['x-guest-id'] as string;
+
+      if (!userId && !guestId) {
+        return res.status(400).json({
+          success: false,
+          message: 'User ID or Guest ID is required'
+        });
+      }
+
+      const query = userId ? { userId, status: 'IN_PROGRESS' } : { guestId, status: 'IN_PROGRESS' };
+      
+      // Mark sessions as COMPLETED instead of deleting
+      // This preserves data for logging, analytics, and reporting
+      // The getSession query only looks for IN_PROGRESS sessions, so completed ones won't be restored
+      await CheckoutSession.updateMany(query, {
+        status: 'COMPLETED',
+        completedAt: new Date()
+      });
+
+      res.json({
+        success: true,
+        message: 'Checkout session cleared successfully'
+      });
+    } catch (error: any) {
+      console.error('Clear session error:', error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
   async initiateCheckout(req: Request, res: Response) {
     try {
       const { userId, cartId, shippingAddress, billingAddress } = req.body;

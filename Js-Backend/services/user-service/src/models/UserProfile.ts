@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 interface IAddress {
+  _id?: any;
   type: string;
   street: string;
   city: string;

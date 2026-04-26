@@ -4,38 +4,43 @@ import { pool } from '../index';
 export class OrderController {
   async createOrder(req: Request, res: Response) {
     try {
-      const { userId, items, shippingAddress, billingAddress, paymentResult } = req.body;
+      const { items, shippingAddress, paymentMethod, subtotal, tax, total } = req.body;
+      
+      // Get userId or guestId from headers
+      const userId = req.headers['x-user-id'] as string;
+      const guestId = req.headers['x-guest-id'] as string;
       
       const client = await pool.connect();
       
       try {
         await client.query('BEGIN');
         
-        // Calculate totals
-        const subtotal = items.reduce((sum: number, item: any) => 
-          sum + (item.price * item.quantity), 0
-        );
-        const tax = subtotal * 0.18;
+        // Calculate shipping
         const shipping = subtotal > 500 ? 0 : 50;
-        const total = subtotal + tax + shipping;
+        const finalTotal = subtotal + tax + shipping;
+        
+        // Determine payment status based on method
+        const paymentStatus = paymentMethod === 'cod' ? 'PENDING' : 'PAID';
         
         // Insert order
         const orderResult = await client.query(
-          `INSERT INTO orders (user_id, status, subtotal, tax, shipping, total, 
-           shipping_address, billing_address, payment_status, payment_id, created_at)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW())
+          `INSERT INTO orders (user_id, guest_id, status, subtotal, tax, shipping, total,
+           shipping_address, billing_address, payment_method, payment_status, payment_id, created_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW())
            RETURNING *`,
           [
-            userId,
+            userId || null,
+            guestId || null,
             'PENDING',
             subtotal,
             tax,
             shipping,
-            total,
+            finalTotal,
             JSON.stringify(shippingAddress),
-            JSON.stringify(billingAddress),
-            paymentResult.status,
-            paymentResult.transactionId,
+            JSON.stringify(shippingAddress), // Use shipping as billing for now
+            paymentMethod,
+            paymentStatus,
+            null, // payment_id will be set later for online payments
           ]
         );
         
@@ -44,9 +49,9 @@ export class OrderController {
         // Insert order items
         for (const item of items) {
           await client.query(
-            `INSERT INTO order_items (order_id, product_id, quantity, price, total)
-             VALUES ($1, $2, $3, $4, $5)`,
-            [order.id, item.productId, item.quantity, item.price, item.price * item.quantity]
+            `INSERT INTO order_items (order_id, product_id, product_name, quantity, price, total)
+             VALUES ($1, $2, $3, $4, $5, $6)`,
+            [order.id, item.productId, item.name || 'Unknown Product', item.quantity, item.price, item.price * item.quantity]
           );
         }
         
@@ -137,6 +142,61 @@ export class OrderController {
         },
       });
     } catch (error: any) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  async trackGuestOrder(req: Request, res: Response) {
+    try {
+      const { email, phone } = req.body;
+      
+      // Validate input - require at least email or phone
+      if (!email && !phone) {
+        return res.status(400).json({
+          success: false,
+          message: 'Either email or phone number is required',
+        });
+      }
+      
+      // Query all guest orders with shipping address containing email or phone
+      const orderResult = await pool.query(
+        `SELECT o.*,
+         (SELECT json_agg(oi.*) FROM order_items oi WHERE oi.order_id = o.id) as items
+         FROM orders o
+         WHERE o.guest_id IS NOT NULL
+         AND (
+           o.shipping_address::jsonb->>'email' = $1
+           OR o.shipping_address::jsonb->>'phone' = $2
+         )
+         ORDER BY o.created_at DESC`,
+        [email || '', phone || '']
+      );
+      
+      if (orderResult.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: 'No orders found for the provided contact information.',
+        });
+      }
+      
+      // Parse JSON fields for all orders
+      const orders = orderResult.rows.map(order => {
+        if (typeof order.shipping_address === 'string') {
+          order.shipping_address = JSON.parse(order.shipping_address);
+        }
+        if (typeof order.billing_address === 'string') {
+          order.billing_address = JSON.parse(order.billing_address);
+        }
+        return order;
+      });
+      
+      res.json({
+        success: true,
+        data: orders,
+        count: orders.length,
+      });
+    } catch (error: any) {
+      console.error('Track guest orders error:', error);
       res.status(500).json({ success: false, message: error.message });
     }
   }
