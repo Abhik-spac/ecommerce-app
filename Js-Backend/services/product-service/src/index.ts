@@ -7,10 +7,16 @@ import productRoutes from './routes/product.routes';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3007;
 
-// Middleware
-app.use(cors());
+// CORS configuration
+app.use(cors({
+  origin: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:4200', 'http://localhost:4201', 'http://localhost:4202'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Routes

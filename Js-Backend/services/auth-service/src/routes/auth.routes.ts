@@ -9,6 +9,7 @@ import {
   verifyToken,
   createGuestSession,
   getCurrentUser,
+  refreshToken,
 } from '../controllers/auth.controller';
 
 const router = Router();
@@ -24,6 +25,7 @@ router.post('/reset-password', resetPassword);
 // Token verification and user info
 router.get('/verify', verifyToken);
 router.get('/me', getCurrentUser);
+router.post('/refresh', refreshToken);
 
 // Guest session
 router.post('/guest/create', createGuestSession);
