@@ -1,0 +1,64 @@
+<div class="wishlist-container">
+  <div class="wishlist-header">
+    <h1>
+      <mat-icon>favorite</mat-icon>
+      My Wishlist
+    </h1>
+    <p *ngIf="wishlistService.itemCount() > 0">
+      {{ wishlistService.itemCount() }} {{ wishlistService.itemCount() === 1 ? 'item' : 'items' }}
+    </p>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Loading wishlist...</p>
+  </div>
+
+  <div *ngIf="!loading && wishlistService.itemCount() === 0" class="empty-wishlist">
+    <mat-icon>favorite_border</mat-icon>
+    <h2>Your wishlist is empty</h2>
+    <p>Save items you love for later!</p>
+    <button mat-raised-button color="primary" routerLink="/products">
+      <mat-icon>store</mat-icon>
+      Browse Products
+    </button>
+  </div>
+
+  <div *ngIf="!loading && wishlistService.itemCount() > 0" class="wishlist-grid">
+    <mat-card *ngFor="let product of products" class="product-card">
+      <button mat-icon-button 
+              class="remove-btn" 
+              (click)="removeFromWishlist(product._id, product.name)"
+              matTooltip="Remove from wishlist">
+        <mat-icon>close</mat-icon>
+      </button>
+      
+      <img mat-card-image 
+           [src]="product.images?.[0]?.url || 'no-image.svg'" 
+           [alt]="product.name"
+           (click)="viewProduct(product._id)">
+      
+      <mat-card-content>
+        <h3 (click)="viewProduct(product._id)">{{ product.name }}</h3>
+        <p class="description">{{ product.description }}</p>
+        <p class="price">${{ product.price.toFixed(2) }}</p>
+        <p class="stock" [class.out-of-stock]="product.stock === 0">
+          {{ product.stock > 0 ? 'In Stock' : 'Out of Stock' }}
+        </p>
+      </mat-card-content>
+      
+      <mat-card-actions>
+        <button mat-raised-button 
+                color="primary" 
+                (click)="addToCart(product)"
+                [disabled]="product.stock === 0">
+          <mat-icon>shopping_cart</mat-icon>
+          Add to Cart
+        </button>
+        <button mat-button (click)="viewProduct(product._id)">
+          View Details
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

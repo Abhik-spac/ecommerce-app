@@ -42,12 +42,53 @@ export class GuestCheckoutFormComponent {
         country: ['India', Validators.required]
       })
     });
+
+    // Add listener to sanitize mobile number input
+    this.checkoutForm.get('mobile')?.valueChanges.subscribe(value => {
+      if (value) {
+        const sanitized = this.sanitizePhoneNumber(value);
+        if (sanitized !== value) {
+          this.checkoutForm.get('mobile')?.setValue(sanitized, { emitEvent: false });
+        }
+      }
+    });
+  }
+
+  private sanitizePhoneNumber(phone: string): string {
+    // Remove all non-digit characters
+    let cleaned = phone.replace(/\D/g, '');
+    
+    // Remove country codes and leading zeros
+    // Keep removing leading 0s
+    while (cleaned.startsWith('0')) {
+      cleaned = cleaned.substring(1);
+    }
+    
+    // If starts with 91 and has more than 10 digits, remove 91
+    if (cleaned.startsWith('91') && cleaned.length > 10) {
+      cleaned = cleaned.substring(2);
+    }
+    
+    // Remove any remaining leading zeros after country code removal
+    while (cleaned.startsWith('0')) {
+      cleaned = cleaned.substring(1);
+    }
+    
+    // Limit to 10 digits
+    return cleaned.substring(0, 10);
   }
 
   onSubmit(): void {
     if (this.checkoutForm.valid) {
       this.isSubmitting.set(true);
-      this.formSubmit.emit(this.checkoutForm.value);
+      
+      // Sanitize mobile number one final time before submission
+      const formValue = this.checkoutForm.value;
+      if (formValue.mobile) {
+        formValue.mobile = this.sanitizePhoneNumber(formValue.mobile);
+      }
+      
+      this.formSubmit.emit(formValue);
     } else {
       this.markFormGroupTouched(this.checkoutForm);
     }

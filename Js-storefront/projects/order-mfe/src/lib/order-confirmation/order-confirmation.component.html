@@ -1,29 +1,78 @@
 <div class="confirmation-container">
   <mat-card class="confirmation-card">
     <mat-card-content>
-      <div class="success-icon">
-        <mat-icon>check_circle</mat-icon>
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="loading-state">
+        <mat-icon>hourglass_empty</mat-icon>
+        <p>Verifying order...</p>
       </div>
-      
-      <h1>Order Confirmed!</h1>
-      <p class="subtitle">Thank you for your purchase</p>
-      
-      <div class="order-info">
-        <p class="order-number">Order Number: <strong>{{ orderId }}</strong></p>
-        <p class="confirmation-message">
-          We've received your order and will send you a confirmation email shortly.
-        </p>
-      </div>
-      
-      <div class="action-buttons">
-        <button mat-raised-button color="primary" (click)="goToHome()">
-          <mat-icon>home</mat-icon>
-          Continue Shopping
-        </button>
-        <button mat-raised-button (click)="goToOrders()">
-          <mat-icon>receipt_long</mat-icon>
-          View Orders
-        </button>
+
+      <!-- Valid Order Confirmation -->
+      <div *ngIf="!isLoading && isValidOrder">
+        <div class="success-icon">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        
+        <h1>Order Details</h1>
+        <p class="subtitle">Order #{{ orderId }}</p>
+        
+        <!-- Order Summary -->
+        <div class="order-summary" *ngIf="order">
+          <div class="summary-row">
+            <span class="label">Status:</span>
+            <span class="status-badge" [ngClass]="'status-' + order.status.toLowerCase()">
+              {{ order.status }}
+            </span>
+          </div>
+          <div class="summary-row">
+            <span class="label">Order Date:</span>
+            <span class="value">{{ formatDate(order.createdAt || order.created_at) }}</span>
+          </div>
+          <div class="summary-row">
+            <span class="label">Total Amount:</span>
+            <span class="value total">₹{{ (+order.total).toFixed(2) }}</span>
+          </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="order-items" *ngIf="order?.items && order.items.length > 0">
+          <h3>Order Items</h3>
+          <div class="item-card" *ngFor="let item of order.items">
+            <div class="item-info">
+              <div class="item-name">{{ item.productName || item.product_name }}</div>
+              <div class="item-details">
+                <span>Quantity: {{ item.quantity }}</span>
+                <span>Price: ₹{{ (+item.price).toFixed(2) }}</span>
+              </div>
+            </div>
+            <div class="item-total">
+              ₹{{ (+item.price * item.quantity).toFixed(2) }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipping Address -->
+        <div class="shipping-address" *ngIf="order?.shippingAddress || order?.shipping_address">
+          <h3>Shipping Address</h3>
+          <div class="address-content">
+            <p><strong>{{ (order.shippingAddress || order.shipping_address).fullName }}</strong></p>
+            <p>{{ (order.shippingAddress || order.shipping_address).address }}</p>
+            <p>{{ (order.shippingAddress || order.shipping_address).city }}, {{ (order.shippingAddress || order.shipping_address).state }} {{ (order.shippingAddress || order.shipping_address).zipCode }}</p>
+            <p>Phone: {{ (order.shippingAddress || order.shipping_address).phone }}</p>
+            <p *ngIf="(order.shippingAddress || order.shipping_address).email">Email: {{ (order.shippingAddress || order.shipping_address).email }}</p>
+          </div>
+        </div>
+        
+        <div class="action-buttons">
+          <button mat-raised-button color="primary" (click)="goToHome()">
+            <mat-icon>home</mat-icon>
+            Continue Shopping
+          </button>
+          <button mat-raised-button (click)="goToOrders()">
+            <mat-icon>receipt_long</mat-icon>
+            {{ isGuestUser() ? 'Track My Orders' : 'View All Orders' }}
+          </button>
+        </div>
       </div>
     </mat-card-content>
   </mat-card>

@@ -40,7 +40,7 @@ export class CartService {
   total = computed(() => this.subtotal() + this.tax());
 
   constructor() {
-    // Load cart from backend on initialization
+    // Load cart on initialization
     this.loadCart();
   }
 
@@ -51,14 +51,15 @@ export class CartService {
       }),
       catchError(error => {
         console.error('Load cart error:', error);
-        return throwError(() => error);
+        // Silently fail - cart will be empty, user can still add items
+        return [];
       })
     ).subscribe();
   }
 
   addToCart(product: any): void {
     const item = {
-      productId: product.id,
+      productId: product._id || product.id,
       name: product.name,
       price: product.price,
       quantity: 1,

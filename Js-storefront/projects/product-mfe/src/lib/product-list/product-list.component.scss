@@ -90,7 +90,7 @@
       border: $border-width-thin solid rgba($color-gold, 0.3);
       color: $color-white;
       padding: $spacing-05 $spacing-1;
-      height: 40px;
+      height: 40px; // Standard button height (no exact variable match)
       transition: all $transition-base;
       position: relative;
       
@@ -102,7 +102,7 @@
         background: linear-gradient(135deg, rgba($color-white, 0.12) 0%, rgba($color-white, 0.16) 100%);
         border-color: $color-gold;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba($color-gold, 0.2);
+        box-shadow: $shadow-md; // Replaced hardcoded shadow
       }
       
       mat-icon {
@@ -116,7 +116,7 @@
         background: $color-accent;
         color: $color-white;
         border-radius: $border-radius-full;
-        width: 20px;
+        width: 20px; // Badge size (no exact variable match)
         height: 20px;
         display: flex;
         align-items: center;
@@ -131,14 +131,14 @@
       border: $border-width-thin solid rgba($color-gold, 0.3);
       color: $color-white;
       padding: $spacing-05 $spacing-1;
-      height: 40px;
+      height: 40px; // Standard button height (no exact variable match)
       transition: all $transition-base;
       
       &:hover {
         background: linear-gradient(135deg, rgba($color-white, 0.12) 0%, rgba($color-white, 0.16) 100%);
         border-color: $color-gold;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba($color-gold, 0.2);
+        box-shadow: $shadow-md; // Replaced hardcoded shadow
       }
       
       mat-icon {
@@ -159,7 +159,7 @@
       border: $border-width-thin solid rgba($color-gold, 0.3);
       border-radius: $border-radius-md;
       color: $color-white;
-      height: 40px;
+      height: 40px; // Standard button height (no exact variable match)
       
       mat-icon {
         color: $color-gold;
@@ -262,18 +262,18 @@
 
   @media (max-width: $breakpoint-md) {
     width: 85%; // 85% width instead of 100%
-    max-width: 400px;
+    max-width: $size-400; // 400px (25rem) - Mobile sidebar max width
     position: fixed;
-    top: 64px; // Below header (header height is typically 64px)
+    top: $spacing-4; // 64px (4rem) - Below header
     left: 0;
     bottom: 0;
     z-index: 1001; // Above backdrop
-    max-height: calc(100vh - 64px);
+    max-height: calc(100vh - $spacing-4); // 64px (4rem) header height
     border-radius: 0;
-    border-right: 2px solid $color-gold;
+    border-right: $border-width-normal solid $color-gold;
     padding-top: $spacing-1; // Add top padding
     transform: translateX(-100%); // Hidden by default (off-screen)
-    transition: transform 0.3s ease-out; // Smooth slide animation
+    transition: transform $transition-slow ease-out; // Smooth slide animation
     
     &.show-mobile {
       transform: translateX(0); // Slide in when shown
@@ -283,14 +283,14 @@
     &::before {
       content: '';
       position: fixed;
-      top: 64px; // Start below header
+      top: $spacing-4; // 64px (4rem) - Start below header
       left: 0;
       right: 0;
       bottom: 0;
       background: rgba($color-black, 0.7);
       z-index: -1;
       opacity: 0;
-      transition: opacity 0.3s ease-out;
+      transition: opacity $transition-slow ease-out;
       pointer-events: none; // Don't block clicks when hidden
     }
     
@@ -359,7 +359,7 @@
       border-radius: $border-radius-sm;
       padding: $spacing-075 $spacing-1;
       height: auto;
-      min-height: 48px;
+      min-height: 48px; // Minimum touch target size (no exact variable match)
 
       &:hover {
         background: rgba($color-white, 0.1) !important;
@@ -383,11 +383,11 @@
           margin-left: auto;
           background: $color-gold;
           color: $color-black;
-          padding: 2px $spacing-05;
+          padding: 2px $spacing-05; // 2px vertical padding (no exact variable match)
           border-radius: $border-radius-full;
           font-size: $font-size-xs;
           font-weight: $font-weight-bold;
-          min-width: 20px;
+          min-width: 20px; // Badge minimum width (no exact variable match)
           text-align: center;
         }
       }
@@ -496,11 +496,11 @@
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); // Product card min width (no exact variable match)
   gap: $spacing-3;
 
   @media (max-width: $breakpoint-lg) {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax($size-250, 1fr)); // 250px (15.625rem) - Tablet card min width
     gap: $spacing-2;
   }
 
@@ -510,7 +510,7 @@
   }
 
   // Single column on mobile phones - centered
-  @media (max-width: 480px) {
+  @media (max-width: $breakpoint-xs) { // 480px
     grid-template-columns: 1fr !important;
     gap: $spacing-1;
     justify-items: center; // Center the cards
@@ -518,7 +518,7 @@
     // Make cards take reasonable width
     > * {
       width: 100%;
-      max-width: 400px; // Limit max width for better appearance
+      max-width: $size-400; // 400px (25rem) - Limit max width for better appearance
     }
   }
 }
@@ -548,7 +548,7 @@
 
     .product-image {
       width: 100%;
-      height: 15.625rem;
+      height: $size-250; // 250px (15.625rem) - Product image height
       object-fit: cover;
       display: block;
     }
@@ -677,7 +677,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid rgba($color-white, 0.1);
+    border-top: $border-width-thin solid rgba($color-white, 0.1);
 
     .add-to-cart-btn {
       flex: 1;
@@ -731,9 +731,9 @@
   text-align: center;
 
   .empty-icon {
-    font-size: 5rem;
-    width: 5rem;
-    height: 5rem;
+    font-size: $spacing-5; // 5rem (80px) - Empty state icon
+    width: $spacing-5;
+    height: $spacing-5;
     color: $color-gold;
     margin-bottom: $spacing-1;
   }
@@ -784,7 +784,7 @@
   }
 
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax($spacing-10, 1fr)); // 10rem (160px)
     gap: $spacing-075;
   }
 
@@ -806,7 +806,7 @@
   
   ::ng-deep .product-card {
     .product-image-container .product-image {
-      height: 12rem;
+      height: 12rem; // 192px - Mobile image height (no exact variable match)
     }
     
     mat-card-content {
@@ -844,7 +844,7 @@
 
 @media (max-width: $breakpoint-sm) {
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax($spacing-8, 1fr)); // 8rem (128px)
     gap: $spacing-05;
   }
   
@@ -854,3 +854,49 @@
 }
 
 // Made with Bob
+
+// Intersection Observer Trigger (invisible element to detect scroll)
+.load-more-trigger {
+  height: 1px;
+  width: 100%;
+  visibility: hidden;
+}
+
+// Loading More Indicator
+.loading-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-3 0;
+  gap: $spacing-1;
+
+  p {
+    color: rgba($color-white, 0.7);
+    font-size: $font-size-sm;
+    margin: 0;
+  }
+}
+
+// End of Results
+.end-of-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-3 0;
+  gap: $spacing-1;
+  color: rgba($color-white, 0.6);
+
+  mat-icon {
+    font-size: 48px; // End of results icon (no exact variable match)
+    width: 48px;
+    height: 48px;
+    color: $color-success;
+  }
+
+  p {
+    font-size: $font-size-sm;
+    margin: 0;
+  }
+}

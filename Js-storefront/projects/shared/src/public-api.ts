@@ -5,6 +5,7 @@
 // Services
 export * from './lib/services/auth.service';
 export * from './lib/services/cart.service';
+export * from './lib/services/wishlist.service';
 export * from './lib/services/toast.service';
 export * from './lib/services/responsive.service';
 

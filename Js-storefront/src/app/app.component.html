@@ -45,6 +45,14 @@
         <mat-icon matListItemIcon [matBadge]="cartService.itemCount()" matBadgeColor="accent">shopping_cart</mat-icon>
         <span matListItemTitle>Cart</span>
       </a>
+      <a mat-list-item routerLink="/wishlist" (click)="sidenav.close()" *ngIf="authService.isAuthenticated()">
+        <mat-icon matListItemIcon [matBadge]="wishlistService.itemCount()" matBadgeColor="accent">favorite</mat-icon>
+        <span matListItemTitle>Wishlist</span>
+      </a>
+      <a mat-list-item routerLink="/orders/track" (click)="sidenav.close()">
+        <mat-icon matListItemIcon>search</mat-icon>
+        <span matListItemTitle>Track Order</span>
+      </a>
       <!-- Not Authenticated -->
       <ng-container *ngIf="!authService.isAuthenticated()">
         <a mat-list-item [routerLink]="['/login']" [queryParams]="{returnUrl: router.url}" (click)="sidenav.close()">
@@ -157,10 +165,20 @@
           </button>
 
           <button mat-icon-button
+                  *ngIf="authService.isAuthenticated()"
+                  [matBadge]="wishlistService.itemCount()"
+                  matBadgeColor="accent"
+                  routerLink="/wishlist"
+                  matTooltip="Wishlist">
+            <mat-icon>favorite</mat-icon>
+          </button>
+
+          <button mat-icon-button
                   [matBadge]="cartService.itemCount()"
                   matBadgeColor="accent"
                   (mouseenter)="onCartHover(true)"
-                  (click)="showCartSidebar.set(!showCartSidebar())">
+                  (click)="showCartSidebar.set(!showCartSidebar())"
+                  matTooltip="Cart">
             <mat-icon>shopping_cart</mat-icon>
           </button>
 
@@ -193,6 +211,10 @@
             <button mat-menu-item routerLink="/profile">
               <mat-icon>person</mat-icon>
               Profile
+            </button>
+            <button mat-menu-item routerLink="/wishlist">
+              <mat-icon>favorite</mat-icon>
+              Wishlist
             </button>
             <button mat-menu-item routerLink="/orders">
               <mat-icon>receipt_long</mat-icon>
@@ -326,6 +348,7 @@
         <div class="footer-section">
           <h3>Customer Service</h3>
           <ul>
+            <li><a routerLink="/orders/track">Track Order</a></li>
             <li><a href="#">Contact Us</a></li>
             <li><a href="#">Shipping Info</a></li>
             <li><a href="#">Returns</a></li>

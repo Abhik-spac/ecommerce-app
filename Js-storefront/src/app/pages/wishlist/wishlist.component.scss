@@ -1,0 +1,178 @@
+@use '../../../styles/variables' as *;
+
+.wishlist-container {
+  max-width: $container-xxl;
+  margin: 0 auto;
+  padding: $spacing-2;
+}
+
+.wishlist-header {
+  margin-bottom: $spacing-2;
+  
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: $spacing-05;
+    font-size: $font-size-4xl;
+    margin: 0 0 $spacing-05 0;
+    
+    mat-icon {
+      font-size: $font-size-4xl;
+      width: $font-size-4xl;
+      height: $font-size-4xl;
+      color: $theme-magenta-400;
+    }
+  }
+  
+  p {
+    color: $color-text-secondary;
+    margin: 0;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-4;
+  gap: $spacing-1;
+}
+
+.empty-wishlist {
+  text-align: center;
+  padding: $spacing-4 $spacing-2;
+  
+  > mat-icon {
+    font-size: $icon-size-xxl;
+    width: $icon-size-xxl;
+    height: $icon-size-xxl;
+    color: $color-gray-400;
+    margin-bottom: $spacing-1;
+  }
+  
+  h2 {
+    color: $color-text-secondary;
+    margin-bottom: $spacing-05;
+  }
+  
+  p {
+    color: $color-text-hint;
+    margin-bottom: $spacing-2;
+  }
+  
+  button {
+    mat-icon {
+      margin-right: $spacing-05;
+      vertical-align: middle;
+    }
+  }
+}
+
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: $spacing-2;
+}
+
+.product-card {
+  position: relative;
+  cursor: pointer;
+  transition: transform $transition-fast, box-shadow $transition-fast;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+  }
+  
+  .remove-btn {
+    position: absolute;
+    top: $spacing-sm;
+    right: $spacing-sm;
+    z-index: $z-index-dropdown;
+    background: $color-white;
+    box-shadow: $shadow-md;
+    
+    mat-icon {
+      color: $color-text-secondary;
+    }
+    
+    &:hover mat-icon {
+      color: $theme-magenta-400;
+    }
+  }
+  
+  img {
+    height: $size-200;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  
+  mat-card-content {
+    h3 {
+      font-size: $font-size-lg;
+      margin: 0 0 $spacing-05 0;
+      cursor: pointer;
+      
+      &:hover {
+        color: $color-info;
+      }
+    }
+    
+    .description {
+      color: $color-text-secondary;
+      font-size: $font-size-sm;
+      margin: 0 0 $spacing-05 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .price {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+      color: $color-info;
+      margin: $spacing-05 0;
+    }
+    
+    .stock {
+      font-size: $font-size-sm;
+      color: $color-success;
+      margin: 0;
+      
+      &.out-of-stock {
+        color: $color-error;
+      }
+    }
+  }
+  
+  mat-card-actions {
+    display: flex;
+    gap: $spacing-05;
+    padding: $spacing-1;
+    
+    button {
+      flex: 1;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .wishlist-container {
+    padding: $spacing-1;
+  }
+  
+  .wishlist-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: $spacing-1;
+  }
+  
+  .product-card {
+    mat-card-actions {
+      flex-direction: column;
+    }
+  }
+}
+
+// Made with Bob
